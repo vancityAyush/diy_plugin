@@ -1,0 +1,85 @@
+name: diy
+description: A new Flutter plugin project.
+version: 0.0.1
+homepage: diy.dart
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+  flutter: ">=2.5.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+  cupertino_icons: ^1.0.2
+  pinput: ^2.2.16
+  timer_count_down: ^2.2.1
+  cool_dropdown: ^1.4.2
+  flutter_signin_button: ^2.0.0
+  intl: ^0.17.0
+  modal_bottom_sheet: ^2.1.2
+  dropdown_textfield: ^1.0.5
+  material_floating_search_bar: ^0.3.7
+  get: ^4.6.5
+  dotted_border: ^2.0.0+2
+  flutter_svg: ^1.1.6
+  shared_preferences: ^2.0.15
+  provider: ^6.0.4
+  google_fonts: ^3.0.1
+  dio: ^4.0.6
+  build_runner: ^2.3.2
+  flutter_secure_storage: ^6.0.0
+  json_serializable: ^6.5.4
+  json_annotation: ^4.7.0
+  get_it: ^7.2.0
+  encrypt: ^5.0.1
+  fluttertoast: ^8.1.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+  # This section identifies this Flutter project as a plugin project.
+  # The 'pluginClass' specifies the class (in Java, Kotlin, Swift, Objective-C, etc.)
+  # which should be registered in the plugin registry. This is required for
+  # using method channels.
+  # The Android 'package' specifies package in which the registered class is.
+  # This is required for using method channels on Android.
+  # The 'ffiPlugin' specifies that native code should be built and bundled.
+  # This is required for using `dart:ffi`.
+  # All these are used by the tooling to maintain consistency when
+  # adding or updating assets for this project.
+  plugin:
+    platforms:
+      android:
+        package: com.example.diy
+        pluginClass: DiyPlugin
+      ios:
+        pluginClass: DiyPlugin
+
+
+  assets:
+    - assets/public.pem
+    - assets/logo-dark.svg
+    - assets/logo-light.svg
+    - assets/logo-dark.png
+    - assets/logo-light.png
+    - assets/blinktrade.svg
+    - assets/icon.svg
+
+  fonts:
+    - family: BeVietnamPro
+      fonts:
+        - asset: assets/fonts/BeVietnamPro-Regular.ttf
+        - asset: assets/fonts/BeVietnamPro-Medium.ttf
+          weight: 600
+        - asset: assets/fonts/BeVietnamPro-Bold.ttf
+          weight: 700
