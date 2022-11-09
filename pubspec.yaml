@@ -1,6 +1,6 @@
 name: diy
 description: A new Flutter plugin project.
-version: 0.0.2
+version: 0.0.5
 homepage: diy.dart
 
 environment:
@@ -67,20 +67,14 @@ flutter:
 
 
   assets:
-    - packages/diy/assets/
-    - packages/diy/assets/public.pem
-    - assets/logo-dark.svg
-    - assets/logo-light.svg
-    - assets/logo-dark.png
-    - assets/logo-light.png
-    - assets/blinktrade.svg
-    - assets/icon.svg
+    - packages/diy/assets/logo-dark.png
+    - packages/diy/assets/pem/public.pem
 
   fonts:
     - family: BeVietnamPro
       fonts:
-        - asset: assets/fonts/BeVietnamPro-Regular.ttf
-        - asset: assets/fonts/BeVietnamPro-Medium.ttf
+        - asset: packages/diy/assets/fonts/BeVietnamPro-Regular.ttf
+        - asset: packages/diy/assets/fonts/BeVietnamPro-Medium.ttf
           weight: 600
-        - asset: assets/fonts/BeVietnamPro-Bold.ttf
+        - asset: packages/diy/assets/fonts/BeVietnamPro-Bold.ttf
           weight: 700
