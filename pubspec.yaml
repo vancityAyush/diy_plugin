@@ -68,6 +68,7 @@ flutter:
 
   assets:
     - packages/diy/assets/logo-dark.png
+    - packages/diy/assets/logo-light.png
     - packages/diy/assets/pem/public.pem
 
   fonts:
