@@ -1,11 +1,7 @@
+import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
-import '../utils/theme_files/app_colors.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key});
-
   @override
   Widget build(BuildContext context) {
     final isLightMode = Theme.of(context).brightness == Brightness.light;

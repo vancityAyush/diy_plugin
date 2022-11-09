@@ -11,8 +11,6 @@ import '../../utils/theme_files/app_colors.dart';
 class EmailPage extends StatefulWidget {
   static String Email = '';
 
-  const EmailPage({super.key});
-
   @override
   State<EmailPage> createState() => _EmailPageState();
 }
@@ -90,9 +88,9 @@ class _EmailPageState extends State<EmailPage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: SignInButton(
+                          Buttons.Google,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          Buttons.Google,
                           text: "Continue with Google",
                           onPressed: () {
                             setState(() {
