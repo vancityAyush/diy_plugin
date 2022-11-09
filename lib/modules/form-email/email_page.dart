@@ -11,6 +11,8 @@ import '../../utils/theme_files/app_colors.dart';
 class EmailPage extends StatefulWidget {
   static String Email = '';
 
+  const EmailPage({Key? key}) : super(key: key);
+
   @override
   State<EmailPage> createState() => _EmailPageState();
 }
@@ -125,7 +127,7 @@ class _EmailPageState extends State<EmailPage> {
                           borderRadius: BorderRadius.circular(8)),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/form-email');
+                      Navigator.pushNamed(context, '/verify-email');
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 108.0),

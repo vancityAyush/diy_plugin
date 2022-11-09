@@ -62,7 +62,7 @@ class FlutterDIY {
               "/": SignUpPage(),
               "/otp": OtpPage(),
               "/form-email": EmailPage(),
-              "/form-email": VerifyEmail(),
+              "/verify-email": VerifyEmail(),
             },
           ),
         );

@@ -14,6 +14,8 @@ import '../../../utils/theme_files/app_colors.dart';
 import '../../../widget/header.dart';
 
 class OtpPage extends StatefulWidget {
+  const OtpPage({Key? key}) : super(key: key);
+
   @override
   State<OtpPage> createState() => _OtpPageState();
 }

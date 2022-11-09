@@ -13,7 +13,7 @@ class RSAEncrypter {
   }
 
   RSAEncrypter._internal() {
-    rootBundle.loadString('assets/public.pem').then((value) {
+    rootBundle.loadString('packages/diy/assets/public.pem').then((value) {
       final parser = RSAKeyParser();
       publicKey = parser.parse(value) as RSAPublicKey;
       encrypter = Encrypter(RSA(publicKey: publicKey));

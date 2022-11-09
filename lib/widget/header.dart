@@ -15,9 +15,11 @@ class Header extends StatelessWidget {
           size: 25,
           color: AppColors.primaryAccent(context),
         ),
-        title: Image.asset(
-          isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
-          width: 150,
+        title: Image(
+          image: AssetImage(
+              isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
+              package: "diy"),
+          height: 150,
         ),
         actions: [
           Icon(

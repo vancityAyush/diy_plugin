@@ -4,7 +4,7 @@ version: 0.0.2
 homepage: diy.dart
 
 environment:
-  sdk: '>=2.16.4 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
   flutter: ">=2.5.0"
 
 dependencies:
@@ -67,7 +67,8 @@ flutter:
 
 
   assets:
-    - assets/public.pem
+    - packages/diy/assets/
+    - packages/diy/assets/public.pem
     - assets/logo-dark.svg
     - assets/logo-light.svg
     - assets/logo-dark.png
