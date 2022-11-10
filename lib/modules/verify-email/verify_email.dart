@@ -1,4 +1,5 @@
 import 'package:diy/network/api_repository.dart';
+import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timer_count_down/timer_count_down.dart';
@@ -20,11 +21,14 @@ class _VerifyEmailState extends State<VerifyEmail> {
   bool timer = false;
   RxBool isSwitched = false.obs;
   ApiRepository apiRepository = getIt<ApiRepository>();
+  BottomSheetNavigator navigator = Get.find<BottomSheetNavigator>();
   final TextEditingController pinController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final isLightMode = Theme.of(context).brightness == Brightness.light;
+    final arguments = navigator.arguments;
+    print(arguments);
     return SafeArea(
       child: SingleChildScrollView(
           child: Column(

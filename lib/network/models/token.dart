@@ -10,7 +10,11 @@ class Token {
   static const EXPIRES_IN = "expires_in";
   String? token;
   String? refreshToken;
-  int? expiresIn;
+  int? _expiresIn;
+
+  int get expiresIn {
+    return _expiresIn ?? 0;
+  }
 
   void writeToken() async {
     await storage.write(key: TOKEN, value: token);
@@ -40,7 +44,8 @@ class Token {
   setToken(AuthBean bean) {
     token = bean.Token;
     refreshToken = bean.RefreshToken;
-    expiresIn = DateTime.now().millisecondsSinceEpoch + (bean.ExpiresIn * 1000);
+    _expiresIn =
+        DateTime.now().millisecondsSinceEpoch + (bean.ExpiresIn * 1000);
     writeToken();
     printToken();
   }

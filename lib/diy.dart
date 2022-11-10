@@ -44,7 +44,7 @@ class FlutterDIY {
 
   Future<dynamic> init(BuildContext context) async {
     if (!isInit) {
-      await Future.delayed(Duration(seconds: 1), () {});
+      await Future.delayed(const Duration(seconds: 1), () {});
     }
     return showMaterialModalBottomSheet(
       backgroundColor: AppColors.background(context),
@@ -58,10 +58,11 @@ class FlutterDIY {
       builder: (context) {
         Get.put(
           BottomSheetNavigator(
+            initialRoute: "/form-email",
             routes: {
-              "/": SignUpPage(),
+              "/": const SignUpPage(),
               "/otp": OtpPage(),
-              "/form-email": EmailPage(),
+              "/form-email": const EmailPage(),
               "/verify-email": VerifyEmail(),
             },
           ),
