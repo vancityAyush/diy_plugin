@@ -1,3 +1,5 @@
+import 'package:diy/diy.dart';
+import 'package:diy/network/api_repository.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -11,6 +13,8 @@ class PanUploadPage extends StatefulWidget {
 }
 
 class _PanUploadPageState extends State<PanUploadPage> {
+  final ApiRepository _apiRepository = getIt<ApiRepository>();
+
   @override
   Widget build(BuildContext context) {
     final isLightMode = Theme.of(context).brightness == Brightness.light;
