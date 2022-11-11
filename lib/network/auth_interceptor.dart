@@ -7,7 +7,7 @@ class AuthInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final OAuthService oauthService = getIt<OAuthService>();
-    if (!options.path.contains("/auth")) {
+    if (!options.path.contains("/auth") && !options.path.contains("/pre")) {
       if (oauthService.token.isExpired) {
         await oauthService.refreshToken();
       }

@@ -46,6 +46,7 @@ class FlutterDIY {
     if (!isInit) {
       await Future.delayed(const Duration(seconds: 1), () {});
     }
+    await getIt<OAuthService>().initState();
     return showMaterialModalBottomSheet(
       backgroundColor: AppColors.background(context),
       shape: const RoundedRectangleBorder(
@@ -58,9 +59,9 @@ class FlutterDIY {
       builder: (context) {
         Get.put(
           BottomSheetNavigator(
-            initialRoute: "/form-email",
+            initialRoute: "/",
             routes: {
-              "/": const SignUpPage(),
+              "/": SignUpPage(),
               "/otp": OtpPage(),
               "/form-email": const EmailPage(),
               "/verify-email": VerifyEmail(),

@@ -1,4 +1,5 @@
 import 'package:diy/diy.dart';
+import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
 
@@ -6,9 +7,11 @@ class ApiRepository {
   final http = getIt<HttpClient>();
   final OAuthService oauthService = getIt<OAuthService>();
 
-  Future<dynamic> getRelationDropDown() async {
+  Future<List<RelationDropdown>> getRelationDropDown() async {
     final res = await http.get("/pre/email-mobile-relationship/");
-    return res;
+    return res
+        .map<RelationDropdown>((e) => RelationDropdown.fromJson(e))
+        .toList();
   }
 
   Future<dynamic> sendEmailOtp(

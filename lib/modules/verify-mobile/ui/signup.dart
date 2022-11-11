@@ -1,36 +1,23 @@
 import 'package:diy/diy.dart';
 import 'package:diy/network/oauth_service.dart';
-import 'package:diy/widget/header.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
+import 'package:diy/widget/textfield.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../utils/theme_files/app_colors.dart';
-import '../../../widget/textfield.dart';
+import '../../../widget/header.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
-
-  @override
-  State<SignUpPage> createState() => _SignUpPageState();
-}
-
-class _SignUpPageState extends State<SignUpPage> {
-  final phoneController = TextEditingController();
-  bool readOnly = false;
-
+class SignUpPage extends StatelessWidget {
   final OAuthService _oAuthService = getIt<OAuthService>();
+  final isReadOnly;
+  final TextEditingController __phoneController = TextEditingController();
 
-  @override
-  void dispose() {
-    phoneController.dispose();
-    super.dispose();
-  }
+  SignUpPage({Key? key, this.isReadOnly = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 40),
               MyTextField(
                 hint: "Enter Phone",
-                controller: phoneController,
+                controller: __phoneController,
                 keyboardType: TextInputType.phone,
                 prefixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -96,45 +83,46 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               const SizedBox(height: 30),
               NextButton(
-                  text: "Continue",
-                  onPressed: () {
-                    if (phoneController.text.length != 10 ||
-                        phoneController.text.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: "Please enter valid phone number",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    } else {
-                      _oAuthService.sendOtp(phoneController.text).then(
-                        (value) {
-                          if (value.success) {
-                            Fluttertoast.showToast(
-                                msg: "OTP sent successfully",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.green,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                            Get.find<BottomSheetNavigator>().pushNamed('/otp');
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: value.message,
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          }
-                        },
-                      );
-                    }
-                  }),
+                text: "Continue",
+                onPressed: () {
+                  if (__phoneController.text.length != 10 ||
+                      __phoneController.text.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Please enter valid phone number",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  } else {
+                    _oAuthService.sendOtp(__phoneController.text).then(
+                      (value) {
+                        if (value.success) {
+                          Fluttertoast.showToast(
+                              msg: "OTP sent successfully",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                          Get.find<BottomSheetNavigator>().pushNamed('/otp');
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: value.message,
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                      },
+                    );
+                  }
+                },
+              ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

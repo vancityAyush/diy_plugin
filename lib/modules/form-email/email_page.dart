@@ -1,5 +1,3 @@
-import 'package:diy/network/oauth_service.dart';
-import 'package:diy/widget/dropdown.dart';
 import 'package:diy/widget/header.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
@@ -175,7 +173,7 @@ class _EmailPageState extends State<EmailPage> {
                   ],
                 ),
               ),
-              DropDown(),
+              // DropDown(),
               const SizedBox(height: 20),
               Text(
                 "Lorem ipsum | Lorem ipsum | Lorem ipsum\nCopyrights @ 2022 © Blink Trude. All Right Reserved",
