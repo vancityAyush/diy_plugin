@@ -5,6 +5,7 @@ import 'package:diy/network/oauth_service.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/pin.dart';
+import 'package:diy/widget/textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -42,26 +43,11 @@ class _OtpPageState extends State<OtpPage> {
           children: [
             Header(),
             const SizedBox(height: 20),
-            Text(
-              'Verification code',
-              style: TextStyle(
-                color: AppColors.primaryContent(context),
-                fontSize: 32,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            TitleText(text: 'Verification code'),
             const SizedBox(height: 20),
-            Center(
-              child: Text(
-                'We have sent the code verifcation to\n your Mobile Number',
-                style: TextStyle(
-                  color: AppColors.primaryAccent(context),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
+            SubtitleText(
+                text:
+                    'We have sent the code verifcation to\n your Mobile Number'),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -90,15 +76,22 @@ class _OtpPageState extends State<OtpPage> {
             const SizedBox(height: 20),
             Center(
               child: Container(
-                child: Countdown(
-                  seconds: 30,
-                  build: (BuildContext context, time) => Text(time.toString()),
-                  interval: const Duration(seconds: 1),
-                  onFinished: () {
-                    setState(() {
-                      timer = true;
-                    });
-                  },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("0:"),
+                    Countdown(
+                      seconds: 30,
+                      build: (BuildContext context, time) =>
+                          Text(time.toString()),
+                      interval: const Duration(seconds: 1),
+                      onFinished: () {
+                        setState(() {
+                          timer = true;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),

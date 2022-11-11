@@ -44,9 +44,6 @@ class _EmailPageState extends State<EmailPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Header(),
-              // const Spacer(
-              //   flex: 1,
-              // ),
               const SizedBox(height: 50),
               Text(
                 'Enter Email Address',

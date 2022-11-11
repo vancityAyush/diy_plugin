@@ -1,5 +1,7 @@
 library diy;
 
+import 'package:diy/modules/pan/ui/enter_pan.dart';
+import 'package:diy/modules/pan/ui/pan_upload_page.dart';
 import 'package:diy/modules/verify-email/verify_email.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
@@ -65,6 +67,8 @@ class FlutterDIY {
               "/otp": OtpPage(),
               "/form-email": const EmailPage(),
               "/verify-email": VerifyEmail(),
+              "/enter-pan": EnterPAN(),
+              "/pan-upload": PanUploadPage(),
             },
           ),
         );
