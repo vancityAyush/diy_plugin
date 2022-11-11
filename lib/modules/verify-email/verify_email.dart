@@ -6,7 +6,6 @@ import 'package:timer_count_down/timer_count_down.dart';
 
 import '../../diy.dart';
 import '../../utils/theme_files/app_colors.dart';
-import '../../widget/dropdown.dart';
 import '../../widget/header.dart';
 import '../../widget/pin.dart';
 
@@ -27,7 +26,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   Widget build(BuildContext context) {
     final isLightMode = Theme.of(context).brightness == Brightness.light;
-    final arguments = navigator.arguments;
+    final arguments = Get.find<BottomSheetNavigator>().arguments;
     print(arguments);
     return SafeArea(
       child: SingleChildScrollView(
@@ -172,7 +171,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                                 fontSize: 15),
                             textAlign: TextAlign.left,
                           ),
-                          DropDown()
+                          // DropDown()
                         ],
                       ),
                     ],

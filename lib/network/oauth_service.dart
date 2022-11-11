@@ -17,7 +17,7 @@ class OAuthService {
 
   Token token = Token();
 
-  OAuthService(this._http, this._storage) ;
+  OAuthService(this._http, this._storage);
 
   StreamController<User?> userController = StreamController<User>();
   dynamic currentUser;
@@ -29,22 +29,8 @@ class OAuthService {
 
   Future<void> initState() async {
     // bool isTokenValid = await token.readToken();
-    // if (value != null) {
-    //   try {
-    //     // this.token = token;
-    //     // await getUserDetails();
-    //   } on HttpException {
-    //     // signOut();
-    //     userController.add(dummyUser);
-    //   }
-    // } else {
-    // userController.add(dummyUser);
-    final res = await startAuth("9060842571");
-    User user =
-        await verifyAuth("9060842571", "1234", res["RefId"], relationshipId: 1);
-    currentUser = user;
-    token.setToken(user.Auth!);
-    // }
+    await sendOtp("8084100105");
+    await verifyOtp("1234");
   }
 
   Future<dynamic> logout() async {

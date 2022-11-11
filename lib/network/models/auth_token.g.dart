@@ -8,7 +8,7 @@ part of 'auth_token.dart';
 
 AuthBean _$AuthBeanFromJson(Map<String, dynamic> json) => AuthBean(
       Token: json['Token'] as String,
-      RefreshToken: json['RefreshToken'] as String,
+      RefreshToken: json['RefreshToken'] as String? ?? "",
       ExpiresIn: json['ExpiresIn'] as int,
     );
 

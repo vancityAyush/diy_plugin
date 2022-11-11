@@ -1,7 +1,7 @@
 import 'package:diy/diy.dart';
+import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/api_repository.dart';
 import 'package:diy/network/oauth_service.dart';
-import 'package:diy/widget/dropdown.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/pin.dart';
@@ -26,6 +26,7 @@ class _OtpPageState extends State<OtpPage> {
   final OAuthService _oAuthService = getIt<OAuthService>();
   final ApiRepository _apiRepository = getIt<ApiRepository>();
   final navigator = Get.find<BottomSheetNavigator>();
+  final Rx<int?> _selectedRelation = Rx<int?>(null);
 
   final TextEditingController pinController = TextEditingController();
 
@@ -122,8 +123,9 @@ class _OtpPageState extends State<OtpPage> {
                 text: "Verify",
                 onPressed: () async {
                   if (pinController.text.length == 4) {
-                    final res =
-                        await _oAuthService.verifyOtp(pinController.text);
+                    final res = await _oAuthService.verifyOtp(
+                        pinController.text,
+                        relationId: _selectedRelation.value!);
                     if (res.success) {
                       Fluttertoast.showToast(
                           msg: "OTP Verified",
@@ -204,7 +206,47 @@ class _OtpPageState extends State<OtpPage> {
                                   fontSize: 15),
                               textAlign: TextAlign.left,
                             ),
-                            DropDown()
+                            FutureBuilder<List<RelationDropdown>>(
+                              future: _apiRepository.getRelationDropDown(),
+                              builder: (context, snapshot) {
+                                List<RelationDropdown> DropDownId = [];
+                                if (snapshot.hasData) {
+                                  DropDownId =
+                                      snapshot.data as List<RelationDropdown>;
+                                }
+                                return Obx(
+                                  () => DropdownButtonHideUnderline(
+                                    child: DropdownButton<int>(
+                                      hint: Text(
+                                        "Select Relation",
+                                        style: TextStyle(
+                                            color: AppColors.primaryAccent(
+                                                context),
+                                            fontSize: 15),
+                                      ),
+                                      value: _selectedRelation.value,
+                                      items: DropDownId.map(
+                                          (RelationDropdown item) {
+                                        return DropdownMenuItem(
+                                          value: item.RelationId,
+                                          child: Text(
+                                            item.RelationName,
+                                            style: TextStyle(
+                                                color: AppColors.primaryAccent(
+                                                    context),
+                                                fontSize: 15),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        print(value);
+                                        _selectedRelation.value = value ?? 0;
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ],
