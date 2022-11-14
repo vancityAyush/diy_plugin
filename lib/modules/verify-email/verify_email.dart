@@ -1,5 +1,6 @@
 import 'package:diy/network/api_repository.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
+import 'package:diy/widget/next_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timer_count_down/timer_count_down.dart';
@@ -8,6 +9,7 @@ import '../../diy.dart';
 import '../../utils/theme_files/app_colors.dart';
 import '../../widget/header.dart';
 import '../../widget/pin.dart';
+import '../../widget/textstyle.dart';
 
 class VerifyEmail extends StatefulWidget {
   const VerifyEmail({Key? key}) : super(key: key);
@@ -34,25 +36,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Header(),
-          Text(
-            'Verification code',
-            style: TextStyle(
-              color: AppColors.primaryContent(context),
-              fontSize: 32,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          TitleText(text: 'Verification code'),
           const SizedBox(height: 20),
-          Center(
-            child: Text(
-              'We have sent the code verifcation to\n your email address ',
-              style: TextStyle(
-                color: AppColors.primaryAccent(context),
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center,
-            ),
+          SubtitleText(
+            text: 'We have sent the code verifcation to\n your email address ',
           ),
           SizedBox(height: 20),
           CodePin(
@@ -90,38 +77,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
             ),
           ),
           SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: SizedBox(
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: AppColors.primaryColor(context),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "Verify",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Icon(
-                      Icons.arrow_forward,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          NextButton(
+              text: 'Verify',
+              color: AppColors.primaryColor(context),
+              onPressed: () {}),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Obx(
@@ -183,15 +142,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
           SizedBox(
             height: 20,
           ),
-          Text(
-            "Lorem ipsum | Lorem ipsum | Lorem ipsum\nCopyrights @ 2022 © Blink Trude. All Right Reserved",
-            style: TextStyle(
-              color: AppColors.primaryAccent(context),
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          FooterText(),
           SizedBox(height: 20),
           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ],
