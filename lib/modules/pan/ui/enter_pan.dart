@@ -34,7 +34,7 @@ class EnterPAN extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Header(),
-            const TitleText(text: 'Enter PAN & Date of\nBirth'),
+            const TitleText(text: 'Enter PAN & Date of\nBirth '),
             SizedBox(
               height: 20,
             ),

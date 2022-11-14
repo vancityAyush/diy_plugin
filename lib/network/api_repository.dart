@@ -90,7 +90,7 @@ class ApiRepository {
       String firstName,
       String middleName,
       String lastName,
-      String uan) async {
+      String ua) async {
     final res = await http.postEncrypted(
       "/app/validate-kra/",
       data: {
@@ -101,7 +101,7 @@ class ApiRepository {
         "FirstName": firstName,
         "MiddleName": middleName,
         "LastName": lastName,
-        "UAN": uan
+        "UAN": ua
       },
     );
     return res;

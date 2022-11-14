@@ -9,17 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
 import '../../../utils/theme_files/app_colors.dart';
+import '../../../widget/button_state.dart';
 import '../../../widget/header.dart';
-
-class PressedState extends GetxController {
-  RxBool isLoading = true.obs;
-
-  void changeStatus() {
-    isLoading.toggle();
-  }
-}
 
 class SignUpPage extends StatelessWidget {
   final OAuthService _oAuthService = getIt<OAuthService>();

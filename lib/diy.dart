@@ -42,6 +42,37 @@ class FlutterDIY {
       dependsOn: [OAuthService, HttpClient],
     );
     isInit = true;
+
+    Future.delayed(Duration(seconds: 3), () async {
+      ApiRepository apiRepository = getIt.get<ApiRepository>();
+      await getIt.get<OAuthService>().initState();
+      // final res = await apiRepository.sendEmailOtp(email: "ak1109@gmail.com");
+      // await apiRepository.validateEmail(
+      //     email: "ak1109@gmail.com", otp: "1234", refId: res["RefId"]);
+      // final res2 = await apiRepository.getRelationDropDown();
+      // print("log");
+
+      final res = await apiRepository.sendEmailOtp(email: "akk1109@gmail.com");
+      await apiRepository.validateEmail(
+          email: "akk1109@gmail.com", otp: "1234", refId: res["RefId"]);
+      final res2 = await apiRepository.getRelationDropDown();
+      print("log");
+
+      var res3 = await apiRepository.validatePan(
+          pan: "EMCPB0255E", dob: "1993-06-07T00:00:00");
+      // print("Result:");
+      //print(res3["FirstName"].toString());
+      // var res4 = await apiRepository.validateKra(
+      //     'DFMPB5865L',
+      //     '1993-06-07T00:00:00',
+      //     res3["KraVerified"],
+      //     res3["PanVerified"],
+      //     res3["FirstName"],
+      //     res3["MiddleName"],
+      //     res3["LastName"],
+      //     res3["uan"]);
+      //   print(res4);
+    });
   }
 
   Future<dynamic> init(BuildContext context) async {
