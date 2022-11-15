@@ -89,12 +89,15 @@ class EnterPAN extends StatelessWidget {
                         (value) async {
                           //Show dialog pop up
                           bool res = await showDialog(
-                            barrierColor: AppColors.background(context),
                             context: context,
                             builder: (context) {
-                              return Center(
-                                child: Column(
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                content: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SizedBox(
                                       height: 10,
