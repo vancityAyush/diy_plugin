@@ -21,7 +21,7 @@ class OAuthService {
   OAuthService(this._http, this._storage);
 
   StreamController<User?> userController = StreamController<User>();
-  dynamic currentUser;
+  User? currentUser;
   dynamic response;
 
   Stream<User?> get authStateChange {

@@ -16,7 +16,7 @@ class NextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: MaterialButton(
           onPressed: onPressed,
           color: AppColors.primaryColor(context),

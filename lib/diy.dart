@@ -64,11 +64,11 @@ class FlutterDIY {
             initialRoute: "/",
             routes: {
               "/": SignUpPage(),
-              "/otp": OtpPage(),
+              "/otp": const OtpPage(),
               "/form-email": const EmailPage(),
-              "/verify-email": VerifyEmail(),
+              "/verify-email": const VerifyEmail(),
               "/enter-pan": EnterPAN(),
-              "/pan-upload": PanUploadPage(),
+              "/pan-upload": const PanUploadPage(),
             },
           ),
         );

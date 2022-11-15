@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../diy.dart';
-import 'navigator/bottom_modal_navigator.dart';
-
 class Header extends StatelessWidget {
+  final bool showLogout;
+
+  Header({this.showLogout = true});
+
   BottomSheetNavigator navigator = Get.find<BottomSheetNavigator>();
   @override
   Widget build(BuildContext context) {
@@ -50,14 +51,17 @@ class Header extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.power_settings_new_rounded,
-              size: 25,
-              color: AppColors.primaryAccent(context),
+          Visibility(
+            visible: showLogout,
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.power_settings_new_rounded,
+                size: 25,
+                color: AppColors.primaryAccent(context),
+              ),
             ),
           ),
           const SizedBox(width: 20),

@@ -9,21 +9,42 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import '../../../utils/theme_files/app_colors.dart';
 import '../../../widget/button_state.dart';
 import '../../../widget/header.dart';
 
-class SignUpPage extends StatelessWidget {
-  final OAuthService _oAuthService = getIt<OAuthService>();
+class SignUpPage extends StatefulWidget {
   final isReadOnly;
+
+  const SignUpPage({Key? key, this.isReadOnly = false}) : super(key: key);
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final OAuthService _oAuthService = getIt<OAuthService>();
+
   final PressedState pressController = Get.put(PressedState());
+
   final TextEditingController __phoneController = TextEditingController();
+
+  RxBool isSwitched = false.obs;
   final isLogged = false.obs;
-  SignUpPage({Key? key, this.isReadOnly = false}) : super(key: key);
+
+  @override
+  void initState() {
+    if (widget.isReadOnly) {
+      if (_oAuthService.currentUser != null) {
+        __phoneController.text = _oAuthService.currentUser!.Mobile!;
+      }
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    RxBool isSwitched = false.obs;
     return SafeArea(
       child: SingleChildScrollView(
         controller: ModalScrollController.of(context),
@@ -31,7 +52,9 @@ class SignUpPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Header(),
+            Header(
+              showLogout: false,
+            ),
             const SizedBox(height: 20),
             const TitleText(
               text: 'Signup Now',
@@ -68,7 +91,7 @@ class SignUpPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            SubtitleText(text: "You will receive an OTP on your number"),
+            const SubtitleText(text: "You will receive an OTP on your number"),
             const SizedBox(height: 30),
             Obx(() {
               return pressController.isLoading.isTrue
