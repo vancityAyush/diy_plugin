@@ -160,12 +160,16 @@ class _EmailPageState extends State<EmailPage> {
                         ),
                       ),
                     ),
-                    Text(
-                      "I understand and agree to allow JMFL to\ncontact me via Calls, SMSes and Emails for any\nfuture communication.",
-                      style: TextStyle(
+                    SizedBox(
+                      width: Get.width * 0.7,
+                      child: Text(
+                        "I understand and agree to allow JMFL to\ncontact me via Calls, SMSes and Emails for any\nfuture communication.",
+                        style: TextStyle(
                           color: AppColors.primaryAccent(context),
-                          fontSize: 15),
-                      textAlign: TextAlign.left,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
                     ),
                   ],
                 ),

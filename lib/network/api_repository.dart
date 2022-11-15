@@ -2,8 +2,9 @@ import 'package:diy/diy.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
+import 'package:intl/intl.dart';
 
-import 'models/Response.dart';
+import '../utils/util.dart';
 
 class ApiRepository {
   final http = getIt<HttpClient>();
@@ -19,14 +20,21 @@ class ApiRepository {
 
   Future<dynamic> sendEmailOtp(
       {required String email, int relationId = 1}) async {
-    final res = await http.post(
-      "/app/send-email-otp/",
-      data: {
-        "Email": email,
-        "EmailRelationshipId": relationId,
-      },
-    );
-    return res;
+    try {
+      final res = await http.post(
+        "/app/send-email-otp/",
+        data: {
+          "Email": email,
+          "EmailRelationshipId": relationId,
+        },
+      );
+      return res;
+    } on HttpException catch (e) {
+      AppUtil.showErrorToast(e.error["ErrorMessage"]);
+      print(e);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<dynamic> validateEmail(
@@ -46,40 +54,29 @@ class ApiRepository {
     return res;
   }
 
-  // Future<dynamic> validatePan(
-  //     {required String pan,
-  //     required String dob,
-  //     required bool kraVerified,
-  //     required bool panVerified,
-  //     required String firstName,
-  //     required String middleName,
-  //     required String lastName,
-  //     required String uan}) async {
-  //   final res = await http.postEncrypted(
-  //     "/app/validate-email/",
-  //     data: {
-  //       "PAN": pan,
-  //       "DOB": dob,
-  //       "KraVerified": kraVerified,
-  //       "panVerified": panVerified,
-  //       "FirstName": firstName,
-  //       "MiddleName": middleName,
-  //       "LastName": lastName,
-  //       "UAN": uan
-  //     },
-  //   );
-  //   return res;
-  // }
-
   Future<dynamic> validatePan(
-      {required String pan, required String dob}) async {
+      {required String pan,
+      required DateTime dob,
+      bool kraVerified = true,
+      bool panVerified = true,
+      String? firstName,
+      String? middleName,
+      String? lastName,
+      String? uan}) async {
     final res = await http.postEncrypted(
       "/app/validate-pan/",
       data: {
         "PAN": pan,
-        "DateOfBirth": dob,
+        "DateOfBirth": DateFormat("yyyy-MM-dd").format(dob) + "T00:00:00",
+        "KraVerified": kraVerified,
+        "PanVerified": panVerified,
+        "FirstName": firstName,
+        "MiddleName": middleName,
+        "LastName": lastName,
+        "UAN": uan
       },
     );
+    return res;
   }
 
   Future<dynamic> validateKra(

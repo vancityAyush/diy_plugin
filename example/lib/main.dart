@@ -1,9 +1,7 @@
 import 'package:diy/diy.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/utils/theme_files/app_themes.dart';
-import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,14 +68,6 @@ class _HomePageState extends State<HomePage> {
                 diy.init(context);
               },
               child: const Text('Go to Main Screen'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                diy.init(context).whenComplete(() =>
-                    Get.find<BottomSheetNavigator>().pushNamed('/enter-pan'));
-                ;
-              },
-              child: const Text('Go to PAN'),
             ),
           ],
         ),

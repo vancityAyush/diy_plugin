@@ -10,6 +10,7 @@ class MyTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final GestureTapCallback? onTap;
+  final void Function(String?)? onChanged;
   const MyTextField(
       {Key? key,
       this.label,
@@ -19,7 +20,8 @@ class MyTextField extends StatelessWidget {
       this.keyboardType = TextInputType.text,
       this.prefixIcon,
       this.suffixIcon,
-      this.onTap})
+      this.onTap,
+      this.onChanged})
       : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class MyTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
         ),
         child: TextField(
+          onChanged: onChanged,
           onTap: onTap,
           controller: controller,
           readOnly: readOnly,

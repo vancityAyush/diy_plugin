@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/models/token.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -29,8 +30,10 @@ class OAuthService {
 
   Future<void> initState() async {
     // bool isTokenValid = await token.readToken();
-    await sendOtp("8084100105");
-    await verifyOtp("1234");
+    if (kDebugMode) {
+      await sendOtp("8084100105");
+      await verifyOtp("1234");
+    }
   }
 
   Future<dynamic> logout() async {

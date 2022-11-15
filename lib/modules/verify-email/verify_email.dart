@@ -1,4 +1,5 @@
 import 'package:diy/network/api_repository.dart';
+import 'package:diy/utils/util.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,28 @@ class _VerifyEmailState extends State<VerifyEmail> {
           NextButton(
               text: 'Verify',
               color: AppColors.primaryColor(context),
-              onPressed: () {}),
+              onPressed: () {
+                if (pinController.text.length == 4) {
+                  apiRepository
+                      .validateEmail(
+                    email: arguments["Email"],
+                    otp: pinController.text,
+                    refId: arguments["RefId"],
+                    relationId: arguments["EmailRelationshipId"],
+                  )
+                      .then(
+                    (value) {
+                      if (value != null) {
+                        navigator.pushNamed('/enter-pan');
+                      } else {
+                        AppUtil.showErrorToast("Invalid OTP");
+                      }
+                    },
+                  );
+                } else {
+                  print('error');
+                }
+              }),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Obx(
