@@ -38,14 +38,17 @@ class FooterText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "Lorem ipsum | Lorem ipsum | Lorem ipsum\nCopyrights @ 2022 © Blink Trude. All Right Reserved",
-      style: TextStyle(
-        color: AppColors.primaryAccent(context),
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Text(
+        "Copyrights @ 2022 © Blink Trude. All Right Reserved",
+        style: TextStyle(
+          color: AppColors.primaryAccent(context),
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+        textAlign: TextAlign.center,
       ),
-      textAlign: TextAlign.center,
     );
   }
 }

@@ -28,7 +28,7 @@ class AppUtil {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: Color.fromARGB(255, 90, 9, 3),
         textColor: Colors.white,
         fontSize: 16.0);
   }

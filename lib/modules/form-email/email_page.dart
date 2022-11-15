@@ -63,10 +63,10 @@ class _EmailPageState extends State<EmailPage> {
               if (IsClicked)
                 MyTextField(
                   hint: 'Enter Email',
-                  label: "Email",
                   controller: _emailController,
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     Icons.email,
+                    color: AppColors.primaryColor(context),
                   ),
                 ),
               if (!IsClicked)

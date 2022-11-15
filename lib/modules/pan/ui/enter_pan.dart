@@ -89,10 +89,12 @@ class EnterPAN extends StatelessWidget {
                         (value) async {
                           //Show dialog pop up
                           bool res = await showDialog(
+                            barrierColor: AppColors.background(context),
                             context: context,
                             builder: (context) {
                               return Center(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       height: 10,
@@ -139,7 +141,23 @@ class EnterPAN extends StatelessWidget {
                                               ),
                                             ),
                                             onPressed: () {
-                                              Navigator.pop(context, true);
+                                              apiRepository
+                                                  .validateKra(
+                                                      value["PAN"],
+                                                      value["DateOfBirth"],
+                                                      value["KraVerified"],
+                                                      value["PanVerified"],
+                                                      value["FirstName"],
+                                                      value["MiddleName"],
+                                                      value["LastName"],
+                                                      value["UAN"])
+                                                  .then((value) async {
+                                                AppUtil.showToast(
+                                                        'PAN Verified Succesffully')
+                                                    .then({
+                                                  Navigator.pop(context, true)
+                                                });
+                                              });
                                             },
                                             child: Row(
                                               mainAxisAlignment:

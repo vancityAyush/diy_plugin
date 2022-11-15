@@ -136,7 +136,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         height: 30,
                       ),
                       Text(
-                        "I hereby declare that the mobile number",
+                        "I hereby declare that the email address",
                         style: TextStyle(
                             color: AppColors.primaryAccent(context),
                             fontSize: 15),
@@ -146,13 +146,12 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "belong to",
+                            "belong to ",
                             style: TextStyle(
                                 color: AppColors.primaryAccent(context),
                                 fontSize: 15),
                             textAlign: TextAlign.left,
                           ),
-                          // DropDown()
                         ],
                       ),
                     ],

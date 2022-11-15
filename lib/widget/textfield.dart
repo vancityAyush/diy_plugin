@@ -56,7 +56,7 @@ class MyTextField extends StatelessWidget {
             ),
             hintText: hint,
             labelText: label,
-            prefixIcon: prefixIcon,
+            prefixIcon: prefixIcon, //need to add color to the icon
             suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.primaryColor(context)),

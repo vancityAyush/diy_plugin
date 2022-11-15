@@ -2,12 +2,12 @@ import 'package:diy/diy.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/api_repository.dart';
 import 'package:diy/network/oauth_service.dart';
+import 'package:diy/utils/util.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/pin.dart';
 import 'package:diy/widget/textstyle.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
@@ -115,39 +115,20 @@ class _OtpPageState extends State<OtpPage> {
             NextButton(
                 text: "Verify",
                 onPressed: () async {
-                  if (pinController.text.length == 4) {
+                  if (pinController.text.length == 4 && isSwitched.value) {
                     final res = await _oAuthService.verifyOtp(
                         pinController.text,
-                        relationId: _selectedRelation.value!);
+                        relationId: _selectedRelation.value = 1);
                     if (res.success) {
-                      Fluttertoast.showToast(
-                          msg: "OTP Verified",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      AppUtil.showToast("OTP Verified");
                       navigator.pushNamed('/form-email');
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "Invalid OTP",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
                     }
+                  } else if (pinController.text.length <= 4) {
+                    AppUtil.showErrorToast("Please enter a valid OTP");
+                  } else if (isSwitched.value == false) {
+                    AppUtil.showErrorToast("Please select relationship.");
                   } else {
-                    Fluttertoast.showToast(
-                        msg: "Please Enter OTP",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
+                    AppUtil.showErrorToast("Please Enter OTP");
                   }
                 }),
             Padding(
@@ -211,11 +192,12 @@ class _OtpPageState extends State<OtpPage> {
                                   () => DropdownButtonHideUnderline(
                                     child: DropdownButton<int>(
                                       hint: Text(
-                                        "Select Relation",
+                                        "SELF",
                                         style: TextStyle(
-                                            color: AppColors.primaryAccent(
-                                                context),
-                                            fontSize: 15),
+                                            color:
+                                                AppColors.primaryColor(context),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700),
                                       ),
                                       value: _selectedRelation.value,
                                       items: DropDownId.map(
@@ -225,9 +207,10 @@ class _OtpPageState extends State<OtpPage> {
                                           child: Text(
                                             item.RelationName,
                                             style: TextStyle(
-                                                color: AppColors.primaryAccent(
+                                                color: AppColors.primaryColor(
                                                     context),
-                                                fontSize: 15),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700),
                                           ),
                                         );
                                       }).toList(),
@@ -248,15 +231,7 @@ class _OtpPageState extends State<OtpPage> {
                 ),
               ),
             ),
-            Text(
-              "Lorem ipsum | Lorem ipsum | Lorem ipsum\nCopyrights @ 2022 © Blink Trude. All Right Reserved",
-              style: TextStyle(
-                color: AppColors.primaryAccent(context),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            FooterText(),
             const SizedBox(height: 20),
             SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
           ],
