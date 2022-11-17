@@ -115,13 +115,15 @@ class _OtpPageState extends State<OtpPage> {
             NextButton(
                 text: "Verify",
                 onPressed: () async {
+                  String? route;
                   if (pinController.text.length == 4 && isSwitched.value) {
                     final res = await _oAuthService.verifyOtp(
                         pinController.text,
                         relationId: _selectedRelation.value = 1);
                     if (res.success) {
                       AppUtil.showToast("OTP Verified");
-                      navigator.pushNamed('/form-email');
+                      await _oAuthService.updateUiStatus();
+                      route = _oAuthService.uiStatus.currentRoute;
                     }
                   } else if (pinController.text.length <= 4) {
                     AppUtil.showErrorToast("Please enter a valid OTP");
@@ -130,6 +132,7 @@ class _OtpPageState extends State<OtpPage> {
                   } else {
                     AppUtil.showErrorToast("Please Enter OTP");
                   }
+                  return route;
                 }),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),

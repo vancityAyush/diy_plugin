@@ -2,9 +2,13 @@ import 'package:diy/widget/navigator/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../network/models/ui_status.dart';
+
 class BottomSheetNavigator extends GetxController {
   final Map<String, Widget> routes;
   final RxString currentRoute = "/".obs;
+
+  final Rx<UiStatus> uiStatus = UiStatus(NextModuleId: 1, BackMenuList: []).obs;
 
   final RxList<settings> _stack = <settings>[].obs;
 

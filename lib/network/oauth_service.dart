@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/models/token.dart';
+import 'package:diy/network/models/ui_status.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,8 @@ class OAuthService {
   final FlutterSecureStorage _storage;
   final dummyUser = User();
 
+  UiStatus uiStatus = UiStatus(NextModuleId: 1, BackMenuList: []);
+
   Token token = Token();
 
   OAuthService(this._http, this._storage);
@@ -26,6 +29,24 @@ class OAuthService {
 
   Stream<User?> get authStateChange {
     return userController.stream;
+  }
+
+  Future<UiStatus?> getUIStatus() async {
+    try {
+      final res = await _http.get("/ui/status");
+      return UiStatus.fromJson(res);
+    } on HttpException catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<String> updateUiStatus() async {
+    final res = await getUIStatus();
+    if (res != null) {
+      uiStatus = res;
+    }
+    return uiStatus.currentRoute;
   }
 
   Future<void> initState() async {

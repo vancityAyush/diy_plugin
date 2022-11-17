@@ -14,8 +14,11 @@ class BottomModalNavigator extends GetView<BottomSheetNavigator> {
       onWillPop: () async {
         return !controller.pop();
       },
-      child: Obx(
-        () => controller.currentScreen,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: Obx(
+          () => controller.currentScreen,
+        ),
       ),
     );
   }

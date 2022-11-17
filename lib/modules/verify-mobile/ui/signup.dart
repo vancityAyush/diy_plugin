@@ -1,7 +1,6 @@
 import 'package:diy/diy.dart';
 import 'package:diy/network/oauth_service.dart';
 import 'package:diy/utils/util.dart';
-import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/textfield.dart';
 import 'package:diy/widget/textstyle.dart';
@@ -93,38 +92,35 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(height: 15),
             const SubtitleText(text: "You will receive an OTP on your number"),
             const SizedBox(height: 30),
-            Obx(() {
-              return pressController.isLoading.isTrue
-                  ? NextButton(
-                      text: "Continue",
-                      onPressed: () {
-                        if (__phoneController.text.length != 10 ||
-                            __phoneController.text.isEmpty) {
-                          AppUtil.showErrorToast(
-                              "Please enter valid phone number");
-                        } else if (isSwitched.value == false) {
-                          AppUtil.showErrorToast(
-                              'Please select Enable WhatsApp Notification');
-                        } else {
-                          pressController.changeStatus();
-                          _oAuthService.sendOtp(__phoneController.text).then(
-                            (value) {
-                              if (value.success) {
-                                AppUtil.showToast("OTP sent successfully");
-                                Get.find<BottomSheetNavigator>()
-                                    .pushNamed('/otp');
-                                pressController.changeStatus();
-                              } else {
-                                AppUtil.showErrorToast(value.message);
-                                pressController.changeStatus();
-                              }
-                            },
-                          );
-                        }
-                      },
-                    )
-                  : LoadingNextButton(text: "Continue");
-            }),
+            NextButton(
+              text: "Continue",
+              onPressed: () async {
+                String? err;
+                String? route;
+                if (__phoneController.text.length != 10) {
+                  err = "Please enter a valid phone number";
+                }
+                if (isSwitched.value == false) {
+                  err = "Please accept the terms and conditions";
+                }
+                if (err != null) {
+                  AppUtil.showErrorToast(err);
+                  return null;
+                } else {
+                  await _oAuthService.sendOtp(__phoneController.text).then(
+                    (value) {
+                      if (value.success) {
+                        AppUtil.showToast("OTP sent successfully");
+                        route = "/otp";
+                      } else {
+                        AppUtil.showErrorToast(value.message);
+                      }
+                    },
+                  );
+                }
+                return route;
+              },
+            ),
             const SizedBox(height: 10),
             Obx(
               () => Row(

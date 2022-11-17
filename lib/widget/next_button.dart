@@ -1,73 +1,49 @@
+import 'package:diy/network/api_repository.dart';
+import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
+import '../diy.dart';
 import '../utils/theme_files/app_colors.dart';
 
+typedef ApiCallback = Future<String?> Function();
+
 class NextButton extends StatelessWidget {
+  final ApiRepository apiRepository = getIt<ApiRepository>();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   final String text;
   final Color? color;
-  final VoidCallback? onPressed;
+  final ApiCallback onPressed;
   NextButton({
     Key? key,
     required this.text,
-    this.onPressed,
+    required this.onPressed,
     this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: MaterialButton(
-          onPressed: onPressed,
-          color: AppColors.primaryColor(context),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
-          height: 50,
-          child: Row(
-            children: [
-              const Spacer(),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              const Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-              ),
-              const Spacer(),
-            ],
-          ),
-        ));
-  }
-}
-
-class LoadingNextButton extends StatelessWidget {
-  final String text;
-  final Color? color;
-
-  const LoadingNextButton({
-    Key? key,
-    required this.text,
-    this.color,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        decoration: BoxDecoration(
-            color: AppColors.primaryAccent(context),
-            borderRadius: BorderRadius.all(Radius.circular(4))),
-        height: 50,
+      padding: const EdgeInsets.all(8.0),
+      child: RoundedLoadingButton(
+        borderRadius: 4,
+        resetAfterDuration: true,
+        resetDuration: const Duration(seconds: 2),
+        color: color ?? AppColors.primaryColor(context),
+        controller: _btnController,
+        onPressed: () async {
+          _btnController.start();
+          String? nextRoute = await onPressed();
+          if (nextRoute != null) {
+            _btnController.success();
+            Get.find<BottomSheetNavigator>().pushNamed(nextRoute);
+          } else {
+            _btnController.error();
+          }
+        },
         child: Row(
           children: [
             const Spacer(),
@@ -82,13 +58,9 @@ class LoadingNextButton extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                color: AppColors.background(context),
-                strokeWidth: 1.8,
-              ),
+            const Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
             ),
             const Spacer(),
           ],

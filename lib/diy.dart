@@ -57,6 +57,7 @@ class FlutterDIY {
         ),
       ),
       enableDrag: false,
+      isDismissible: false,
       context: (context),
       builder: (context) {
         Get.put(
@@ -65,7 +66,7 @@ class FlutterDIY {
             routes: {
               "/": SignUpPage(),
               "/otp": const OtpPage(),
-              "/form-email": const EmailPage(),
+              "/form/email": const EmailPage(),
               "/verify-email": const VerifyEmail(),
               "/enter-pan": EnterPAN(),
               "/pan-upload": const PanUploadPage(),

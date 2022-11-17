@@ -81,7 +81,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
           NextButton(
               text: 'Verify',
               color: AppColors.primaryColor(context),
-              onPressed: () {
+              onPressed: () async {
                 if (pinController.text.length == 4) {
                   apiRepository
                       .validateEmail(
@@ -102,6 +102,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 } else {
                   print('error');
                 }
+                return null;
               }),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
