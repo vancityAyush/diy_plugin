@@ -113,27 +113,26 @@ class _OtpPageState extends State<OtpPage> {
             ),
             const SizedBox(height: 8),
             NextButton(
-                text: "Verify",
-                onPressed: () async {
-                  String? route;
-                  if (pinController.text.length == 4 && isSwitched.value) {
-                    final res = await _oAuthService.verifyOtp(
-                        pinController.text,
-                        relationId: _selectedRelation.value = 1);
-                    if (res.success) {
-                      AppUtil.showToast("OTP Verified");
-                      await _oAuthService.updateUiStatus();
-                      route = _oAuthService.uiStatus.currentRoute;
-                    }
-                  } else if (pinController.text.length <= 4) {
-                    AppUtil.showErrorToast("Please enter a valid OTP");
-                  } else if (isSwitched.value == false) {
-                    AppUtil.showErrorToast("Please select relationship.");
-                  } else {
-                    AppUtil.showErrorToast("Please Enter OTP");
+              text: "Verify",
+              onPressed: () async {
+                String? route;
+                if (pinController.text.length == 4 && isSwitched.value) {
+                  final res = await _oAuthService.verifyOtp(pinController.text,
+                      relationId: _selectedRelation.value = 1);
+                  if (res.success) {
+                    AppUtil.showToast("OTP Verified");
+                    route = await _oAuthService.updateUiStatus();
                   }
-                  return route;
-                }),
+                } else if (pinController.text.length <= 4) {
+                  AppUtil.showErrorToast("Please enter a valid OTP");
+                } else if (isSwitched.value == false) {
+                  AppUtil.showErrorToast("Please select relationship.");
+                } else {
+                  AppUtil.showErrorToast("Please Enter OTP");
+                }
+                return route;
+              },
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Obx(
