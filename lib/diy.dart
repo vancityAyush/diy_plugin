@@ -1,5 +1,6 @@
 library diy;
 
+import 'package:diy/modules/addressproof/add-front.dart';
 import 'package:diy/modules/pan/ui/enter_pan.dart';
 import 'package:diy/modules/pan/ui/pan_upload_page.dart';
 import 'package:diy/modules/verify-email/verify_email.dart';
@@ -70,6 +71,7 @@ class FlutterDIY {
               "/verify-email": const VerifyEmail(),
               "/enter-pan": EnterPAN(),
               "/pan-upload": const PanUploadPage(),
+              "/form/address-proof-front-side": const AddFront(),
             },
           ),
         );

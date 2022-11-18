@@ -28,7 +28,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
 
   @override
   Widget build(BuildContext context) {
-    final isLightMode = Theme.of(context).brightness == Brightness.light;
     final arguments = Get.find<BottomSheetNavigator>().arguments;
     print(arguments);
     return SafeArea(

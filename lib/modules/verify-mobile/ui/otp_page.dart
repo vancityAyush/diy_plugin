@@ -27,9 +27,25 @@ class _OtpPageState extends State<OtpPage> {
   final OAuthService _oAuthService = getIt<OAuthService>();
   final ApiRepository _apiRepository = getIt<ApiRepository>();
   final navigator = Get.find<BottomSheetNavigator>();
+  //TODO removed final
   final Rx<int?> _selectedRelation = Rx<int?>(null);
-
   final TextEditingController pinController = TextEditingController();
+
+  RxBool isVisible = true.obs;
+
+  late int relation;
+
+  @override
+  void initState() {
+    if (getIt<OAuthService>().response["AppExists"] == true) {
+      relation = getIt<OAuthService>().response["MobileRelationshipId"];
+      isVisible = false.obs;
+    } else {
+      isVisible = true.obs;
+    }
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,123 +129,152 @@ class _OtpPageState extends State<OtpPage> {
             ),
             const SizedBox(height: 8),
             NextButton(
-              text: "Verify",
+              text: getIt<OAuthService>().response["AppExists"] == false
+                  ? "Verify"
+                  : "Resume Application",
               onPressed: () async {
                 String? route;
-                if (pinController.text.length == 4 && isSwitched.value) {
-                  final res = await _oAuthService.verifyOtp(pinController.text,
-                      relationId: _selectedRelation.value = 1);
-                  if (res.success) {
-                    AppUtil.showToast("OTP Verified");
-                    route = await _oAuthService.updateUiStatus();
+
+                if (getIt<OAuthService>().response["AppExists"] == true) {
+                  if (pinController.text.length == 4) {
+                    final res = await _oAuthService
+                        .verifyOtp(pinController.text, relationId: relation);
+                    if (res.success) {
+                      AppUtil.showToast("OTP Verified");
+                      //TODO TESTING READONLY SCREENS
+                      route = "/form/email";
+                      //route = await _oAuthService.updateUiStatus();
+                    }
+                  } else if (pinController.text.length <= 4) {
+                    AppUtil.showErrorToast("Please enter a valid OTP");
+                  } else if (isSwitched.value == false) {
+                    AppUtil.showErrorToast("Please select relationship.");
+                  } else {
+                    AppUtil.showErrorToast("Please Enter OTP");
                   }
-                } else if (pinController.text.length <= 4) {
-                  AppUtil.showErrorToast("Please enter a valid OTP");
-                } else if (isSwitched.value == false) {
-                  AppUtil.showErrorToast("Please select relationship.");
                 } else {
-                  AppUtil.showErrorToast("Please Enter OTP");
+                  if (pinController.text.length == 4 && isSwitched.value) {
+                    final res = await _oAuthService.verifyOtp(
+                        pinController.text,
+                        relationId: _selectedRelation.value ?? 1);
+                    if (res.success) {
+                      AppUtil.showToast("OTP Verified");
+                      //TODO TESTING READONLY SCREENS
+                      route = "/form/email";
+                      //route = await _oAuthService.updateUiStatus();
+                    }
+                  } else if (pinController.text.length <= 4) {
+                    AppUtil.showErrorToast("Please enter a valid OTP");
+                  } else if (isSwitched.value == false) {
+                    AppUtil.showErrorToast("Please select relationship.");
+                  } else {
+                    AppUtil.showErrorToast("Please Enter OTP");
+                  }
                 }
+
                 return route;
               },
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Checkbox(
-                      value: isSwitched.value,
-                      onChanged: (val) {
-                        isSwitched.value = val!;
-                      },
-                      side: BorderSide(
-                        color: AppColors.primaryColor(context),
-                      ),
-                      activeColor: AppColors.primaryColor(context),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                () => Visibility(
+                  visible: isVisible.value,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        value: isSwitched.value,
+                        onChanged: (val) {
+                          isSwitched.value = val!;
+                        },
                         side: BorderSide(
                           color: AppColors.primaryColor(context),
                         ),
+                        activeColor: AppColors.primaryColor(context),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          side: BorderSide(
+                            color: AppColors.primaryColor(context),
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          "I hereby declare that the mobile number",
-                          style: TextStyle(
-                              color: AppColors.primaryAccent(context),
-                              fontSize: 15),
-                          textAlign: TextAlign.left,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "belong to ",
-                              style: TextStyle(
-                                  color: AppColors.primaryAccent(context),
-                                  fontSize: 15),
-                              textAlign: TextAlign.left,
-                            ),
-                            FutureBuilder<List<RelationDropdown>>(
-                              future: _apiRepository.getRelationDropDown(),
-                              builder: (context, snapshot) {
-                                List<RelationDropdown> DropDownId = [];
-                                if (snapshot.hasData) {
-                                  DropDownId =
-                                      snapshot.data as List<RelationDropdown>;
-                                }
-                                return Obx(
-                                  () => DropdownButtonHideUnderline(
-                                    child: DropdownButton<int>(
-                                      hint: Text(
-                                        "SELF",
-                                        style: TextStyle(
-                                            color:
-                                                AppColors.primaryColor(context),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "I hereby declare that the mobile number",
+                            style: TextStyle(
+                                color: AppColors.primaryAccent(context),
+                                fontSize: 15),
+                            textAlign: TextAlign.left,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "belong to ",
+                                style: TextStyle(
+                                    color: AppColors.primaryAccent(context),
+                                    fontSize: 15),
+                                textAlign: TextAlign.left,
+                              ),
+                              FutureBuilder<List<RelationDropdown>>(
+                                future: _apiRepository.getRelationDropDown(),
+                                builder: (context, snapshot) {
+                                  List<RelationDropdown> DropDownId = [];
+                                  if (snapshot.hasData) {
+                                    DropDownId =
+                                        snapshot.data as List<RelationDropdown>;
+                                  }
+                                  return Obx(
+                                    () => DropdownButtonHideUnderline(
+                                      child: DropdownButton<int>(
+                                        hint: Text(
+                                          "SELF",
+                                          style: TextStyle(
+                                              color: AppColors.primaryColor(
+                                                  context),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        value: _selectedRelation.value,
+                                        items: DropDownId.map(
+                                            (RelationDropdown item) {
+                                          return DropdownMenuItem(
+                                            value: item.RelationId,
+                                            child: Text(
+                                              item.RelationName,
+                                              style: TextStyle(
+                                                  color: AppColors.primaryColor(
+                                                      context),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          print(value);
+                                          _selectedRelation.value = value ?? 0;
+                                        },
                                       ),
-                                      value: _selectedRelation.value,
-                                      items: DropDownId.map(
-                                          (RelationDropdown item) {
-                                        return DropdownMenuItem(
-                                          value: item.RelationId,
-                                          child: Text(
-                                            item.RelationName,
-                                            style: TextStyle(
-                                                color: AppColors.primaryColor(
-                                                    context),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        print(value);
-                                        _selectedRelation.value = value ?? 0;
-                                      },
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

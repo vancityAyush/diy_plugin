@@ -1,37 +1,25 @@
-import 'package:diy/diy.dart';
-import 'package:diy/network/oauth_service.dart';
-import 'package:diy/utils/util.dart';
-import 'package:diy/widget/next_button.dart';
-import 'package:diy/widget/textfield.dart';
-import 'package:diy/widget/textstyle.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../../utils/theme_files/app_colors.dart';
-import '../../../widget/button_state.dart';
-import '../../../widget/header.dart';
+import '../../utils/theme_files/app_colors.dart';
+import '../../utils/util.dart';
+import '../../widget/header.dart';
+import '../../widget/next_button.dart';
+import '../../widget/textfield.dart';
+import '../../widget/textstyle.dart';
 
-class SignUpPage extends StatefulWidget {
-  final isReadOnly;
-
-  const SignUpPage({Key? key, this.isReadOnly = false}) : super(key: key);
+class AddFront extends StatefulWidget {
+  const AddFront({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<AddFront> createState() => _AddFrontState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final OAuthService _oAuthService = getIt<OAuthService>();
+final TextEditingController __addController = TextEditingController();
 
-  final PressedState pressController = Get.put(PressedState());
-
-  final TextEditingController __phoneController = TextEditingController();
-
-  RxBool isSwitched = false.obs;
-  final isLogged = false.obs;
-
+class _AddFrontState extends State<AddFront> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,12 +34,12 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const SizedBox(height: 20),
             const TitleText(
-              text: 'Signup Now',
+              text: 'AdressProof-Front',
             ),
             const SizedBox(height: 20),
             MyTextField(
               hint: "Enter Phone",
-              controller: __phoneController,
+              controller: __addController,
               keyboardType: TextInputType.phone,
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -85,30 +73,30 @@ class _SignUpPageState extends State<SignUpPage> {
             NextButton(
               text: "Continue",
               onPressed: () async {
-                String? err;
-                String? route;
-                if (__phoneController.text.length != 10) {
-                  err = "Please enter a valid phone number";
-                }
-                if (isSwitched.value == false) {
-                  err = "Please accept the terms and conditions";
-                }
-                if (err != null) {
-                  AppUtil.showErrorToast(err);
-                  return null;
-                } else {
-                  await _oAuthService.sendOtp(__phoneController.text).then(
-                    (value) {
-                      if (value.success) {
-                        AppUtil.showToast("OTP sent successfully");
-                        route = "/otp";
-                      } else {
-                        AppUtil.showErrorToast(value.message);
-                      }
-                    },
-                  );
-                }
-                return route;
+                // String? err;
+                // String? route;
+                // if (__phoneController.text.length != 10) {
+                //   err = "Please enter a valid phone number";
+                // }
+                // if (isSwitched.value == false) {
+                //   err = "Please accept the terms and conditions";
+                // }
+                // if (err != null) {
+                //   AppUtil.showErrorToast(err);
+                //   return null;
+                // } else {
+                //   await _oAuthService.sendOtp(__phoneController.text).then(
+                //     (value) {
+                //       if (value.success) {
+                //         AppUtil.showToast("OTP sent successfully");
+                //         route = "/otp";
+                //       } else {
+                //         AppUtil.showErrorToast(value.message);
+                //       }
+                //     },
+                //   );
+                // }
+                // return route;
               },
             ),
             const SizedBox(height: 10),
@@ -116,27 +104,6 @@ class _SignUpPageState extends State<SignUpPage> {
               () => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                      unselectedWidgetColor: AppColors.primaryColor(context),
-                    ),
-                    child: Checkbox(
-                      value: isSwitched.value,
-                      onChanged: (val) {
-                        isSwitched.value = val!;
-                      },
-                      side: BorderSide(
-                        color: AppColors.primaryColor(context),
-                      ),
-                      activeColor: AppColors.primaryColor(context),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        side: BorderSide(
-                          color: AppColors.primaryColor(context),
-                        ),
-                      ),
-                    ),
-                  ),
                   RichText(
                     text: TextSpan(
                       text:

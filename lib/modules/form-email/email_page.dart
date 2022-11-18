@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../../diy.dart';
 import '../../network/api_repository.dart';
+import '../../network/oauth_service.dart';
 import '../../utils/theme_files/app_colors.dart';
 
 class EmailPage extends StatefulWidget {
@@ -28,6 +29,24 @@ class _EmailPageState extends State<EmailPage> {
     setState(() {
       EmailPage.Email = val;
     });
+  }
+
+  final OAuthService _oAuthService = getIt<OAuthService>();
+  RxBool isReadOnly = false.obs;
+
+  @override
+  void initState() {
+    if (_oAuthService.currentUser != null) {
+      _emailController.text = _oAuthService.currentUser!.Email ?? "";
+      // print("Mobile no.");
+      // print(_oAuthService.currentUser!.Mobile);
+      if (_emailController.text == _oAuthService.currentUser!.Email) {
+        isReadOnly = true.obs;
+      } else {
+        isReadOnly = false.obs;
+      }
+    }
+    super.initState();
   }
 
   final TextEditingController _emailController = TextEditingController();
@@ -63,6 +82,7 @@ class _EmailPageState extends State<EmailPage> {
               if (IsClicked)
                 MyTextField(
                   hint: 'Enter Email',
+                  readOnly: isReadOnly.value,
                   controller: _emailController,
                   prefixIcon: Icon(
                     Icons.email,
@@ -105,18 +125,26 @@ class _EmailPageState extends State<EmailPage> {
               SizedBox(height: IsClicked ? 20 : 5),
               if (IsClicked)
                 NextButton(
-                  text: "Validate E-Mail",
+                  text: isReadOnly.isTrue
+                      ? "Resume Application"
+                      : "Validate E-Mail",
                   onPressed: () async {
                     //TODO Email conditions
-                    if (_emailController.text.isNotEmpty) {
-                      final res = await apiRepository.sendEmailOtp(
-                          email: _emailController.text);
-                      if (res != null) {
-                        Get.find<BottomSheetNavigator>().pushNamed(
-                          "/verify-email",
-                          arguments: res,
-                        );
+                    if (isReadOnly.isFalse) {
+                      if (_emailController.text.isNotEmpty) {
+                        final res = await apiRepository.sendEmailOtp(
+                            email: _emailController.text);
+                        if (res != null) {
+                          Get.find<BottomSheetNavigator>().pushNamed(
+                            "/verify-email",
+                            arguments: res,
+                          );
+                        }
                       }
+                    } else {
+                      Get.find<BottomSheetNavigator>().pushNamed(
+                        "/enter-pan",
+                      );
                     }
                   },
                 ),

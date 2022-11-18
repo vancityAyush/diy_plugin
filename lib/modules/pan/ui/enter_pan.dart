@@ -5,23 +5,56 @@ import 'package:intl/intl.dart';
 
 import '../../../diy.dart';
 import '../../../network/api_repository.dart';
+import '../../../network/oauth_service.dart';
 import '../../../utils/theme_files/app_colors.dart';
 import '../../../utils/util.dart';
 import '../../../widget/button_state.dart';
 import '../../../widget/header.dart';
 import '../../../widget/textfield.dart';
 
-class EnterPAN extends StatelessWidget {
+class EnterPAN extends StatefulWidget {
+  final isReadOnly;
+
+  EnterPAN({Key? key, this.isReadOnly = false}) : super(key: key);
+
+  @override
+  State<EnterPAN> createState() => _EnterPANState();
+}
+
+class _EnterPANState extends State<EnterPAN> {
   //TextEditingController dateinput = TextEditingController();
   final ApiRepository apiRepository = getIt<ApiRepository>();
-  final isReadOnly;
+
   String PanName = '';
-  EnterPAN({Key? key, this.isReadOnly = false}) : super(key: key);
+
   final PressedState pressController = Get.put(PressedState());
 
   DateTime? dob;
+
   final TextEditingController inputDate = TextEditingController();
+
   final TextEditingController paninput = TextEditingController();
+
+  final OAuthService _oAuthService = getIt<OAuthService>();
+  RxBool isReadOnly = false.obs;
+
+  @override
+  void initState() {
+    if (_oAuthService.currentUser != null) {
+      paninput.text = _oAuthService.currentUser!.PAN ?? "";
+      inputDate.text = _oAuthService.currentUser!.DateOfBirth ?? "";
+
+      if (paninput.text == _oAuthService.currentUser!.PAN) {
+        isReadOnly = true.obs;
+      } else {
+        isReadOnly = false.obs;
+      }
+      // print("Mobile no.");
+      // print(_oAuthService.currentUser!.Mobile);
+
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +77,13 @@ class EnterPAN extends StatelessWidget {
             ),
             Center(
               child: MyTextField(
+                readOnly: isReadOnly.value,
                 controller: paninput,
                 hint: 'Enter PAN Number',
               ),
             ),
             MyTextField(
+              readOnly: isReadOnly.value,
               onChanged: (value) {
                 try {
                   dob = DateTime.parse(value ?? "");
@@ -75,15 +110,11 @@ class EnterPAN extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (dob == null) {
-                      AppUtil.showErrorToast(
-                          'Please select a valid date of birth');
-                    }
-                    if (paninput.text.length != 10 || paninput.text.isEmpty) {
-                      AppUtil.showErrorToast('Please enter a valid PAN number');
-                    } else {
-                      apiRepository
+                  onPressed: () async {
+                    String? route;
+                    if (paninput.text.length == 10 &&
+                        inputDate.text.length == 10) {
+                      final res = await apiRepository
                           .validatePan(pan: paninput.text, dob: dob!)
                           .then(
                         (value) async {
@@ -210,22 +241,27 @@ class EnterPAN extends StatelessWidget {
                           );
                           if (res) {
                             AppUtil.showToast('PAN verified successfully');
+                            route = await _oAuthService.updateUiStatus();
                           } else {
                             AppUtil.showErrorToast('PAN verification failed');
                           }
-
-                          // } else {
-                          //   Fluttertoast.showToast(
-                          //       msg: value.message,
-                          //       toastLength: Toast.LENGTH_SHORT,
-                          //       gravity: ToastGravity.BOTTOM,
-                          //       timeInSecForIosWeb: 1,
-                          //       backgroundColor: Colors.red,
-                          //       textColor: Colors.white,
-                          //       fontSize: 16.0);
-                          // }
+                          return route;
                         },
                       );
+                    } else if (paninput.text.length != 10) {
+                      AppUtil.showErrorToast("Please enter valid PAN number");
+                    } else if (paninput.text.isEmpty) {
+                      AppUtil.showErrorToast("Please enter PAN number");
+                    } else if (dob == null) {
+                      AppUtil.showErrorToast("Please Select date");
+                    } else if (inputDate.text.isEmpty) {
+                      AppUtil.showErrorToast(
+                          "Please select a valid date of birth");
+                    } else if (dob == null) {
+                      AppUtil.showErrorToast(
+                          'Please select a valid date of birth');
+                    } else {
+                      AppUtil.showErrorToast('Please enter a valid PAN number');
                     }
 
                     //navigate to page 6 i.e PAN name confirmation
@@ -234,7 +270,7 @@ class EnterPAN extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Continue',
+                        isReadOnly.value ? 'Resume Application' : 'Continue',
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       SizedBox(

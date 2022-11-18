@@ -23,5 +23,6 @@ class UiStatus {
     4: "/form/pan",
     35: "/form/kra",
     5: "/form/bank-ifsc-code",
+    18: "/form/address-proof-front-side"
   };
 }
