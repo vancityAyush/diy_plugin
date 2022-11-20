@@ -1,4 +1,5 @@
 import 'package:diy/network/api_repository.dart';
+import 'package:diy/network/oauth_service.dart';
 import 'package:diy/utils/util.dart';
 import 'package:diy/widget/navigator/navigation_controller.dart';
 import 'package:diy/widget/next_button.dart';
@@ -81,6 +82,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
               text: 'Verify',
               color: AppColors.primaryColor(context),
               onPressed: () async {
+                String? route;
                 if (pinController.text.length == 4) {
                   apiRepository
                       .validateEmail(
@@ -90,9 +92,9 @@ class _VerifyEmailState extends State<VerifyEmail> {
                     relationId: arguments["EmailRelationshipId"],
                   )
                       .then(
-                    (value) {
+                    (value) async {
                       if (value != null) {
-                        navigator.pushNamed('/enter-pan');
+                        route = await getIt<OAuthService>().updateUiStatus();
                       } else {
                         AppUtil.showErrorToast("Invalid OTP");
                       }

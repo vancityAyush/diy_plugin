@@ -159,9 +159,8 @@ class _OtpPageState extends State<OtpPage> {
                         relationId: _selectedRelation.value ?? 1);
                     if (res.success) {
                       AppUtil.showToast("OTP Verified");
-                      //TODO TESTING READONLY SCREENS
-                      route = "/form/email";
-                      //route = await _oAuthService.updateUiStatus();
+                      // route = "/form/email";
+                      route = await _oAuthService.updateUiStatus();
                     }
                   } else if (pinController.text.length <= 4) {
                     AppUtil.showErrorToast("Please enter a valid OTP");

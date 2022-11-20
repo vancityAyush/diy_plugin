@@ -24,27 +24,13 @@ class EmailPage extends StatefulWidget {
 class _EmailPageState extends State<EmailPage> {
   bool IsClicked = false;
   RxBool isSwitched = false.obs;
-
-  void _onChanged(val) {
-    setState(() {
-      EmailPage.Email = val;
-    });
-  }
-
   final OAuthService _oAuthService = getIt<OAuthService>();
   RxBool isReadOnly = false.obs;
 
   @override
   void initState() {
-    if (_oAuthService.currentUser != null) {
+    if (_oAuthService.currentUser != null && isReadOnly.value) {
       _emailController.text = _oAuthService.currentUser!.Email ?? "";
-      // print("Mobile no.");
-      // print(_oAuthService.currentUser!.Mobile);
-      if (_emailController.text == _oAuthService.currentUser!.Email) {
-        isReadOnly = true.obs;
-      } else {
-        isReadOnly = false.obs;
-      }
     }
     super.initState();
   }
@@ -54,7 +40,6 @@ class _EmailPageState extends State<EmailPage> {
   final ApiRepository apiRepository = getIt<ApiRepository>();
   @override
   Widget build(BuildContext context) {
-    final isLightMode = Theme.of(context).brightness == Brightness.light;
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -130,6 +115,7 @@ class _EmailPageState extends State<EmailPage> {
                       : "Validate E-Mail",
                   onPressed: () async {
                     //TODO Email conditions
+                    String? route;
                     if (isReadOnly.isFalse) {
                       if (_emailController.text.isNotEmpty) {
                         final res = await apiRepository.sendEmailOtp(
@@ -141,10 +127,6 @@ class _EmailPageState extends State<EmailPage> {
                           );
                         }
                       }
-                    } else {
-                      Get.find<BottomSheetNavigator>().pushNamed(
-                        "/enter-pan",
-                      );
                     }
                   },
                 ),
