@@ -40,15 +40,9 @@ class _EnterPANState extends State<EnterPAN> {
 
   @override
   void initState() {
-    if (_oAuthService.currentUser != null) {
+    if (_oAuthService.currentUser != null && isReadOnly.value) {
       paninput.text = _oAuthService.currentUser!.PAN ?? "";
       inputDate.text = _oAuthService.currentUser!.DateOfBirth ?? "";
-
-      if (paninput.text == _oAuthService.currentUser!.PAN) {
-        isReadOnly = true.obs;
-      } else {
-        isReadOnly = false.obs;
-      }
       // print("Mobile no.");
       // print(_oAuthService.currentUser!.Mobile);
 
@@ -67,10 +61,10 @@ class _EnterPANState extends State<EnterPAN> {
           children: [
             Header(),
             const TitleText(text: 'Enter PAN & Date of\nBirth '),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            SubtitleText(
+            const SubtitleText(
                 text: 'A PAN card is compulsory for investing in India.'),
             const SizedBox(
               height: 20,
@@ -112,6 +106,9 @@ class _EnterPANState extends State<EnterPAN> {
                 child: ElevatedButton(
                   onPressed: () async {
                     String? route;
+                    if (isReadOnly.isFalse) {
+                      return null;
+                    }
                     if (paninput.text.length == 10 &&
                         inputDate.text.length == 10) {
                       final res = await apiRepository
@@ -130,7 +127,7 @@ class _EnterPANState extends State<EnterPAN> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     CircleAvatar(
