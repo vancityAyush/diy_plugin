@@ -4,7 +4,7 @@ abstract class LightThemeColors {
   static Color get background => const Color(0xFFf8f8f8);
   static Color get primaryContent => const Color(0xFF000000);
   static Color get primaryAccent => const Color(0xFF354157);
-  static Color get primaryColor => const Color(0xFF444cf1);
+  static Color get primaryColor => const Color(0xFFE95885);
   static Color get textFieldBackground => Color.fromARGB(255, 231, 231, 231);
 }
 

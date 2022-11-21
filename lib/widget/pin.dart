@@ -1,18 +1,19 @@
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
 class CodePin extends StatelessWidget {
-  final TextEditingController pinController;
-  const CodePin({Key? key, required this.pinController}) : super(key: key);
+  final Function onChanged;
+  const CodePin({Key? key, required this.onChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
+      width: 50.sp,
+      height: 50.sp,
       textStyle: TextStyle(
-          fontSize: 20,
+          fontSize: 20.sp,
           color: AppColors.primaryColor(context),
           fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
@@ -34,13 +35,14 @@ class CodePin extends StatelessWidget {
     );
 
     return Pinput(
-      controller: pinController,
       defaultPinTheme: defaultPinTheme,
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,
       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
       showCursor: true,
-      onCompleted: (pin) => print(pin),
+      onChanged: (value) {
+        onChanged(value);
+      },
     );
   }
 }

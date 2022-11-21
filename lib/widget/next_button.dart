@@ -1,14 +1,14 @@
 import 'package:diy/network/api_repository.dart';
-import 'package:diy/widget/navigator/navigation_controller.dart';
+import 'package:diy/network/oauth_service.dart';
+import 'package:diy/utils/util.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../diy.dart';
 import '../utils/theme_files/app_colors.dart';
 
-typedef ApiCallback = Future<String?> Function();
+typedef ApiCallback = Future<bool> Function();
 
 class NextButton extends StatelessWidget {
   final ApiRepository apiRepository = getIt<ApiRepository>();
@@ -17,15 +17,18 @@ class NextButton extends StatelessWidget {
   final String text;
   final Color? color;
   final ApiCallback onPressed;
+  final bool autoNavigate;
   NextButton({
     Key? key,
     required this.text,
     required this.onPressed,
     this.color,
+    this.autoNavigate = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final form = ReactiveForm.of(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RoundedLoadingButton(
@@ -36,11 +39,25 @@ class NextButton extends StatelessWidget {
         controller: _btnController,
         onPressed: () async {
           _btnController.start();
-          String? nextRoute = await onPressed();
-          if (nextRoute != null) {
-            _btnController.success();
-            Get.find<BottomSheetNavigator>().pushNamed(nextRoute);
+          if (form!.valid) {
+            bool res = await onPressed();
+            if (res) {
+              _btnController.success();
+              if (autoNavigate) {
+                await getIt<OAuthService>().updateUiStatus().then(
+                    (value) => {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              value, (Route<dynamic> route) => false)
+                        }, onError: (e) {
+                  AppUtil.showErrorToast(e.toString());
+                  _btnController.error();
+                });
+              }
+            } else {
+              _btnController.error();
+            }
           } else {
+            form.markAllAsTouched();
             _btnController.error();
           }
         },
