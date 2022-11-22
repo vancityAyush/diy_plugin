@@ -1,7 +1,6 @@
 import 'package:diy/diy.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
-import 'package:diy/modules/verify-mobile/ui/signup_page.dart';
 import 'package:diy/network/api_repository.dart';
 import 'package:diy/network/oauth_service.dart';
 import 'package:diy/utils/util.dart';
@@ -32,23 +31,11 @@ class OtpPage extends StatelessWidget {
       formGroup: otpForm,
       child: Column(
         children: [
-          //button
-          MaterialButton(
-            onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SignUpPage(),
-                ),
-              );
-            },
-            child: Text("Navigate Back"),
-          ),
           RichText(
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: '+91',
+                  text: '+91 ',
                   style: TextStyle(
                     color: AppColors.primaryContent(context),
                     fontSize: 16.sp,

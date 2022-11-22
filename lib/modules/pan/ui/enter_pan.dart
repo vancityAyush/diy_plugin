@@ -7,6 +7,7 @@ import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../../network/oauth_service.dart';
 import '../../form_service.dart';
 
 class EnterPan extends StatelessWidget {
@@ -82,17 +83,23 @@ class EnterPan extends StatelessWidget {
                 dob: panForm.control("dob").value,
               )
                   .then(
-                (value) {
+                (value) async {
                   if (value != null) {
-                    //SHOW pop up
-                    print(value);
+                    await getIt<OAuthService>().updateUiStatus().then(
+                          (route) => Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            route,
+                            (route) => false,
+                            arguments: {"response": value},
+                          ),
+                        );
                     return true;
                   } else {
                     //TODO show error
+                    return false;
                   }
                 },
               );
-              return false;
             },
           ),
         ],
