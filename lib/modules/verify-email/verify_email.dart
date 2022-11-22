@@ -10,23 +10,22 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_pin_code_fields/reactive_pin_code_fields.dart';
 
 import '../../../utils/theme_files/app_colors.dart';
+import '../form_service.dart';
 
 class VerifyEmailPage extends StatelessWidget {
+  final bool isReadOnly;
   VerifyEmailPage({
     Key? key,
+    this.isReadOnly = false,
   }) : super(key: key);
 
-  final otpForm = FormGroup(
-    {
-      'otp': FormControl<String>(
-        validators: [Validators.required, Validators.minLength(4)],
-      ),
-      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
-    },
-  );
+  final otpForm = getIt<FormService>().emailOtpForm;
 
   @override
   Widget build(BuildContext context) {
+    if (!isReadOnly) {
+      otpForm.reset();
+    }
     return DiyForm(
       title: 'Verify Your Email Address',
       subtitle: "Please enter the OTP sent to your email",
@@ -61,6 +60,7 @@ class VerifyEmailPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ReactivePinCodeTextField<String>(
+              readOnly: isReadOnly,
               formControlName: 'otp',
               length: 4,
               keyboardType: TextInputType.number,

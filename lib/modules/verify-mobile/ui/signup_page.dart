@@ -1,4 +1,5 @@
 import 'package:diy/diy.dart';
+import 'package:diy/modules/form_service.dart';
 import 'package:diy/utils/util.dart';
 import 'package:diy/widget/diy_form.dart';
 import 'package:diy/widget/next_button.dart';
@@ -12,19 +13,8 @@ import 'otp_page.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);
-  final signUpForm = FormGroup(
-    {
-      'phone': FormControl<String>(
-        validators: [
-          Validators.required,
-          Validators.minLength(10),
-        ],
-        touched: false,
-      ),
-      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
-    },
-  );
 
+  final signUpForm = getIt<FormService>().signUpForm;
   @override
   Widget build(BuildContext context) {
     return DiyForm(

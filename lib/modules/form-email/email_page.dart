@@ -11,30 +11,20 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../diy.dart';
 import '../../network/api_repository.dart';
+import '../form_service.dart';
 import '../verify-mobile/models/relation_dropdown.dart';
 
 class EmailPage extends StatelessWidget {
-  EmailPage({Key? key}) : super(key: key);
+  final bool isReadOnly;
+  EmailPage({Key? key, this.isReadOnly = false}) : super(key: key);
 
-  final emailForm = FormGroup(
-    {
-      'googleToggle': FormControl<bool>(value: false),
-      'email': FormControl<String>(
-        validators: [
-          Validators.required,
-          Validators.email,
-        ],
-        touched: false,
-      ),
-      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
-      'relation': FormControl<int>(
-        validators: [Validators.required],
-      ),
-    },
-  );
+  final emailForm = getIt<FormService>().emailForm;
 
   @override
   Widget build(BuildContext context) {
+    if (!isReadOnly) {
+      emailForm.reset();
+    }
     return DiyForm(
       title: "Enter Your Email ID",
       formGroup: emailForm,
@@ -52,7 +42,7 @@ class EmailPage extends StatelessWidget {
                           emailForm.control("googleToggle").value = false;
                           //TODO signup with google
                         },
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                       ),
                       WidgetHelper.verticalSpace,
                       ElevatedButton.icon(
@@ -60,8 +50,8 @@ class EmailPage extends StatelessWidget {
                           emailForm.control("googleToggle").value = true;
                           emailForm.markAsTouched();
                         },
-                        icon: Icon(Icons.email_outlined),
-                        label: Text("Enter Email ID"),
+                        icon: const Icon(Icons.email_outlined),
+                        label: const Text("Enter Email ID"),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: AppColors.primaryContent(context),
                           primary: AppColors.background(context),
@@ -77,6 +67,7 @@ class EmailPage extends StatelessWidget {
                 return Column(
                   children: [
                     ReactiveTextField(
+                      readOnly: isReadOnly,
                       formControlName: 'email',
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -111,12 +102,11 @@ class EmailPage extends StatelessWidget {
                         if (res.status) {
                           await getIt<OAuthService>().updateUiStatus().then(
                                 (route) => Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              route,
+                                  context,
+                                  route,
                                   (route) => false,
-                              arguments: res,
-                            ),
-                          );
+                                ),
+                              );
                           return true;
                         }
                         return false;
@@ -142,6 +132,7 @@ class EmailPage extends StatelessWidget {
                                 builder: (context, AsyncSnapshot snapshot) {
                                   if (snapshot.hasData) {
                                     return ReactiveDropdownField(
+                                      readOnly: isReadOnly,
                                       hint: const Text('Select Relation'),
                                       items: [
                                         for (RelationDropdown item

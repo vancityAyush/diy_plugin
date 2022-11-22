@@ -1,10 +1,9 @@
 library diy;
 
-import 'package:diy/modules/pan/ui/enter_pan.dart';
-import 'package:diy/modules/verify-email/verify_email.dart';
-import 'package:diy/modules/verify-mobile/ui/signup_page.dart';
+import 'package:diy/modules/form_service.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
+import 'package:diy/widget/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,6 +11,9 @@ import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'modules/form-email/email_page.dart';
+import 'modules/pan/ui/enter_pan.dart';
+import 'modules/verify-email/verify_email.dart';
+import 'modules/verify-mobile/ui/signup_page.dart';
 import 'network/api_repository.dart';
 import 'network/oauth_service.dart';
 
@@ -36,6 +38,7 @@ class FlutterDIY {
       () => ApiRepository(),
       dependsOn: [OAuthService, HttpClient],
     );
+    getIt.registerSingleton(FormService());
     isInit = true;
   }
 
@@ -49,6 +52,7 @@ class FlutterDIY {
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
       enableDrag: false,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       isDismissible: false,
       useRootNavigator: true,
       context: (context),
@@ -60,16 +64,26 @@ class FlutterDIY {
           child: Navigator(
             initialRoute: '/',
             onGenerateRoute: (settings) {
+              final arguments = settings.arguments != null
+                  ? settings.arguments as Map<String, dynamic>
+                  : {};
+              bool isReadOnly = arguments[kReadOnly] ?? false;
               Widget page;
               switch (settings.name) {
                 case "/form/pan":
-                  page = EnterPan();
+                  page = EnterPan(
+                    isReadOnly: isReadOnly,
+                  );
                   break;
                 case '/form/verify-email':
-                  page = VerifyEmailPage();
+                  page = VerifyEmailPage(
+                    isReadOnly: isReadOnly,
+                  );
                   break;
                 case "/form/email":
-                  page = EmailPage();
+                  page = EmailPage(
+                    isReadOnly: isReadOnly,
+                  );
                   break;
                 default:
                   page = SignUpPage();

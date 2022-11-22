@@ -7,26 +7,18 @@ import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class EnterPan extends StatelessWidget {
-  EnterPan({Key? key}) : super(key: key);
+import '../../form_service.dart';
 
-  final panForm = FormGroup(
-    {
-      'pan': FormControl<String>(
-        validators: [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
-        ],
-      ),
-      'dob': FormControl<DateTime>(
-        validators: [Validators.required],
-      ),
-    },
-  );
+class EnterPan extends StatelessWidget {
+  bool isReadOnly;
+  EnterPan({Key? key, this.isReadOnly = false}) : super(key: key);
+  final panForm = getIt<FormService>().panForm;
 
   @override
   Widget build(BuildContext context) {
+    if (!isReadOnly) {
+      panForm.reset();
+    }
     return DiyForm(
       title: "Enter PAN & Date of Birth",
       subtitle: "A PAN card is compulsory for investing in India",

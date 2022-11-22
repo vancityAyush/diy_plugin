@@ -1,4 +1,10 @@
+import 'package:diy/network/models/ui_status.dart';
+import 'package:diy/network/oauth_service.dart';
 import 'package:flutter/material.dart';
+
+import '../diy.dart';
+
+const kReadOnly = 'readOnly';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -14,7 +20,12 @@ class Header extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              final UiStatus uiStatus = getIt<OAuthService>().uiStatus;
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/form/email", (route) => false,
+                  arguments: {kReadOnly: true});
+            },
             icon: const Icon(Icons.menu),
           ),
           Image(
