@@ -77,7 +77,7 @@ class EnterPan extends StatelessWidget {
           NextButton(
             text: "Verify",
             onPressed: () async {
-              getIt<ApiRepository>()
+              return await getIt<ApiRepository>()
                   .validatePan(
                 pan: panForm.control("pan").value,
                 dob: panForm.control("dob").value,
