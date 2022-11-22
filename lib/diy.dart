@@ -1,5 +1,6 @@
 library diy;
 
+import 'package:diy/modules/pan/ui/enter_pan.dart';
 import 'package:diy/modules/verify-email/verify_email.dart';
 import 'package:diy/modules/verify-mobile/ui/signup_page.dart';
 import 'package:diy/network/http_client.dart';
@@ -61,6 +62,9 @@ class FlutterDIY {
             onGenerateRoute: (settings) {
               Widget page;
               switch (settings.name) {
+                case "/form/pan":
+                  page = EnterPan();
+                  break;
                 case '/form/verify-email':
                   page = VerifyEmailPage();
                   break;
