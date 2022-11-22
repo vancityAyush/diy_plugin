@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:diy/network/auth_interceptor.dart';
+import 'package:diy/utils/util.dart';
 
 import '../utils/rsa_encypter.dart';
 
@@ -38,7 +39,8 @@ class HttpClient {
 
       return response.data;
     } on DioError catch (e) {
-      print(e.message);
+      final String? res = e.response!.data["ErrorMessage"];
+      AppUtil.showErrorToast(res ?? "Something Went Wrong!");
       throw HttpException(e.message, e.response);
     }
   }
@@ -59,6 +61,8 @@ class HttpClient {
       );
       return response.data;
     } on DioError catch (e) {
+      final String? res = e.response!.data["ErrorMessage"];
+      AppUtil.showErrorToast(res ?? "Something Went Wrong!");
       throw HttpException(e.message, e.response);
     } on Exception catch (e) {
       throw HttpException("Error", e);

@@ -1,175 +1,142 @@
-// import 'package:diy/network/api_repository.dart';
-// import 'package:diy/network/oauth_service.dart';
-// import 'package:diy/utils/util.dart';
-// import 'package:diy/widget/navigator/navigation_controller.dart';
-// import 'package:diy/widget/next_button.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:timer_count_down/timer_count_down.dart';
-//
-// import '../../diy.dart';
-// import '../../utils/theme_files/app_colors.dart';
-// import '../../widget/header.dart';
-// import '../../widget/pin.dart';
-// import '../../widget/textstyle.dart';
-//
-// class VerifyEmail extends StatefulWidget {
-//   const VerifyEmail({Key? key}) : super(key: key);
-//
-//   @override
-//   State<VerifyEmail> createState() => _VerifyEmailState();
-// }
-//
-// class _VerifyEmailState extends State<VerifyEmail> {
-//   bool timer = false;
-//   RxBool isSwitched = false.obs;
-//   ApiRepository apiRepository = getIt<ApiRepository>();
-//   BottomSheetNavigator navigator = Get.find<BottomSheetNavigator>();
-//   final TextEditingController pinController = TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final arguments = Get.find<BottomSheetNavigator>().arguments;
-//     print(arguments);
-//     return SafeArea(
-//       child: SingleChildScrollView(
-//           child: Column(
-//         mainAxisAlignment: MainAxisAlignment.start,
-//         children: [
-//           Header(),
-//           TitleText(text: 'Verification code'),
-//           const SizedBox(height: 20),
-//           SubtitleText(
-//             text: 'We have sent the code verifcation to\n your email address ',
-//           ),
-//           SizedBox(height: 20),
-//           CodePin(
-//             pinController: pinController,
-//           ),
-//           SizedBox(height: 20),
-//           Center(
-//             child: Container(
-//               child: Countdown(
-//                 seconds: 30,
-//                 build: (BuildContext context, time) => Text(time.toString()),
-//                 interval: Duration(seconds: 1),
-//                 onFinished: () {
-//                   setState(() {
-//                     timer = true;
-//                   });
-//                 },
-//               ),
-//             ),
-//           ),
-//           SizedBox(height: 3),
-//           TextButton(
-//             onPressed: () {
-//               if (timer == true) {
-//                 null;
-//                 //code to send the code again
-//               } else {
-//                 null;
-//               }
-//             },
-//             child: Text(
-//               "Resend OTP",
-//               style: TextStyle(
-//                   color: AppColors.primaryColor(context), fontSize: 18),
-//             ),
-//           ),
-//           SizedBox(height: 8),
-//           NextButton(
-//               text: 'Verify',
-//               color: AppColors.primaryColor(context),
-//               onPressed: () async {
-//                 String? route;
-//                 if (pinController.text.length == 4) {
-//                   apiRepository
-//                       .validateEmail(
-//                     email: arguments["Email"],
-//                     otp: pinController.text,
-//                     refId: arguments["RefId"],
-//                     relationId: arguments["EmailRelationshipId"],
-//                   )
-//                       .then(
-//                     (value) async {
-//                       if (value != null) {
-//                         route = await getIt<OAuthService>().updateUiStatus();
-//                       } else {
-//                         AppUtil.showErrorToast("Invalid OTP");
-//                       }
-//                     },
-//                   );
-//                 } else {
-//                   print('error');
-//                 }
-//                 return null;
-//               }),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//             child: Obx(
-//               () => Row(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                   Checkbox(
-//                     value: isSwitched.value,
-//                     onChanged: (val) {
-//                       isSwitched.value = val!;
-//                     },
-//                     side: BorderSide(
-//                       color: AppColors.primaryColor(context),
-//                     ),
-//                     activeColor: AppColors.primaryColor(context),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(5),
-//                       side: BorderSide(
-//                         color: AppColors.primaryColor(context),
-//                       ),
-//                     ),
-//                   ),
-//                   const SizedBox(
-//                     height: 50,
-//                   ),
-//                   Column(
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       SizedBox(
-//                         height: 30,
-//                       ),
-//                       Text(
-//                         "I hereby declare that the email address",
-//                         style: TextStyle(
-//                             color: AppColors.primaryAccent(context),
-//                             fontSize: 15),
-//                         textAlign: TextAlign.left,
-//                       ),
-//                       Row(
-//                         mainAxisAlignment: MainAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             "belong to ",
-//                             style: TextStyle(
-//                                 color: AppColors.primaryAccent(context),
-//                                 fontSize: 15),
-//                             textAlign: TextAlign.left,
-//                           ),
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//           SizedBox(
-//             height: 20,
-//           ),
-//           FooterText(),
-//           SizedBox(height: 20),
-//           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-//         ],
-//       )),
-//     );
-//   }
-// }
+import 'package:diy/diy.dart';
+import 'package:diy/network/oauth_service.dart';
+import 'package:diy/utils/util.dart';
+import 'package:diy/widget/diy_form.dart';
+import 'package:diy/widget/next_button.dart';
+import 'package:diy/widget/widget_helper.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_pin_code_fields/reactive_pin_code_fields.dart';
+
+import '../../../utils/theme_files/app_colors.dart';
+
+class VerifyEmailPage extends StatelessWidget {
+  VerifyEmailPage({
+    Key? key,
+  }) : super(key: key);
+
+  final otpForm = FormGroup(
+    {
+      'otp': FormControl<String>(
+        validators: [Validators.required, Validators.minLength(4)],
+      ),
+      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
+    },
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return DiyForm(
+      title: 'Verify Your Email Address',
+      subtitle: "Please enter the OTP sent to your email",
+      formGroup: otpForm,
+      child: Column(
+        children: [
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: getIt<OAuthService>().response["Email"] + "  ",
+                  style: TextStyle(
+                    color: AppColors.primaryContent(context),
+                    fontSize: 16.sp,
+                  ),
+                ),
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.edit,
+                      color: AppColors.primaryContent(context),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          WidgetHelper.verticalSpace20,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: ReactivePinCodeTextField<String>(
+              formControlName: 'otp',
+              length: 4,
+              keyboardType: TextInputType.number,
+              validationMessages: {
+                'required': (error) => 'The OTP must not be empty',
+                'minLength': (error) =>
+                    'The OTP must have at least 4 characters',
+              },
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                borderRadius: BorderRadius.circular(10),
+                activeColor: AppColors.primaryColor(context),
+              ),
+              showErrors: (control) => control.invalid && control.dirty,
+            ),
+          ),
+          WidgetHelper.verticalSpace20,
+          GestureDetector(
+            onTap: () async {
+              await getIt<OAuthService>()
+                  .sendEmailOtp(email: getIt<OAuthService>().response["Email"])
+                  .then(
+                (value) {
+                  if (value.status) {
+                    AppUtil.showToast("OTP sent successfully");
+                  } else {
+                    AppUtil.showToast("Something went wrong");
+                  }
+                },
+              );
+            },
+            child: Text(
+              'Resend OTP',
+              style: TextStyle(
+                color: AppColors.primaryColor(context),
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          WidgetHelper.verticalSpace20,
+          NextButton(
+            text: "Verify",
+            onPressed: () async {
+              final res = await getIt<OAuthService>().validateEmail(
+                otp: otpForm.control('otp').value,
+              );
+              if (res.status) {
+                AppUtil.showToast("OTP verified successfully");
+                await getIt<OAuthService>().updateUiStatus().then(
+                      (route) => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        route,
+                        (route) => false,
+                      ),
+                    );
+                return true;
+              } else {
+                AppUtil.showToast("Something went wrong");
+              }
+              return false;
+            },
+          ),
+          WidgetHelper.verticalSpace20,
+          ReactiveCheckboxListTile(
+            formControlName: 'TnC',
+            title: Text(
+              "I understand and authorize JM Financial Services to contact me via email for all future communication",
+              style: TextStyle(
+                color: AppColors.primaryContent(context),
+                fontSize: 14.sp,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

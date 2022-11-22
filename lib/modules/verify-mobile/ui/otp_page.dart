@@ -5,11 +5,11 @@ import 'package:diy/network/oauth_service.dart';
 import 'package:diy/utils/util.dart';
 import 'package:diy/widget/diy_form.dart';
 import 'package:diy/widget/next_button.dart';
-import 'package:diy/widget/pin.dart';
 import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_pin_code_fields/reactive_pin_code_fields.dart';
 
 import '../../../utils/theme_files/app_colors.dart';
 
@@ -23,7 +23,7 @@ class OtpPage extends StatelessWidget {
   final otpForm = FormGroup(
     {
       'otp': FormControl<String>(
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.minLength(4)],
       ),
       'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
       'relation': FormControl<int>(
@@ -72,17 +72,31 @@ class OtpPage extends StatelessWidget {
             ),
           ),
           WidgetHelper.verticalSpace20,
-          CodePin(
-            onChanged: (value) {
-              otpForm.control('otp').value = value;
-            },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: ReactivePinCodeTextField<String>(
+              formControlName: 'otp',
+              length: 4,
+              keyboardType: TextInputType.number,
+              validationMessages: {
+                'required': (error) => 'The OTP must not be empty',
+                'minLength': (error) =>
+                    'The OTP must have at least 4 characters',
+              },
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                borderRadius: BorderRadius.circular(10),
+                activeColor: AppColors.primaryColor(context),
+              ),
+              showErrors: (control) => control.invalid && control.dirty,
+            ),
           ),
           WidgetHelper.verticalSpace20,
           GestureDetector(
             onTap: () async {
               await getIt<OAuthService>().sendOtp(phoneNumber).then(
                 (value) {
-                  if (value.success) {
+                  if (value.status) {
                     AppUtil.showToast("OTP sent successfully");
                   } else {
                     AppUtil.showToast("Something went wrong");
@@ -103,22 +117,24 @@ class OtpPage extends StatelessWidget {
           NextButton(
             text: "Verify",
             onPressed: () async {
-              if (otpForm.valid) {
-                final res = await getIt<OAuthService>().verifyOtp(
-                  otpForm.control('otp').value,
-                  relationId: otpForm.control('relation').value,
-                );
-                if (res.success) {
-                  AppUtil.showToast("OTP verified successfully");
-                  return true;
-                } else {
-                  AppUtil.showToast("Something went wrong");
-                  return false;
-                }
+              final res = await getIt<OAuthService>().verifyOtp(
+                otpForm.control('otp').value,
+                relationId: otpForm.control('relation').value,
+              );
+              if (res.status) {
+                AppUtil.showToast("OTP verified successfully");
+                await getIt<OAuthService>().updateUiStatus().then(
+                      (route) => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        route,
+                        (route) => false,
+                      ),
+                    );
+                return true;
               } else {
-                AppUtil.showErrorToast("Please enter OTP");
-                return false;
+                AppUtil.showToast("Something went wrong");
               }
+              return false;
             },
           ),
           WidgetHelper.verticalSpace20,

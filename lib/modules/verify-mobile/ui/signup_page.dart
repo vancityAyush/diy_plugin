@@ -66,7 +66,6 @@ class SignUpPage extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           NextButton(
             text: "Continue",
-            autoNavigate: false,
             onPressed: () async {
               return await getIt<OAuthService>()
                   .sendOtp(
@@ -74,11 +73,7 @@ class SignUpPage extends StatelessWidget {
               )
                   .then(
                 (res) {
-                  if (signUpForm.value['TnC'] == false) {
-                    AppUtil.showErrorToast(
-                        "Please accept the terms and conditions");
-                  }
-                  if (res.success) {
+                  if (res.status) {
                     AppUtil.showToast(
                       'OTP sent successfully',
                     );
@@ -87,10 +82,11 @@ class SignUpPage extends StatelessWidget {
                         OtpPage(phoneNumber: signUpForm.control('phone').value),
                       ),
                     );
+                    return true;
                   } else {
-                    AppUtil.showErrorToast(res.message);
+                    AppUtil.showErrorToast(res.arguments);
                   }
-                  return res.success;
+                  return false;
                 },
               );
             },

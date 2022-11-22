@@ -1,6 +1,4 @@
 import 'package:diy/network/api_repository.dart';
-import 'package:diy/network/oauth_service.dart';
-import 'package:diy/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -17,13 +15,11 @@ class NextButton extends StatelessWidget {
   final String text;
   final Color? color;
   final ApiCallback onPressed;
-  final bool autoNavigate;
   NextButton({
     Key? key,
     required this.text,
     required this.onPressed,
     this.color,
-    this.autoNavigate = true,
   }) : super(key: key);
 
   @override
@@ -43,16 +39,6 @@ class NextButton extends StatelessWidget {
             bool res = await onPressed();
             if (res) {
               _btnController.success();
-              if (autoNavigate) {
-                await getIt<OAuthService>().updateUiStatus().then(
-                    (value) => {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              value, (Route<dynamic> route) => false)
-                        }, onError: (e) {
-                  AppUtil.showErrorToast(e.toString());
-                  _btnController.error();
-                });
-              }
             } else {
               _btnController.error();
             }

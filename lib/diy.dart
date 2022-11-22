@@ -1,5 +1,6 @@
 library diy;
 
+import 'package:diy/modules/verify-email/verify_email.dart';
 import 'package:diy/modules/verify-mobile/ui/signup_page.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import 'modules/form-email/email_page.dart';
 import 'network/api_repository.dart';
 import 'network/oauth_service.dart';
 
@@ -59,6 +61,12 @@ class FlutterDIY {
             onGenerateRoute: (settings) {
               Widget page;
               switch (settings.name) {
+                case '/form/verify-email':
+                  page = VerifyEmailPage();
+                  break;
+                case "/form/email":
+                  page = EmailPage();
+                  break;
                 default:
                   page = SignUpPage();
                   break;

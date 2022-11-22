@@ -33,6 +33,7 @@ class BottomPage extends StatelessWidget {
             ),
           ),
           pinned: true,
+          automaticallyImplyLeading: false,
           backgroundColor: AppColors.background(context),
           expandedHeight: 20.sp,
           flexibleSpace: const Header(),
