@@ -1,11 +1,14 @@
 class ResponseModel {
-  final bool success;
-  final dynamic message;
+  final bool status;
+  final dynamic arguments;
+  final String message;
 
-  ResponseModel({required this.success, this.message});
+  ResponseModel({required this.status, this.arguments, this.message = ""});
+
+  ResponseModel.False({this.arguments, this.message = ""}) : status = false;
 
   @override
   String toString() {
-    return message.toString();
+    return arguments.toString();
   }
 }

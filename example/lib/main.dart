@@ -1,4 +1,5 @@
 import 'package:diy/diy.dart';
+import 'package:diy/modules/pan/ui/enter_pan.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/utils/theme_files/app_themes.dart';
 import 'package:flutter/material.dart';

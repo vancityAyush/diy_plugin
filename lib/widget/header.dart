@@ -1,39 +1,44 @@
-import 'package:diy/utils/theme_files/app_colors.dart';
+import 'package:diy/network/models/ui_status.dart';
+import 'package:diy/network/oauth_service.dart';
 import 'package:flutter/material.dart';
 
+import '../diy.dart';
+
+const kReadOnly = 'readOnly';
+
 class Header extends StatelessWidget {
+  const Header({super.key});
+
+  // BottomSheetNavigator navigator = Get.find<BottomSheetNavigator>();
+
   @override
   Widget build(BuildContext context) {
     final isLightMode = Theme.of(context).brightness == Brightness.light;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
-      child: AppBar(
-        backgroundColor: AppColors.background(context),
-        elevation: 0,
-        leading: Icon(
-          Icons.arrow_back,
-          size: 25,
-          color: AppColors.primaryAccent(context),
-        ),
-        title: Image(
-          image: AssetImage(
-              isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
-              package: "diy"),
-          height: 150,
-        ),
-        actions: [
-          Icon(
-            Icons.call_outlined,
-            size: 25,
-            color: AppColors.primaryAccent(context),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            onPressed: () {
+              final UiStatus uiStatus = getIt<OAuthService>().uiStatus;
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/form/email", (route) => false,
+                  arguments: {kReadOnly: true});
+            },
+            icon: const Icon(Icons.menu),
           ),
-          const SizedBox(width: 15),
-          Icon(
-            Icons.power_settings_new_rounded,
-            size: 25,
-            color: AppColors.primaryAccent(context),
+          Image(
+            image: AssetImage(
+                isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
+                package: "diy"),
+            height: 40,
+            fit: BoxFit.cover,
           ),
-          const SizedBox(width: 20),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.power_settings_new),
+          ),
         ],
       ),
     );

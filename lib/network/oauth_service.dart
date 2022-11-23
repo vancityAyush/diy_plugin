@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/models/token.dart';
+import 'package:diy/network/models/ui_status.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../utils/util.dart';
 import 'models/Response.dart';
 import 'models/auth_token.dart';
 import 'models/user.dart';
@@ -15,22 +18,90 @@ class OAuthService {
   final FlutterSecureStorage _storage;
   final dummyUser = User();
 
+  UiStatus uiStatus = UiStatus(NextModuleId: 1, BackMenuList: []);
+
   Token token = Token();
 
   OAuthService(this._http, this._storage);
 
   StreamController<User?> userController = StreamController<User>();
-  dynamic currentUser;
+  User? currentUser;
   dynamic response;
 
   Stream<User?> get authStateChange {
     return userController.stream;
   }
 
+  Future<ResponseModel> sendEmailOtp(
+      {required String email, int? relationId}) async {
+    try {
+      relationId = relationId ?? response["EmailRelationshipId"];
+      final res = await _http.post(
+        "/app/send-email-otp/",
+        data: {
+          "Email": email,
+          "EmailRelationshipId": relationId,
+        },
+      );
+      if (res != null) {
+        response = res;
+        return ResponseModel(status: true, arguments: "Otp Sent Successfully");
+      } else {
+        return ResponseModel(status: false, arguments: res["ErrorMessage"]);
+      }
+    } on HttpException catch (e) {
+      AppUtil.showErrorToast(e.error["ErrorMessage"]);
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+    return ResponseModel(status: false, arguments: "Something went wrong");
+  }
+
+  Future<ResponseModel> validateEmail({
+    required String otp,
+  }) async {
+    try {
+      final res = await _http.postEncrypted(
+        "/app/validate-email/",
+        data: {
+          "Email": response["Email"],
+          "EmailRelationshipId": response["EmailRelationshipId"],
+          "Otp": otp,
+          "RefId": response["RefId"],
+        },
+      );
+      return ResponseModel(status: true, arguments: res);
+    } catch (e) {
+      print(e);
+      return ResponseModel(status: false, arguments: "Something went wrong");
+    }
+  }
+
+  Future<UiStatus?> getUIStatus() async {
+    try {
+      final res = await _http.get("/ui/status");
+      return UiStatus.fromJson(res);
+    } on HttpException catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<String> updateUiStatus() async {
+    final res = await getUIStatus();
+    if (res != null) {
+      uiStatus = res;
+    }
+    return uiStatus.currentRoute;
+  }
+
   Future<void> initState() async {
     // bool isTokenValid = await token.readToken();
-    await sendOtp("8084100105");
-    await verifyOtp("1234");
+    if (kDebugMode) {
+      await sendOtp("8084100105");
+      await verifyOtp("1234");
+    }
   }
 
   Future<dynamic> logout() async {
@@ -58,15 +129,15 @@ class OAuthService {
       response = await startAuth(phone);
       if (response != null) {
         return ResponseModel(
-          success: true,
-          message: "OTP sent successfully",
+          status: true,
+          arguments: "OTP sent successfully",
         );
       } else {
-        return ResponseModel(success: false, message: "Error sending OTP");
+        return ResponseModel(status: false, arguments: "Error sending OTP");
       }
     } catch (e) {
       print(e);
-      return ResponseModel(success: false, message: e);
+      return ResponseModel(status: false, arguments: e);
     }
   }
 
@@ -76,10 +147,10 @@ class OAuthService {
           relationshipId: relationId);
       currentUser = user;
       token.setToken(user.Auth!);
-      return ResponseModel(success: true, message: "User Verified");
+      return ResponseModel(status: true, arguments: "User Verified");
     } catch (e) {
       print(e);
-      return ResponseModel(success: false, message: e);
+      return ResponseModel(status: false, arguments: e);
     }
   }
 
