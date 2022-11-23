@@ -71,14 +71,29 @@ class EmailPage extends StatelessWidget {
                       formControlName: 'email',
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        labelText: 'Email ID',
+                        fillColor: AppColors.textFieldBackground(context),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.textFieldBackground(context),
+                          ),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primaryColor(context),
+                          ),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        // labelText: 'Email ID',
+                        // labelStyle:
+                        //     TextStyle(color: AppColors.primaryContent(context)),
                         hintText: 'Your Email ID',
                         prefixIcon: Icon(
                           Icons.email_outlined,
                           color: Theme.of(context).primaryColor,
                         ),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(4),
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
                           ),
@@ -113,13 +128,16 @@ class EmailPage extends StatelessWidget {
                       },
                     ),
                     ReactiveCheckboxListTile(
+                      activeColor: AppColors.primaryColor(context),
                       formControlName: 'TnC',
+                      checkboxShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       title: RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text:
-                                  'I hereby declare that the mobile number belongs to ',
+                              text: 'I hereby declare that the mobile number',
                               style: TextStyle(
                                 color: AppColors.primaryContent(context),
                                 fontSize: 14.sp,

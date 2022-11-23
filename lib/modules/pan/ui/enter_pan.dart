@@ -30,8 +30,21 @@ class EnterPan extends StatelessWidget {
             formControlName: "pan",
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.characters,
-            decoration: const InputDecoration(
-              labelText: "PAN",
+            decoration: InputDecoration(
+              fillColor: AppColors.textFieldBackground(context),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.textFieldBackground(context),
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.primaryColor(context),
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              // labelText: "PAN",
               hintText: "Enter your PAN",
               border: OutlineInputBorder(),
             ),
@@ -56,13 +69,26 @@ class EnterPan extends StatelessWidget {
                 readOnly: true,
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
-                  labelText: "Date of Birth",
+                  fillColor: AppColors.textFieldBackground(context),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.textFieldBackground(context),
+                    ),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.primaryColor(context),
+                    ),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  //labelText: "Date of Birth",
                   hintText: "Enter your Date of Birth",
                   suffixIconColor: AppColors.primaryAccent(context),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      Icons.calendar_today,
+                      Icons.calendar_month,
                       color: AppColors.primaryAccent(context),
                     ),
                     onPressed: () {

@@ -70,13 +70,28 @@ class BottomPage extends StatelessWidget {
         backgroundColor: AppColors.background(context),
         foregroundColor: AppColors.primaryContent(context),
         elevation: 0,
-        title: Image(
-          image: AssetImage(
-              isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
-              package: "diy"),
-          height: 40,
-          fit: BoxFit.cover,
+        title: Center(
+          child: Image(
+            image: AssetImage(
+                isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
+                package: "diy"),
+            height: 40,
+            fit: BoxFit.cover,
+          ),
         ),
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       //Navigator.of(context).pop();
+        //     },
+        //     icon: Icon(
+        //       Icons.power_settings_new_rounded,
+        //       size: 25,
+        //       color: AppColors.primaryAccent(context),
+        //     ),
+        //   ),
+        // ],
+
         automaticallyImplyLeading:
             getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
       ),
@@ -87,14 +102,17 @@ class BottomPage extends StatelessWidget {
           if (title != null)
             SliverToBoxAdapter(
               child: Padding(
-                padding: padding,
-                child: Text(
-                  title!,
-                  style: TextStyle(
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.center,
+                padding: EdgeInsets.only(top: 60.sp),
+                child: Padding(
+                  padding: padding,
+                  child: Text(
+                    title!,
+                    style: TextStyle(
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryContent(context)),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),
@@ -107,7 +125,7 @@ class BottomPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w400,
-                    color: Colors.black,
+                    color: AppColors.primaryAccent(context),
                   ),
                   textAlign: TextAlign.center,
                 ),

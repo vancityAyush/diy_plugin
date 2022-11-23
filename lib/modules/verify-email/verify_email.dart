@@ -70,8 +70,11 @@ class VerifyEmailPage extends StatelessWidget {
                     'The OTP must have at least 4 characters',
               },
               pinTheme: PinTheme(
+                selectedColor: AppColors.primaryColor(context),
+                inactiveColor: AppColors.primaryAccent(context),
+                activeFillColor: AppColors.textFieldBackground(context),
                 shape: PinCodeFieldShape.box,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(4),
                 activeColor: AppColors.primaryColor(context),
               ),
               showErrors: (control) => control.invalid && control.dirty,
@@ -126,12 +129,16 @@ class VerifyEmailPage extends StatelessWidget {
           ),
           WidgetHelper.verticalSpace20,
           ReactiveCheckboxListTile(
+            activeColor: AppColors.primaryColor(context),
+            checkboxShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
             formControlName: 'TnC',
             title: Text(
               "I understand and authorize JM Financial Services to contact me via email for all future communication",
               style: TextStyle(
                 color: AppColors.primaryContent(context),
-                fontSize: 14.sp,
+                fontSize: 12.sp,
               ),
             ),
           ),

@@ -23,20 +23,54 @@ class SignUpPage extends StatelessWidget {
       child: Column(
         children: [
           ReactiveTextField(
+            cursorColor: AppColors.primaryColor(context),
             formControlName: 'phone',
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              labelText: 'Phone Number',
-              hintText: 'Your 10 digit phone number',
-              prefixIcon: Icon(
-                Icons.phone,
-                color: AppColors.primaryContent(context),
+              fillColor: AppColors.textFieldBackground(context),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.textFieldBackground(context),
+                ),
+                borderRadius: BorderRadius.circular(4),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+              focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: AppColors.primaryColor(context),
                 ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              // labelText: 'Phone Number',
+              // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
+              hintText: 'Your 10 digit phone number',
+              prefixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    '+91',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryContent(context)),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    '|',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryContent(context),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                ],
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor(context)),
+                borderRadius: BorderRadius.circular(4),
               ),
             ),
             maxLength: 10,
@@ -112,7 +146,8 @@ class SignUpPage extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
+          //SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ],
       ),
     );

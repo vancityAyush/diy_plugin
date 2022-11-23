@@ -75,8 +75,11 @@ class OtpPage extends StatelessWidget {
                     'The OTP must have at least 4 characters',
               },
               pinTheme: PinTheme(
+                selectedColor: AppColors.primaryColor(context),
+                inactiveColor: AppColors.primaryAccent(context),
+                activeFillColor: AppColors.textFieldBackground(context),
                 shape: PinCodeFieldShape.box,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(4),
                 activeColor: AppColors.primaryColor(context),
               ),
               showErrors: (control) => control.invalid && control.dirty,
@@ -130,6 +133,10 @@ class OtpPage extends StatelessWidget {
           ),
           WidgetHelper.verticalSpace20,
           ReactiveCheckboxListTile(
+            activeColor: AppColors.primaryColor(context),
+            checkboxShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
             formControlName: 'TnC',
             title: RichText(
               text: TextSpan(
@@ -138,7 +145,7 @@ class OtpPage extends StatelessWidget {
                     text: 'I hereby declare that the mobile number belongs to ',
                     style: TextStyle(
                       color: AppColors.primaryContent(context),
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                     ),
                   ),
                   WidgetSpan(
