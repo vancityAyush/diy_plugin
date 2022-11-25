@@ -93,4 +93,16 @@ class FormService {
       ),
     },
   );
+
+  final ifscForm = FormGroup(
+    {
+      'ifsc': FormControl<String>(
+        validators: [
+          Validators.required,
+          Validators.minLength(11),
+          Validators.pattern("[A-Z]{4}[0-9]{7}")
+        ],
+      ),
+    },
+  );
 }

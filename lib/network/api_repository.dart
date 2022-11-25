@@ -59,29 +59,48 @@ class ApiRepository {
     return res;
   }
 
-  // Future<ResponseModel> panDetails(
-  //   {  required String pan,
-  //     required String dob,
-  //     bool kraVerified = false,
-  //     bool panVerified =false,
-  //     String firstName,
-  //     String middleName,
-  //     String lastName,
-  //     String uan}) async {
-  //   try {
-  //     response = await validatePan(pan, dob, kraVerified, panVerified,
-  //         firstName, middleName, lastName, uan);
-  //     if (response != null) {
-  //       return ResponseModel(
-  //         success: true,
-  //         message: "OTP sent successfully",
-  //       );
-  //     } else {
-  //       return ResponseModel(success: false, message: "Error sending OTP");
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //     return ResponseModel(success: false, message: e);
-  //   }
-  // }
+  Future<dynamic> validateBankAcc({
+    String? ifsc,
+    required String bankaccNo,
+    String? bank,
+    String? branch,
+    String? branchcode,
+    String? micrCode,
+    String? customerid,
+    bool? nameverified,
+    bool? skip,
+  }) async {
+    final res = await http.postEncrypted(
+      "/app/validate-bank/",
+      data: {
+        "IFSC": ifsc,
+        "BankAccountNo": bankaccNo,
+        "Bank": bank,
+        "Branch": branch,
+        "BranchCode": branchcode,
+        "MICR_CODE": micrCode,
+        "CustomerId": customerid,
+        "NameVerified": nameverified,
+        "Skip": skip,
+      },
+    );
+    return res;
+  }
+
+  Future<List<dynamic>> getBankNames() async {
+    final res = await http.get("/masters/bank-names/");
+    return res;
+  }
+
+  Future<dynamic> GetIfsc({
+    required String data,
+  }) async {
+    final res = await http.post(
+      "/masters/banks/HDFC%20BANK",
+      data: {
+        "Data": data,
+      },
+    );
+    return res;
+  }
 }

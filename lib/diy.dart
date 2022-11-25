@@ -1,5 +1,6 @@
 library diy;
 
+import 'package:diy/modules/bank/ifsc_page.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/modules/pan/ui/pan_upload_page.dart';
 import 'package:diy/network/http_client.dart';
@@ -71,6 +72,9 @@ class FlutterDIY {
               bool isReadOnly = arguments[kReadOnly] ?? false;
               Widget page;
               switch (settings.name) {
+                case '/form/bank-ifsc-code':
+                  page = IFSCPage();
+                  break;
                 case "/app/validate-kra/":
                   page = ValidateKra(isReadOnly: isReadOnly);
                   break;
