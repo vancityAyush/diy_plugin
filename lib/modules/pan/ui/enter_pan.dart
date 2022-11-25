@@ -7,7 +7,6 @@ import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../network/oauth_service.dart';
 import '../../form_service.dart';
 
 class EnterPan extends StatelessWidget {
@@ -111,14 +110,11 @@ class EnterPan extends StatelessWidget {
                   .then(
                 (value) async {
                   if (value != null) {
-                    await getIt<OAuthService>().updateUiStatus().then(
-                          (route) => Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            route,
-                            (route) => false,
-                            arguments: {"response": value},
-                          ),
-                        );
+                    getIt<FormService>().validatePanForm.value = value;
+                    final form = getIt<FormService>().validatePanForm;
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/app/validate-kra/", (route) => false,
+                        arguments: {"response": value});
                     return true;
                   } else {
                     //TODO show error

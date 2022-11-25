@@ -1,6 +1,7 @@
 library diy;
 
 import 'package:diy/modules/form_service.dart';
+import 'package:diy/modules/pan/ui/pan_upload_page.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
@@ -70,7 +71,10 @@ class FlutterDIY {
               bool isReadOnly = arguments[kReadOnly] ?? false;
               Widget page;
               switch (settings.name) {
-                case "/form/pan":
+                case "/app/validate-kra/":
+                  page = ValidateKra(isReadOnly: isReadOnly);
+                  break;
+                case "/app/validate-pan/":
                   page = EnterPan(
                     isReadOnly: isReadOnly,
                   );

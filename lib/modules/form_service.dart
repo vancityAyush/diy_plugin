@@ -63,4 +63,34 @@ class FormService {
       ),
     },
   );
+
+  final validatePanForm = FormGroup(
+    {
+      'PAN': FormControl<String>(
+        validators: [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+        ],
+      ),
+      'DateOfBirth': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'KraVerified': FormControl<bool>(
+        validators: [Validators.required],
+      ),
+      'PanVerified': FormControl<bool>(
+        validators: [Validators.required],
+      ),
+      'FirstName': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'MiddleName': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'LastName': FormControl<String>(
+        validators: [Validators.required],
+      ),
+    },
+  );
 }

@@ -14,7 +14,7 @@ diy:
 
 diy:
     git:
-      url: https://github.com/vancityAyush/diy_plugin.git
+      url: https://github.com/hemantam1/diy_plugin.git
       ref: main
 
 

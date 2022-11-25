@@ -30,8 +30,8 @@ class UiStatus {
     1: "/verify-mobile",
     2: "/form/email",
     3: "/form/verify-email",
-    4: "/form/pan",
-    35: "/form/kra",
+    4: '/app/validate-pan/',
+    35: "/app/validate-kra/",
     5: "/form/bank-ifsc-code",
     18: "/form/address-proof-front-side"
   };

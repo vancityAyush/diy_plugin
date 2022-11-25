@@ -15,11 +15,13 @@ class NextButton extends StatelessWidget {
   final String text;
   final Color? color;
   final ApiCallback onPressed;
+  final bool validateForm;
   NextButton({
     Key? key,
     required this.text,
     required this.onPressed,
     this.color,
+    this.validateForm = true,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class NextButton extends StatelessWidget {
         controller: _btnController,
         onPressed: () async {
           _btnController.start();
-          if (form!.valid) {
+          if (form!.valid || !validateForm) {
             bool res = await onPressed();
             if (res) {
               _btnController.success();

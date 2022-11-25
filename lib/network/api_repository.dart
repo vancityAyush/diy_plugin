@@ -41,27 +41,20 @@ class ApiRepository {
     return res;
   }
 
-  Future<dynamic> validateKra(
-      String pan,
-      String dob,
-      bool kraVerified,
-      bool panVerified,
-      String firstName,
-      String middleName,
-      String lastName,
-      Null uan) async {
+  Future<dynamic> validateKra(Map<String, dynamic> data) async {
     final res = await http.postEncrypted(
       "/app/validate-kra/",
-      data: {
-        "PAN": pan,
-        "DateOfBirth": dob,
-        "KraVerified": kraVerified,
-        "PanVerified": panVerified,
-        "FirstName": firstName,
-        "MiddleName": middleName,
-        "LastName": lastName,
-        "UAN": uan
-      },
+      data: data,
+      // {
+      //   "PAN": pan,
+      //   "DateOfBirth": dob,
+      //   "KraVerified": kraVerified,
+      //   "PanVerified": panVerified,
+      //   "FirstName": firstName,
+      //   "MiddleName": middleName,
+      //   "LastName": lastName,
+      //   "UAN": uan
+      // },
     );
     return res;
   }
