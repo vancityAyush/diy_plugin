@@ -1,6 +1,7 @@
 import 'package:diy/diy.dart';
 import 'package:diy/network/api_repository.dart';
 import 'package:diy/widget/diy_form.dart';
+import 'package:diy/widget/next_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -47,7 +48,7 @@ class IFSCPage extends StatelessWidget {
               labelStyle: TextStyle(color: AppColors.primaryContent(context)),
               hintText: 'Enter Your IFSC Code',
               prefixIcon: Icon(
-                Icons.email_outlined,
+                Icons.account_balance,
                 color: Theme.of(context).primaryColor,
               ),
               border: OutlineInputBorder(
@@ -70,6 +71,9 @@ class IFSCPage extends StatelessWidget {
                 'bank': FormControl<String>(
                   validators: [Validators.required],
                 ),
+                'location': FormControl<String>(
+                  validators: [Validators.required],
+                ),
               });
               await showDialog(
                 context: context,
@@ -77,7 +81,7 @@ class IFSCPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
-                      vertical: 10,
+                      vertical: 20,
                     ),
                     child: ReactiveForm(
                       formGroup: selectIfscForm,
@@ -111,8 +115,24 @@ class IFSCPage extends StatelessWidget {
                                 )
                                 .toList(),
                             style: TextStyle(
-                              color: AppColors.primaryColor(context),
+                              color: AppColors.primaryContent(context),
                             ),
+                            decoration: InputDecoration(
+                              labelText: 'Bank Name',
+                              labelStyle: TextStyle(
+                                  color: AppColors.primaryContent(context)),
+                              hintText: 'Enter Your Bank Name',
+                            ),
+                            showErrors: (control) =>
+                                control.invalid && control.dirty,
+                            validationMessages: {
+                              'required': (error) => 'Please Enter Bank Name',
+                            },
+                          ),
+                          WidgetHelper.verticalSpace20,
+                          ReactiveTextField(
+                            formControlName: 'location',
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               fillColor: AppColors.textFieldBackground(context),
                               enabledBorder: OutlineInputBorder(
@@ -127,10 +147,14 @@ class IFSCPage extends StatelessWidget {
                                 ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              labelText: 'Bank Name',
+                              labelText: 'Bank Location',
                               labelStyle: TextStyle(
                                   color: AppColors.primaryContent(context)),
-                              hintText: 'Enter Your Bank Name',
+                              hintText: 'Enter Bank Location',
+                              prefixIcon: Icon(
+                                Icons.location_city,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
@@ -141,7 +165,20 @@ class IFSCPage extends StatelessWidget {
                             showErrors: (control) =>
                                 control.invalid && control.dirty,
                             validationMessages: {
-                              'required': (error) => 'Please Enter Bank Name',
+                              'required': (error) =>
+                                  'Please Enter Bank Location',
+                            },
+                          ),
+                          WidgetHelper.verticalSpace20,
+                          NextButton(
+                            text: "Search",
+                            onPressed: () async {
+                              final res = await getIt<ApiRepository>().getIFSC(
+                                bankName: selectIfscForm.control('bank').value,
+                                location:
+                                    selectIfscForm.control('location').value,
+                              );
+                              return true;
                             },
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:diy/diy.dart';
+import 'package:diy/modules/bank/models/bank.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
@@ -92,13 +93,15 @@ class ApiRepository {
     return res;
   }
 
-  Future<dynamic> GetIfsc({
-    required String data,
+  Future<List<bank>> getIFSC({
+    required String bankName,
+    required String location,
   }) async {
+    bankName.replaceAll(" ", "%20");
     final res = await http.post(
-      "/masters/banks/HDFC%20BANK",
+      "/masters/banks/$bankName",
       data: {
-        "Data": data,
+        "Data": location,
       },
     );
     return res;
