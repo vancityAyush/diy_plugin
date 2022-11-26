@@ -1,9 +1,10 @@
 import 'package:diy/diy.dart';
-import 'package:diy/modules/bank/models/bank.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
 import 'package:intl/intl.dart';
+
+import '../modules/ifsc/models/bank.dart';
 
 class ApiRepository {
   final http = getIt<HttpClient>();
@@ -15,6 +16,11 @@ class ApiRepository {
     return res
         .map<RelationDropdown>((e) => RelationDropdown.fromJson(e))
         .toList();
+  }
+
+  Future<dynamic> selectIfsc(Map<String, dynamic> data) async {
+    final res = await http.post("/app/select-ifsc/", data: data);
+    return res;
   }
 
   Future<dynamic> validatePan(
@@ -95,15 +101,17 @@ class ApiRepository {
 
   Future<List<bank>> getIFSC({
     required String bankName,
-    required String location,
+    String? location,
   }) async {
     bankName.replaceAll(" ", "%20");
     final res = await http.post(
       "/masters/banks/$bankName",
-      data: {
-        "Data": location,
-      },
+      data: location != null
+          ? {
+              "Data": location,
+            }
+          : null,
     );
-    return res;
+    return res.map<bank>((e) => bank.fromJson(e)).toList();
   }
 }

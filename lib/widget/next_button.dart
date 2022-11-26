@@ -24,6 +24,31 @@ class NextButton extends StatelessWidget {
     this.validateForm = true,
   }) : super(key: key);
 
+  void _onClick1(form) async {
+    _btnController.start();
+    if (form!.valid || !validateForm) {
+      bool res = await onPressed();
+      if (res) {
+        _btnController.success();
+      } else {
+        _btnController.error();
+      }
+    } else {
+      form.markAllAsTouched();
+      _btnController.error();
+    }
+  }
+
+  void _onClick2() async {
+    _btnController.start();
+    bool res = await onPressed();
+    if (res) {
+      _btnController.success();
+    } else {
+      _btnController.error();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final form = ReactiveForm.of(context);
@@ -36,17 +61,10 @@ class NextButton extends StatelessWidget {
         color: color ?? AppColors.primaryColor(context),
         controller: _btnController,
         onPressed: () async {
-          _btnController.start();
-          if (form!.valid || !validateForm) {
-            bool res = await onPressed();
-            if (res) {
-              _btnController.success();
-            } else {
-              _btnController.error();
-            }
+          if (form != null) {
+            _onClick1(form);
           } else {
-            form.markAllAsTouched();
-            _btnController.error();
+            _onClick2();
           }
         },
         child: Row(

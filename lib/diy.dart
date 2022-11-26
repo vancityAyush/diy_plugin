@@ -1,8 +1,6 @@
 library diy;
 
-import 'package:diy/modules/bank/ifsc_page.dart';
 import 'package:diy/modules/form_service.dart';
-import 'package:diy/modules/pan/ui/pan_upload_page.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
@@ -13,7 +11,9 @@ import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'modules/form-email/email_page.dart';
+import 'modules/ifsc/ui/ifsc_page.dart';
 import 'modules/pan/ui/enter_pan.dart';
+import 'modules/pan/ui/validate_kra.dart';
 import 'modules/verify-email/verify_email.dart';
 import 'modules/verify-mobile/ui/signup_page.dart';
 import 'network/api_repository.dart';
@@ -48,6 +48,7 @@ class FlutterDIY {
     await ScreenUtil.ensureScreenSize();
     ScreenUtil.init(context);
     await getIt<OAuthService>().initState();
+    String route = await getIt<OAuthService>().updateUiStatus();
     return showMaterialModalBottomSheet(
       backgroundColor: AppColors.background(context),
       shape: const RoundedRectangleBorder(
@@ -64,7 +65,7 @@ class FlutterDIY {
             maxHeight: MediaQuery.of(context).size.height * 0.85,
           ),
           child: Navigator(
-            initialRoute: '/',
+            initialRoute: "/",
             onGenerateRoute: (settings) {
               final arguments = settings.arguments != null
                   ? settings.arguments as Map<String, dynamic>
@@ -73,7 +74,7 @@ class FlutterDIY {
               Widget page;
               switch (settings.name) {
                 case '/form/bank-ifsc-code':
-                  page = IFSCPage();
+                  page = IFSCPage(isReadOnly: isReadOnly);
                   break;
                 case "/app/validate-kra/":
                   page = ValidateKra(isReadOnly: isReadOnly);

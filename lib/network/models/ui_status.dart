@@ -14,8 +14,10 @@ class UiStatus {
 
   Map<String, dynamic> toJson() => _$UiStatusToJson(this);
 
+  @JsonKey(ignore: true)
   String get currentRoute => modules[NextModuleId] ?? "/";
 
+  @JsonKey(ignore: true)
   Map<int, String> titles = {
     1: "Verify Mobile",
     2: "Email",
@@ -25,7 +27,7 @@ class UiStatus {
     5: "IFSC",
     18: "Address Proof Front Side",
   };
-
+  @JsonKey(ignore: true)
   Map<int, String> modules = {
     1: "/verify-mobile",
     2: "/form/email",

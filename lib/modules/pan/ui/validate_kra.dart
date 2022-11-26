@@ -46,13 +46,14 @@ class ValidateKra extends StatelessWidget {
             onPressed: () async {
               try {
                 await getIt<ApiRepository>().validateKra(kraForm.value);
+                return true;
+              } catch (e) {
+                return false;
+              } finally {
                 await getIt<OAuthService>().updateUiStatus().then(
                       (newRoute) => Navigator.pushNamedAndRemoveUntil(
                           context, newRoute, (route) => false),
                     );
-                return true;
-              } catch (e) {
-                return false;
               }
             },
           ),
