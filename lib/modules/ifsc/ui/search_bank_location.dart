@@ -32,9 +32,14 @@ class SearchBankLocation extends StatelessWidget {
         children: [
           TextField(
             controller: searchController,
-            decoration: const InputDecoration(
+            cursorColor: AppColors.primaryColor(context),
+            decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor(context)),
+              ),
               hintText: 'Search',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon:
+                  Icon(Icons.search, color: AppColors.primaryColor(context)),
             ),
             onChanged: (value) {
               filteredBanks.value = filteredBanksList(value);

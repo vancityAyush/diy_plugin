@@ -105,12 +105,22 @@ class FormService {
       ),
     },
   );
-  final selectIfscForm = FormGroup({
-    'bank': FormControl<String>(
-      validators: [Validators.required],
-    ),
-    'location': FormControl<String>(
-      validators: [Validators.required],
-    ),
-  },);
+  final selectIfscForm = FormGroup(
+    {
+      'bank': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'location': FormControl<String>(
+        validators: [Validators.required],
+      ),
+    },
+  );
+
+  final bankAccountForm = FormGroup(
+    {
+      'bankNo': FormControl<String>(
+        validators: [Validators.required, Validators.maxLength(11)],
+      ),
+    },
+  );
 }

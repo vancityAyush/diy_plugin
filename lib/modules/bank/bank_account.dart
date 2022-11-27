@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+
+import '../../diy.dart';
+import '../../utils/libs.dart';
+import '../../utils/theme_files/app_colors.dart';
+import '../../utils/util.dart';
+import '../../widget/diy_form.dart';
+import '../form_service.dart';
+
+class BankAccountNumber extends StatelessWidget {
+  final bool isReadOnly;
+  BankAccountNumber({Key? key, this.isReadOnly = false}) : super(key: key);
+  final selectbankAccountForm = getIt<FormService>().bankAccountForm;
+  @override
+  Widget build(BuildContext context) {
+    if (!isReadOnly) {
+      selectbankAccountForm.reset();
+    }
+    return DiyForm(
+      formGroup: selectbankAccountForm,
+      title: 'Link Your Bank Account',
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ReactiveTextField(
+            readOnly: isReadOnly,
+            formControlName: 'bankNo',
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              fillColor: AppColors.textFieldBackground(context),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.textFieldBackground(context),
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.primaryColor(context),
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              labelText: 'Bank Account Number',
+              labelStyle: TextStyle(color: AppColors.primaryContent(context)),
+              hintText: 'Enter Bank Account Number',
+              // prefixIcon: Icon(
+              //   Icons.account_balance,
+              //   color: Theme.of(context).primaryColor,
+              // ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            maxLength: 11,
+            showErrors: (control) => control.invalid && control.dirty,
+            validationMessages: {
+              'required': (error) => 'Please Enter Bank Account Number',
+              'minLength': (error) =>
+                  'The Bank Account Number must have at least 11 characters',
+            },
+          ),
+          WidgetHelper.verticalSpace20,
+          NextButton(
+            text: "Next",
+            onPressed: () async {
+              final res = await getIt<ApiRepository>()
+                  .validateBankAcc(
+                      bankaccNo: selectbankAccountForm.control('bankNo').value)
+                  .then((res) async {
+                if (res.status) {
+                  AppUtil.showToast("Bank Account Verified");
+                  await getIt<OAuthService>().updateUiStatus().then(
+                        (route) => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          route,
+                          (route) => false,
+                        ),
+                      );
+                  return true;
+                } else {
+                  AppUtil.showToast("Something went wrong");
+                }
+              });
+
+              return false;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}

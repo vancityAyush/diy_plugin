@@ -25,16 +25,41 @@ class BottomPage extends StatelessWidget {
     final isLightMode = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       drawer: Drawer(
+        backgroundColor: AppColors.background(context),
         child: Builder(
           builder: (context) {
             final uiStatus = getIt<OAuthService>().uiStatus;
             return ListView(
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Jump to',
+                          style: TextStyle(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryContent(context))),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(Icons.close_rounded))
+                    ],
+                  ),
+                ),
+                Divider(
+                  indent: 10.0,
+                  endIndent: 10.0,
+                  color: AppColors.primaryContent(context),
+                ),
                 ListTile(
-                  title: const Text(
+                  title: Text(
                     "Resume Journey",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black),
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryColor(context)),
                   ),
                   onTap: () {
                     getIt<OAuthService>().updateUiStatus().then((route) {
@@ -47,9 +72,35 @@ class BottomPage extends StatelessWidget {
                     });
                   },
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.verified,
+                        color: AppColors.primaryColor(context),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "VERIFY",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primaryContent(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 for (int index in uiStatus.BackMenuList)
                   ListTile(
-                    title: Text(uiStatus.titles[index] ?? ''),
+                    title: Text(
+                      uiStatus.titles[index] ?? '',
+                      style: TextStyle(color: AppColors.primaryAccent(context)),
+                    ),
                     onTap: () {
                       String? route = uiStatus.modules[index];
                       Navigator.pushNamed(

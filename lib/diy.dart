@@ -10,6 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import 'modules/bank/bank_account.dart';
 import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
 import 'modules/pan/ui/enter_pan.dart';
@@ -73,6 +74,9 @@ class FlutterDIY {
               bool isReadOnly = arguments[kReadOnly] ?? false;
               Widget page;
               switch (settings.name) {
+                case '/form/bank-account-no':
+                  page = BankAccountNumber(isReadOnly: isReadOnly);
+                  break;
                 case '/form/bank-ifsc-code':
                   page = IFSCPage(isReadOnly: isReadOnly);
                   break;
