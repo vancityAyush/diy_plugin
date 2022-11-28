@@ -7,6 +7,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 Copy And Paste Plugin in your Project Folder
 
 Add this to your package's pubspec.yaml file:
+minSdkVersion 21
 
 diy:
     path: ../diy
