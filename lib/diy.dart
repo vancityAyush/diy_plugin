@@ -1,5 +1,6 @@
 library diy;
 
+import 'package:diy/modules/bank_proof/upload_bank_proof.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'modules/bank/bank_account.dart';
 import 'modules/form-email/email_page.dart';
@@ -45,7 +47,15 @@ class FlutterDIY {
     isInit = true;
   }
 
+  requestPermissions() async {
+    var status = await Permission.camera.status;
+    if (status.isDenied) {
+      await Permission.camera.request();
+    }
+  }
+
   Future<dynamic> init(BuildContext context) async {
+    await requestPermissions();
     await ScreenUtil.ensureScreenSize();
     ScreenUtil.init(context);
     await getIt<OAuthService>().initState();
@@ -76,6 +86,9 @@ class FlutterDIY {
               isReadOnly = false;
               Widget page;
               switch (settings.name) {
+                case '/form/upload-bank-proof':
+                  page = UploadBankProof(isReadOnly: isReadOnly);
+                  break;
                 case '/form/bank-account-no':
                   page = BankAccountNumber(isReadOnly: isReadOnly);
                   break;

@@ -170,7 +170,7 @@ class BottomPage extends StatelessWidget {
           if (subtitle != null)
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(top: 20.sp),
+                padding: EdgeInsets.only(top: 20.sp, left: 20.sp, right: 20.sp),
                 child: Text(
                   subtitle!,
                   style: TextStyle(

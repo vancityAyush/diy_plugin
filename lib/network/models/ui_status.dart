@@ -26,6 +26,7 @@ class UiStatus {
     35: "KRA",
     5: "IFSC",
     6: "Bank Details",
+    7: "Bank Proof",
     18: "Address Proof Front Side",
   };
   @JsonKey(ignore: true)
@@ -37,6 +38,7 @@ class UiStatus {
     35: "/app/validate-kra/",
     5: "/form/bank-ifsc-code",
     6: "/form/bank-account-no",
+    7: "/form/upload-bank-proof",
     18: "/form/address-proof-front-side"
   };
 }

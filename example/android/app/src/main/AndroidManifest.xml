@@ -2,8 +2,8 @@
     package="com.example.diy_example">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.GALLERY"/>
    <application
         android:label="diy_example"
         android:name="${applicationName}"

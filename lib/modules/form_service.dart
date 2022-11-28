@@ -1,4 +1,5 @@
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_image_picker/image_file.dart';
 
 class FormService {
   final signUpForm = FormGroup(
@@ -145,6 +146,14 @@ class FormService {
         value: false,
       ),
       "Skip": FormControl<bool>(value: false),
+    },
+  );
+
+  final uploadBankProofForm = FormGroup(
+    {
+      'BankProof': FormControl<ImageFile>(
+        validators: [Validators.required],
+      ),
     },
   );
 }
