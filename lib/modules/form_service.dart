@@ -118,9 +118,33 @@ class FormService {
 
   final bankAccountForm = FormGroup(
     {
-      'bankNo': FormControl<String>(
+      'IFSC': FormControl<String>(
+        validators: [
+          Validators.required,
+          Validators.minLength(11),
+          Validators.pattern("[A-Z]{4}[0-9]{7}")
+        ],
+      ),
+      'BankAccountNo': FormControl<String>(
         validators: [Validators.required, Validators.maxLength(11)],
       ),
+      'Bank': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'Branch': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'BranchCode': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'CustomerId': FormControl<String>(
+        validators: [Validators.required],
+      ),
+      'MICR_CODE': FormControl<String>(),
+      'NameVerified': FormControl<bool>(
+        value: false,
+      ),
+      "Skip": FormControl<bool>(value: false),
     },
   );
 }

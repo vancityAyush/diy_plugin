@@ -13,9 +13,6 @@ class BankAccountNumber extends StatelessWidget {
   final selectbankAccountForm = getIt<FormService>().bankAccountForm;
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      selectbankAccountForm.reset();
-    }
     return DiyForm(
       formGroup: selectbankAccountForm,
       title: 'Link Your Bank Account',
@@ -25,7 +22,7 @@ class BankAccountNumber extends StatelessWidget {
         children: [
           ReactiveTextField(
             readOnly: isReadOnly,
-            formControlName: 'bankNo',
+            formControlName: 'BankAccountNo',
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               fillColor: AppColors.textFieldBackground(context),
@@ -66,13 +63,16 @@ class BankAccountNumber extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           NextButton(
             text: "Next",
+            validateForm: false,
             onPressed: () async {
+              // final val = getIt<OAuthService>().currentUser;
+              // selectbankAccountForm.control('CustomerId').value(val);
               final res = await getIt<ApiRepository>()
-                  .validateBankAcc(
-                      bankaccNo: selectbankAccountForm.control('bankNo').value)
+                  .validateBankAcc(selectbankAccountForm.value)
                   .then((res) async {
                 if (res.status) {
                   AppUtil.showToast("Bank Account Verified");
+                  selectbankAccountForm.value = res;
                   await getIt<OAuthService>().updateUiStatus().then(
                         (route) => Navigator.pushNamedAndRemoveUntil(
                           context,

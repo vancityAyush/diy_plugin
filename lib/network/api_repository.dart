@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 
 import '../modules/ifsc/models/bank.dart';
 
+typedef Request = Map<String, dynamic>;
+
 class ApiRepository {
   final http = getIt<HttpClient>();
   final OAuthService oauthService = getIt<OAuthService>();
@@ -66,30 +68,10 @@ class ApiRepository {
     return res;
   }
 
-  Future<dynamic> validateBankAcc({
-    String? ifsc,
-    required String bankaccNo,
-    String? bank,
-    String? branch,
-    String? branchcode,
-    String? micrCode,
-    String? customerid,
-    bool? nameverified,
-    bool? skip,
-  }) async {
+  Future<dynamic> validateBankAcc(Request data) async {
     final res = await http.postEncrypted(
       "/app/validate-bank/",
-      data: {
-        "IFSC": ifsc,
-        "BankAccountNo": bankaccNo,
-        "Bank": bank,
-        "Branch": branch,
-        "BranchCode": branchcode,
-        "MICR_CODE": micrCode,
-        "CustomerId": customerid,
-        "NameVerified": nameverified,
-        "Skip": skip,
-      },
+      data: data,
     );
     return res;
   }
@@ -99,6 +81,11 @@ class ApiRepository {
     return res;
   }
 
+  Future<List<bank>> getIfscFromCode(String ifsc) async {
+    final res = await http.get("/masters/banks/$ifsc");
+    return res.map<bank>((e) => bank.fromJson(e)).toList();
+  }
+
   Future<List<bank>> getIFSC({
     required String bankName,
     String? location,
@@ -106,11 +93,9 @@ class ApiRepository {
     bankName.replaceAll(" ", "%20");
     final res = await http.post(
       "/masters/banks/$bankName",
-      data: location != null
-          ? {
-              "Data": location,
-            }
-          : null,
+      data: {
+        "Data": location,
+      },
     );
     return res.map<bank>((e) => bank.fromJson(e)).toList();
   }

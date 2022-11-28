@@ -94,7 +94,7 @@ class IFSCPage extends StatelessWidget {
             text: "Search",
             onPressed: () async {
               List<bank> banks = await getIt<ApiRepository>()
-                  .getIFSC(bankName: ifscForm.control('ifsc').value);
+                  .getIfscFromCode(ifscForm.control('ifsc').value);
               if (banks.isNotEmpty) {
                 Navigator.push(
                   context,

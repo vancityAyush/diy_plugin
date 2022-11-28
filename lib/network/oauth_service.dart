@@ -99,7 +99,7 @@ class OAuthService {
   Future<void> initState() async {
     // bool isTokenValid = await token.readToken();
     if (kDebugMode) {
-      await sendOtp("8083100104");
+      await sendOtp("9988776654");
       await verifyOtp("1234");
     }
   }

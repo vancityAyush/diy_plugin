@@ -121,8 +121,10 @@ class SearchBankLocation extends StatelessWidget {
               getIt<FormService>().selectIfscForm.patchValue({
                 'ifsc': selectedBank.value!.IFSC,
               });
-              await getIt<ApiRepository>()
+              final res = await getIt<ApiRepository>()
                   .selectIfsc(selectedBank.value!.toJson());
+              final bankAccountForm = getIt<FormService>().bankAccountForm;
+              bankAccountForm.value = res;
               final user = await getIt<OAuthService>().currentUser!;
               await getIt<OAuthService>().updateUiStatus().then((value) =>
                   Navigator.pushNamedAndRemoveUntil(
