@@ -174,9 +174,9 @@ class BottomPage extends StatelessWidget {
                 child: Text(
                   subtitle!,
                   style: TextStyle(
-                    fontSize: 13.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.primaryAccent(context),
+                    color: AppColors.subHeading(context),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -198,7 +198,7 @@ class BottomPage extends StatelessWidget {
                 Text(
                   "Copyrights @ 2022 © Blink Trude. All Right Reserved",
                   style: TextStyle(
-                    color: AppColors.primaryAccent(context),
+                    color: AppColors.footerText(context),
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                   ),

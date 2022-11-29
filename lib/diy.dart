@@ -59,7 +59,7 @@ class FlutterDIY {
     await ScreenUtil.ensureScreenSize();
     ScreenUtil.init(context);
     await getIt<OAuthService>().initState();
-    String route = await getIt<OAuthService>().updateUiStatus();
+    // String route = await getIt<OAuthService>().updateUiStatus();
     return showMaterialModalBottomSheet(
       backgroundColor: AppColors.background(context),
       shape: const RoundedRectangleBorder(
@@ -76,7 +76,7 @@ class FlutterDIY {
             maxHeight: MediaQuery.of(context).size.height * 0.85,
           ),
           child: Navigator(
-            initialRoute: route,
+            //initialRoute: SignUp().toString(),
             onGenerateRoute: (settings) {
               final arguments = settings.arguments != null
                   ? settings.arguments as Map<String, dynamic>

@@ -30,6 +30,7 @@ class EnterPan extends StatelessWidget {
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.characters,
             decoration: InputDecoration(
+              filled: AppColors.textFieldBackground(context) != null,
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
@@ -68,6 +69,7 @@ class EnterPan extends StatelessWidget {
                 readOnly: true,
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
+                  filled: AppColors.textFieldBackground(context) != null,
                   fillColor: AppColors.textFieldBackground(context),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -83,12 +85,12 @@ class EnterPan extends StatelessWidget {
                   ),
                   //labelText: "Date of Birth",
                   hintText: "Enter your Date of Birth",
-                  suffixIconColor: AppColors.primaryAccent(context),
+                  suffixIconColor: AppColors.primaryColor(context),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(
                       Icons.calendar_month,
-                      color: AppColors.primaryAccent(context),
+                      color: AppColors.primaryColor(context),
                     ),
                     onPressed: () {
                       picker.showPicker();

@@ -43,6 +43,8 @@ class SignUpPage extends StatelessWidget {
               // labelText: 'Phone Number',
               // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
               hintText: 'Your 10 digit phone number',
+              hintStyle:
+                  TextStyle(color: AppColors.textColorTextField(context)),
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -54,7 +56,7 @@ class SignUpPage extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primaryContent(context)),
+                        color: AppColors.textColorTextField(context)),
                   ),
                   const SizedBox(width: 10),
                   Text(
@@ -72,6 +74,7 @@ class SignUpPage extends StatelessWidget {
                 borderSide: BorderSide(color: AppColors.primaryColor(context)),
                 borderRadius: BorderRadius.circular(4),
               ),
+              filled: AppColors.textFieldBackground(context) != null,
             ),
             maxLength: 10,
             showErrors: (control) => control.invalid && control.hasFocus,

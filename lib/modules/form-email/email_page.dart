@@ -70,7 +70,9 @@ class EmailPage extends StatelessWidget {
                       readOnly: isReadOnly,
                       formControlName: 'email',
                       keyboardType: TextInputType.emailAddress,
+                      cursorColor: AppColors.primaryColor(context),
                       decoration: InputDecoration(
+                        filled: AppColors.textFieldBackground(context) != null,
                         fillColor: AppColors.textFieldBackground(context),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -88,6 +90,8 @@ class EmailPage extends StatelessWidget {
                         // labelStyle:
                         //     TextStyle(color: AppColors.primaryContent(context)),
                         hintText: 'Your Email ID',
+                        hintStyle: TextStyle(
+                            color: AppColors.textColorTextField(context)),
                         prefixIcon: Icon(
                           Icons.email_outlined,
                           color: Theme.of(context).primaryColor,

@@ -48,12 +48,19 @@ class SelectIFSCPage extends StatelessWidget {
                   color: AppColors.primaryContent(context),
                 ),
                 decoration: InputDecoration(
+                  filled: AppColors.textFieldBackground(context) != null,
                   labelText: 'Bank Name',
                   labelStyle:
                       TextStyle(color: AppColors.primaryContent(context)),
                   hintText: 'Enter Your Bank Name',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.primaryColor(context),
+                    ),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   prefixIcon: Icon(
                     Icons.account_balance,
@@ -70,6 +77,7 @@ class SelectIFSCPage extends StatelessWidget {
                 formControlName: 'location',
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
+                  filled: AppColors.textFieldBackground(context) != null,
                   fillColor: AppColors.textFieldBackground(context),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(

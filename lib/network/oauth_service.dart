@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:diy/modules/form_service.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/models/token.dart';
 import 'package:diy/network/models/ui_status.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../diy.dart';
 import '../utils/util.dart';
 import 'models/Response.dart';
 import 'models/auth_token.dart';
@@ -17,6 +19,48 @@ class OAuthService {
   final HttpClient _http;
   final FlutterSecureStorage _storage;
   final dummyUser = User();
+
+  final FormService _formService = getIt<FormService>();
+
+  void currentUserData() {
+    _formService.signUpForm.control('phone').value = currentUser!.Mobile ?? "";
+    _formService.emailForm.control('email').value = currentUser!.Email ?? "";
+    _formService.panForm.control('pan').value = currentUser!.PAN ?? "";
+    _formService.panForm.control('dob').value = currentUser!.DateOfBirth ?? "";
+    _formService.validatePanForm.control('PAN').value = currentUser!.PAN ?? "";
+    _formService.validatePanForm.control('DateOfBirth').value =
+        currentUser!.DateOfBirth ?? "";
+    _formService.validatePanForm.control('KraVerified').value =
+        currentUser!.KraVerified ?? "";
+    //PanVarified not found in user model
+    //_formService.validatePanForm.control('PanVerified').value = currentUser!.  ?? "";
+    _formService.validatePanForm.control('FirstName').value =
+        currentUser!.FirstName ?? "";
+    _formService.validatePanForm.control('MiddleName').value =
+        currentUser!.MiddleName ?? "";
+    _formService.validatePanForm.control('LastName').value =
+        currentUser!.LastName ?? "";
+    _formService.ifscForm.control('ifsc').value = currentUser!.IFSC ?? "";
+    _formService.selectIfscForm.control('bank').value =
+        currentUser!.BankName ?? "";
+    _formService.selectIfscForm.control('location').value =
+        currentUser!.BankBranch ?? "";
+    _formService.bankAccountForm.control('IFSC').value =
+        currentUser!.IFSC ?? "";
+    _formService.bankAccountForm.control('BankAccountNo').value =
+        currentUser!.BankAccountNo ?? "";
+    _formService.bankAccountForm.control('Bank').value =
+        currentUser!.BankName ?? "";
+    _formService.bankAccountForm.control('Branch').value =
+        currentUser!.BankBranch ?? "";
+    _formService.bankAccountForm.control('BranchCode').value =
+        currentUser!.BranchCode ?? "";
+    _formService.bankAccountForm.control('CustomerId').value =
+        currentUser!.CustomerId ?? "";
+    _formService.bankAccountForm.control('MICR_CODE').value =
+        currentUser!.MICR_CODE ?? "";
+    //Skipped uploadBankProofForm
+  }
 
   UiStatus uiStatus = UiStatus(NextModuleId: 1, BackMenuList: []);
 
@@ -146,6 +190,7 @@ class OAuthService {
       User user = await verifyAuth(response["Mobile"], otp, response["RefId"],
           relationshipId: relationId);
       currentUser = user;
+      //currentUserData();
       token.setToken(user.Auth!);
       return ResponseModel(status: true, arguments: "User Verified");
     } catch (e) {

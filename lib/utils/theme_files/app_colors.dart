@@ -29,4 +29,16 @@ abstract class AppColors {
         light: LightThemeColors.textFieldBackground,
         dark: DarkThemeColors.textFieldBackground,
       ).getColor(context);
+  static Color textColorTextField(BuildContext context) => ThemedColor(
+        light: LightThemeColors.textColorTextField,
+        dark: DarkThemeColors.textColorTextField,
+      ).getColor(context);
+  static Color footerText(BuildContext context) => ThemedColor(
+        light: LightThemeColors.footerText,
+        dark: DarkThemeColors.footerText,
+      ).getColor(context);
+  static Color subHeading(BuildContext context) => ThemedColor(
+        light: LightThemeColors.subHeading,
+        dark: DarkThemeColors.subHeading,
+      ).getColor(context);
 }

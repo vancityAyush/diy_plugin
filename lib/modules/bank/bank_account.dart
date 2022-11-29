@@ -25,6 +25,7 @@ class BankAccountNumber extends StatelessWidget {
             formControlName: 'BankAccountNo',
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
+              filled: AppColors.textFieldBackground(context) != null,
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(

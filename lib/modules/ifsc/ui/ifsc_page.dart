@@ -34,6 +34,7 @@ class IFSCPage extends StatelessWidget {
             formControlName: 'ifsc',
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
+              filled: AppColors.textFieldBackground(context) != null,
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
