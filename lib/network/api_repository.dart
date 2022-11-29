@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:diy/diy.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
+import 'package:diy/utils/util.dart';
 import 'package:intl/intl.dart';
 
 import '../modules/ifsc/models/bank.dart';
@@ -72,6 +76,34 @@ class ApiRepository {
     final res = await http.postEncrypted(
       "/app/validate-bank/",
       data: data,
+    );
+    return res;
+  }
+
+  Future<dynamic> uploadFromCamera(
+      {required File file, required, required uploadType type}) async {
+    List<int> bytes = file.readAsBytesSync();
+    String base64Image = base64Encode(bytes);
+    String fileName = file.path.split("/").last;
+    String mimeType = "image/jpeg";
+    final res = await http.post(
+      "/app/upload-document/",
+      data: {
+        "DocumentId": 0,
+        "DocumentType": uploadMap[type],
+        "FileName": fileName,
+        "Latitude": 0,
+        "Longitude": 0,
+        "FileDataBase64": base64Image,
+        "FileType": mimeType,
+      },
+    );
+    return res;
+  }
+
+  Future<dynamic> getDocument(uploadType type) async {
+    final res = await http.get(
+      "/app/document/${uploadMap[type]}",
     );
     return res;
   }

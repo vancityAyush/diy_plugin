@@ -1,6 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+enum uploadType {
+  BankProof,
+  PanPhoto,
+  Signature,
+  AddressProofFrontSide,
+  AddressProofBackSide,
+  Selfie,
+  IPV,
+  AOF,
+  Photo,
+  IncomeProo,
+  PromoCodeProof,
+  KRAAOF
+}
+
+Map<uploadType, int> uploadMap = {
+  uploadType.BankProof: 7,
+  uploadType.PanPhoto: 8,
+  uploadType.Signature: 9,
+  uploadType.AddressProofFrontSide: 18,
+  uploadType.AddressProofBackSide: 19,
+  uploadType.Selfie: 20,
+  uploadType.IPV: 23,
+  uploadType.AOF: 24,
+  uploadType.Photo: 26,
+  uploadType.IncomeProo: 27,
+  uploadType.PromoCodeProof: 28,
+  uploadType.KRAAOF: 36,
+};
+
 class AppUtil {
   static pickDate(BuildContext context) async {
     return await showDatePicker(

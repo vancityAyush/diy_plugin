@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:diy/utils/libs.dart';
+import 'package:diy/utils/util.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_image_picker/image_file.dart';
@@ -111,10 +110,16 @@ class UploadBankProof extends StatelessWidget {
             onPressed: () async {
               ImageFile imageFile =
                   uploadBankProofForm.control('BankProof').value;
-              List<int> bytes = imageFile.image!.readAsBytesSync();
-              String base64Image = base64Encode(bytes);
-              print(base64Image);
-              return true;
+              if (imageFile != null) {
+                final res = await getIt<ApiRepository>().uploadFromCamera(
+                    file: imageFile.image!, type: uploadType.BankProof);
+                print(res);
+                final res2 = await getIt<ApiRepository>()
+                    .getDocument(uploadType.BankProof);
+                print(res2);
+                return true;
+              }
+              return false;
             },
           )
         ],
