@@ -26,6 +26,7 @@ class EnterPan extends StatelessWidget {
       child: Column(
         children: [
           ReactiveTextField(
+            readOnly: isReadOnly,
             formControlName: "pan",
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.characters,
@@ -66,7 +67,7 @@ class EnterPan extends StatelessWidget {
                 ReactiveDatePickerDelegate<dynamic> picker, Widget? child) {
               return ReactiveTextField(
                 formControlName: "dob",
-                readOnly: true,
+                readOnly: isReadOnly,
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
                   filled: AppColors.textFieldBackground(context) != null,

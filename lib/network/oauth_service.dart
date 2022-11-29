@@ -4,7 +4,6 @@ import 'package:diy/modules/form_service.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/models/token.dart';
 import 'package:diy/network/models/ui_status.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -26,8 +25,8 @@ class OAuthService {
     _formService.signUpForm.control('phone').value = currentUser!.Mobile ?? "";
     _formService.emailForm.control('email').value = currentUser!.Email ?? "";
     _formService.panForm.control('pan').value = currentUser!.PAN ?? "";
-    _formService.panForm.control('dob').value =
-        DateTime.parse(currentUser!.DateOfBirth ?? "11/09/2000");
+    _formService.panForm.control('dob').value = DateTime.parse(
+        currentUser!.DateOfBirth ?? DateTime(2000 - 01 - 01).toString());
     _formService.validatePanForm.control('PAN').value = currentUser!.PAN ?? "";
     _formService.validatePanForm.control('DateOfBirth').value =
         currentUser!.DateOfBirth ?? "";
