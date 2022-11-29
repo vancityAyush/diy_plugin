@@ -26,12 +26,13 @@ class OAuthService {
     _formService.signUpForm.control('phone').value = currentUser!.Mobile ?? "";
     _formService.emailForm.control('email').value = currentUser!.Email ?? "";
     _formService.panForm.control('pan').value = currentUser!.PAN ?? "";
-    _formService.panForm.control('dob').value = currentUser!.DateOfBirth ?? "";
+    _formService.panForm.control('dob').value =
+        DateTime.parse(currentUser!.DateOfBirth ?? "11/09/2000");
     _formService.validatePanForm.control('PAN').value = currentUser!.PAN ?? "";
     _formService.validatePanForm.control('DateOfBirth').value =
         currentUser!.DateOfBirth ?? "";
     _formService.validatePanForm.control('KraVerified').value =
-        currentUser!.KraVerified ?? "";
+        currentUser!.KraVerified ?? true;
     //PanVarified not found in user model
     //_formService.validatePanForm.control('PanVerified').value = currentUser!.  ?? "";
     _formService.validatePanForm.control('FirstName').value =
@@ -142,7 +143,7 @@ class OAuthService {
 
   Future<void> initState() async {
     // bool isTokenValid = await token.readToken();
-    if (kDebugMode) {
+    if (false) {
       await sendOtp("9988776654");
       await verifyOtp("1234");
     }
@@ -190,7 +191,7 @@ class OAuthService {
       User user = await verifyAuth(response["Mobile"], otp, response["RefId"],
           relationshipId: relationId);
       currentUser = user;
-      //currentUserData();
+      currentUserData();
       token.setToken(user.Auth!);
       return ResponseModel(status: true, arguments: "User Verified");
     } catch (e) {

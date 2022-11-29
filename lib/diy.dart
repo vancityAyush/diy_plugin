@@ -76,14 +76,14 @@ class FlutterDIY {
             maxHeight: MediaQuery.of(context).size.height * 0.85,
           ),
           child: Navigator(
-            //initialRoute: SignUp().toString(),
+            initialRoute: "/",
             onGenerateRoute: (settings) {
               final arguments = settings.arguments != null
                   ? settings.arguments as Map<String, dynamic>
                   : {};
               bool isReadOnly = arguments[kReadOnly] ?? false;
               //TODO REMOVE BELOW LINE
-              isReadOnly = false;
+              // isReadOnly = false;
               Widget page;
               switch (settings.name) {
                 case '/form/upload-bank-proof':
