@@ -156,4 +156,43 @@ class FormService {
       ),
     },
   );
+  final uploadPanPhotoForm = FormGroup(
+    {
+      'PanPhoto': FormControl<ImageFile>(
+        validators: [Validators.required],
+      ),
+    },
+  );
+  // final selectKyc = FormGroup(
+  //   {
+  //     'SelectKyc': FormControl<bool>(validators: [Validators.requiredTrue]),
+  //     'kyc': FormControl<int>(
+  //       validators: [Validators.required],
+  //     ),
+  //   },
+  // );
+  final uploadAddressProof = FormGroup(
+    {
+      'AddressProofFront': FormControl<ImageFile>(
+        validators: [Validators.required],
+      ),
+      'List': FormControl<List>(
+        validators: [Validators.required],
+      ),
+    },
+  );
+
+  final settings = FormGroup(
+    {
+      'EnableDigiLocker': FormControl<bool>(
+        validators: [Validators.any((value) => true)],
+      ),
+      'EnableManual': FormControl<bool>(
+        validators: [Validators.any((value) => true)],
+      ),
+      'EnableOfflineAadhar': FormControl<bool>(
+        validators: [Validators.any((value) => true)],
+      ),
+    },
+  );
 }
