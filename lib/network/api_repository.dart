@@ -9,6 +9,7 @@ import 'package:diy/utils/util.dart';
 import 'package:intl/intl.dart';
 
 import '../modules/ifsc/models/bank.dart';
+import '../utils/libs.dart';
 
 typedef Request = Map<String, dynamic>;
 
@@ -130,5 +131,26 @@ class ApiRepository {
       },
     );
     return res.map<bank>((e) => bank.fromJson(e)).toList();
+  }
+
+  // Future<bool> settings() async {
+  //   final res = await http.get("/app/settings/");
+  //   return res;
+  // }
+
+  Future<dynamic> settings({
+    bool? EnableDigiLocker,
+    bool? EnableManual,
+    bool? EnableOfflineAadhar,
+  }) async {
+    final res = await http.postEncrypted(
+      "/app/settings/",
+      data: {
+        "EnableDigiLocker": EnableDigiLocker,
+        "EnableManual": EnableManual,
+        "EnableOfflineAadhar": EnableOfflineAadhar,
+      },
+    );
+    return res;
   }
 }

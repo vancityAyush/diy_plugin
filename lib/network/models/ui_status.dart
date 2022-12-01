@@ -27,7 +27,10 @@ class UiStatus {
     5: "IFSC",
     6: "Bank Details",
     7: "Bank Proof",
+    10: "KYC",
+    8: "Upload Pan Photo",
     18: "Address Proof Front Side",
+    19: "Address Proof Back Side",
   };
   @JsonKey(ignore: true)
   Map<int, String> modules = {
@@ -39,6 +42,9 @@ class UiStatus {
     5: "/form/bank-ifsc-code",
     6: "/form/bank-account-no",
     7: "/form/upload-bank-proof",
-    18: "/form/address-proof-front-side"
+    10: "/form/kyc",
+    8: "/form/upload-pan-photo",
+    18: "/form/address-proof-front-side",
+    19: "/form/address-proof-back-side"
   };
 }

@@ -1,7 +1,10 @@
 library diy;
 
+import 'package:diy/modules/addressproof/address-proof-back-side.dart';
 import 'package:diy/modules/bank_proof/upload_bank_proof.dart';
 import 'package:diy/modules/form_service.dart';
+import 'package:diy/modules/kyc/kyc-select.dart';
+import 'package:diy/modules/upload-pan-photo/upload-pan-photo.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
@@ -12,6 +15,7 @@ import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'modules/addressproof/address-proof-front-side.dart';
 import 'modules/bank/bank_account.dart';
 import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
@@ -86,6 +90,18 @@ class FlutterDIY {
               // isReadOnly = false;
               Widget page;
               switch (settings.name) {
+                case '/form/address-proof-back-side':
+                  page = AddressProofBack(isReadOnly: isReadOnly);
+                  break;
+                case '/form/address-proof-front-side':
+                  page = AddressProofFront(isReadOnly: isReadOnly);
+                  break;
+                case '/form/upload-pan-photo':
+                  page = UploadPanPhoto(isReadOnly: isReadOnly);
+                  break;
+                case '/form/kyc':
+                  page = KycSelect();
+                  break;
                 case '/form/upload-bank-proof':
                   page = UploadBankProof(isReadOnly: isReadOnly);
                   break;
