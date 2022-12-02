@@ -12,19 +12,21 @@ class BottomPage extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final EdgeInsets padding;
+  final Widget? terms;
   const BottomPage(
       {Key? key,
       required this.child,
       this.title,
       this.subtitle,
-      this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 20)})
+      this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      this.terms})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isLightMode = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       drawer: Drawer(
+        width: MediaQuery.of(context).size.width,
         backgroundColor: AppColors.background(context),
         child: Builder(
           builder: (context) {
@@ -121,28 +123,44 @@ class BottomPage extends StatelessWidget {
         backgroundColor: AppColors.background(context),
         foregroundColor: AppColors.primaryContent(context),
         elevation: 0,
-        title: Center(
-          child: Image(
-            image: AssetImage(
-                isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
-                package: "diy"),
-            height: 40,
-            fit: BoxFit.cover,
+        title: Text(
+          title! ?? '',
+          style: TextStyle(
+              fontSize: 24.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryContent(context)),
+          textAlign: TextAlign.center,
+        ),
+        //CAN BE usefull to close the bottom sheet
+        // actions: [
+        //   Builder(builder: (context) {
+        //     return Visibility(
+        //       visible: getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
+        //       child: IconButton(
+        //         onPressed: () {
+        //           Navigator.of(context).pop();
+        //         },
+        //         icon: Icon(
+        //           Icons.power_settings_new_rounded,
+        //           size: 25,
+        //           color: AppColors.primaryAccent(context),
+        //         ),
+        //       ),
+        //     );
+        //   }),
+        // ],
+        centerTitle: true,
+        leading: Builder(
+          builder: (context) => Visibility(
+            visible: getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
+            child: IconButton(
+              icon: Icon(
+                  // Menu.menu,
+                  Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
           ),
         ),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       //Navigator.of(context).pop();
-        //     },
-        //     icon: Icon(
-        //       Icons.power_settings_new_rounded,
-        //       size: 25,
-        //       color: AppColors.primaryAccent(context),
-        //     ),
-        //   ),
-        // ],
-
         automaticallyImplyLeading:
             getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
       ),
@@ -150,23 +168,6 @@ class BottomPage extends StatelessWidget {
         controller: ModalScrollController.of(context),
         physics: const BouncingScrollPhysics(),
         slivers: [
-          if (title != null)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: 60.sp),
-                child: Padding(
-                  padding: padding,
-                  child: Text(
-                    title!,
-                    style: TextStyle(
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryContent(context)),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
           if (subtitle != null)
             SliverToBoxAdapter(
               child: Padding(
@@ -195,14 +196,17 @@ class BottomPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Spacer(),
-                Text(
-                  "Copyrights @ 2022 © Blink Trude. All Right Reserved",
-                  style: TextStyle(
-                    color: AppColors.footerText(context),
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.center,
+                // Text(
+                //   "Copyrights @ 2022 © Blink Trude. All Right Reserved",
+                //   style: TextStyle(
+                //     color: AppColors.footerText(context),
+                //     fontSize: 12.sp,
+                //     fontWeight: FontWeight.w400,
+                //   ),
+                //   textAlign: TextAlign.center,
+                // ),
+                Container(
+                  child: terms,
                 ),
                 const SizedBox(height: 20),
               ],

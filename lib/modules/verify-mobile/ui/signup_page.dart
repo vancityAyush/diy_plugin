@@ -89,69 +89,74 @@ class SignUpPage extends StatelessWidget {
             "You will receive an OTP on your number",
             style: Theme.of(context).textTheme.caption,
           ),
-          WidgetHelper.verticalSpace20,
-          WidgetHelper.verticalSpace20,
-          NextButton(
-            text: "Continue",
-            onPressed: () async {
-              return await getIt<OAuthService>()
-                  .sendOtp(
-                signUpForm.control('phone').value,
-              )
-                  .then(
-                (res) {
-                  if (res.status) {
-                    AppUtil.showToast(
-                      'OTP sent successfully',
-                    );
-                    Navigator.of(context).push(
-                      AppUtil.pageBuilder(
-                        OtpPage(phoneNumber: signUpForm.control('phone').value),
-                      ),
-                    );
-                    return true;
-                  } else {
-                    AppUtil.showErrorToast(res.arguments);
-                  }
-                  return false;
-                },
-              );
-            },
-          ),
-          WidgetHelper.verticalSpace20,
-          WidgetHelper.verticalSpace20,
-          WidgetHelper.verticalSpace20,
-          Row(
-            children: [
-              ReactiveCheckbox(
-                formControlName: 'TnC',
-                activeColor: AppColors.primaryColor(context),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    text:
-                        'I understand and authorize JM Financial Services to contact me via SMS, Calls, and WhatsApp for all future communication ',
-                    style: Theme.of(context).textTheme.caption,
-                    children: [
-                      TextSpan(
-                        text: 'Terms and Conditions',
-                        style: Theme.of(context).textTheme.caption?.copyWith(
-                              color: AppColors.primaryColor(context),
-                              decoration: TextDecoration.underline,
-                            ),
-                      ),
-                    ],
+          SizedBox(height: MediaQuery.of(context).size.height / 6),
+        ],
+      ),
+      terms: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          children: [
+            NextButton(
+              text: "Continue",
+              onPressed: () async {
+                return await getIt<OAuthService>()
+                    .sendOtp(
+                  signUpForm.control('phone').value,
+                )
+                    .then(
+                  (res) {
+                    if (res.status) {
+                      AppUtil.showToast(
+                        'OTP sent successfully',
+                      );
+                      Navigator.of(context).push(
+                        AppUtil.pageBuilder(
+                          OtpPage(
+                              phoneNumber: signUpForm.control('phone').value),
+                        ),
+                      );
+                      return true;
+                    } else {
+                      AppUtil.showErrorToast(res.arguments);
+                    }
+                    return false;
+                  },
+                );
+              },
+            ),
+            WidgetHelper.verticalSpace,
+            Row(
+              children: [
+                ReactiveCheckbox(
+                  formControlName: 'TnC',
+                  activeColor: AppColors.primaryColor(context),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-              ),
-            ],
-          ),
-          //SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-        ],
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      text:
+                          'I understand and authorize JM Financial Services to contact me via SMS, Calls, and WhatsApp for all future communication ',
+                      style: Theme.of(context).textTheme.caption,
+                      children: [
+                        TextSpan(
+                          text: 'Terms and Conditions',
+                          style: Theme.of(context).textTheme.caption?.copyWith(
+                                color: AppColors.primaryColor(context),
+                                decoration: TextDecoration.underline,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+          ],
+        ),
       ),
     );
   }
