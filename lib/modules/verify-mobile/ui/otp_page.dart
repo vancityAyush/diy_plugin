@@ -70,7 +70,7 @@ class OtpPage extends StatelessWidget {
               ],
             ),
           ),
-          WidgetHelper.verticalSpace20,
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ReactivePinCodeTextField<String>(
@@ -93,7 +93,7 @@ class OtpPage extends StatelessWidget {
               showErrors: (control) => control.invalid && control.dirty,
             ),
           ),
-          WidgetHelper.verticalSpace20,
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           GestureDetector(
             onTap: () async {
               await getIt<OAuthService>().sendOtp(phoneNumber).then(
@@ -115,7 +115,7 @@ class OtpPage extends StatelessWidget {
               ),
             ),
           ),
-          WidgetHelper.verticalSpace20,
+          SizedBox(height: MediaQuery.of(context).size.height * 0.2),
           NextButton(
             text: "Verify",
             onPressed: () async {
@@ -215,6 +215,7 @@ class OtpPage extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ],
       ),
     );

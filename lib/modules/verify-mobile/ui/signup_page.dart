@@ -22,6 +22,36 @@ class SignUpPage extends StatelessWidget {
       formGroup: signUpForm,
       child: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Or track your existing application',
+                style: TextStyle(
+                    color: AppColors.subHeading(context),
+                    fontWeight: FontWeight.w500),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    Text(
+                      'here',
+                      style: TextStyle(
+                          color: AppColors.primaryColor(context),
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: AppColors.primaryColor(context),
+                      size: 12,
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          // WidgetHelper.verticalSpace20,
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
             formControlName: 'phone',

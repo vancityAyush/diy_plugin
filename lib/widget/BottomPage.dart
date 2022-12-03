@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../network/oauth_service.dart';
+import '../utils/theme_files/menu_icons.dart';
 
 class BottomPage extends StatelessWidget {
   final Widget child;
@@ -155,8 +156,9 @@ class BottomPage extends StatelessWidget {
             visible: getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
             child: IconButton(
               icon: Icon(
-                  // Menu.menu,
-                  Icons.menu),
+                Menu.menu,
+                //Icons.menu
+              ),
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
@@ -171,12 +173,12 @@ class BottomPage extends StatelessWidget {
           if (subtitle != null)
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(top: 20.sp, left: 20.sp, right: 20.sp),
+                padding: EdgeInsets.only(left: 20.sp, right: 20.sp),
                 child: Text(
                   subtitle!,
                   style: TextStyle(
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                     color: AppColors.subHeading(context),
                   ),
                   textAlign: TextAlign.center,
