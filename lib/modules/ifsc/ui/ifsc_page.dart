@@ -25,7 +25,7 @@ class IFSCPage extends StatelessWidget {
       ifscForm.reset();
     }
     return DiyForm(
-      title: "Link Your Bank Account",
+      title: "Verify Bank Account",
       subtitle: "Lorem ipsum dolor sit amet, consectetur",
       formGroup: ifscForm,
       child: Column(

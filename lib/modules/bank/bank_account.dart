@@ -15,7 +15,7 @@ class BankAccountNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return DiyForm(
       formGroup: selectbankAccountForm,
-      title: 'Link Your Bank Account',
+      title: 'Verify Bank Account',
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -39,7 +39,7 @@ class BankAccountNumber extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(4),
               ),
-              labelText: 'Bank Account Number',
+              //labelText: 'Bank Account Number',
               labelStyle: TextStyle(color: AppColors.primaryContent(context)),
               hintText: 'Enter Bank Account Number',
               // prefixIcon: Icon(
@@ -62,35 +62,38 @@ class BankAccountNumber extends StatelessWidget {
             },
           ),
           WidgetHelper.verticalSpace20,
-          NextButton(
-            text: "Next",
-            validateForm: false,
-            onPressed: () async {
-              // final val = getIt<OAuthService>().currentUser;
-              // selectbankAccountForm.control('CustomerId').value(val);
-              final res = await getIt<ApiRepository>()
-                  .validateBankAcc(selectbankAccountForm.value)
-                  .then((res) async {
-                if (res.status) {
-                  AppUtil.showToast("Bank Account Verified");
-                  selectbankAccountForm.value = res;
-                  await getIt<OAuthService>().updateUiStatus().then(
-                        (route) => Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          route,
-                          (route) => false,
-                        ),
-                      );
-                  return true;
-                } else {
-                  AppUtil.showToast("Something went wrong");
-                }
-              });
-
-              return false;
-            },
-          ),
         ],
+      ),
+      terms: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: NextButton(
+          text: "Next",
+          validateForm: false,
+          onPressed: () async {
+            // final val = getIt<OAuthService>().currentUser;
+            // selectbankAccountForm.control('CustomerId').value(val);
+            final res = await getIt<ApiRepository>()
+                .validateBankAcc(selectbankAccountForm.value)
+                .then((res) async {
+              if (res.status) {
+                AppUtil.showToast("Bank Account Verified");
+                selectbankAccountForm.value = res;
+                await getIt<OAuthService>().updateUiStatus().then(
+                      (route) => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        route,
+                        (route) => false,
+                      ),
+                    );
+                return true;
+              } else {
+                AppUtil.showToast("Something went wrong");
+              }
+            });
+
+            return false;
+          },
+        ),
       ),
     );
   }

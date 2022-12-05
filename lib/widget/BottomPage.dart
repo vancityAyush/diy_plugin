@@ -3,10 +3,10 @@ import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../network/oauth_service.dart';
-import '../utils/theme_files/menu_icons.dart';
 
 class BottomPage extends StatelessWidget {
   final Widget child;
@@ -153,15 +153,17 @@ class BottomPage extends StatelessWidget {
         centerTitle: true,
         leading: Builder(
           builder: (context) => Visibility(
-            visible: getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
-            child: IconButton(
-              icon: Icon(
-                Menu.menu,
-                //Icons.menu
-              ),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
-          ),
+              visible: getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, top: 15, bottom: 20),
+                child: InkWell(
+                    borderRadius: BorderRadius.circular(25),
+                    onTap: () => Scaffold.of(context).openDrawer(),
+                    child: SvgPicture.asset(
+                      "packages/diy/assets/menu.svg",
+                      color: AppColors.textColorTextField(context),
+                    )),
+              )),
         ),
         automaticallyImplyLeading:
             getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,

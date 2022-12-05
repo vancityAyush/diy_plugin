@@ -5,8 +5,7 @@ import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../diy.dart';
@@ -39,27 +38,32 @@ class EmailPage extends StatelessWidget {
                 if (form.value == false) {
                   return Column(
                     children: [
-                      SignInButton(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        Buttons.Google,
-                        onPressed: () {
-                          emailForm.control("googleToggle").value = false;
-                          //TODO signup with google
-                        },
-                        padding: const EdgeInsets.all(10),
-                        text: "Continue with Google",
-                      ),
+                      // SignInButton(
+                      //   elevation: 0,
+                      //   shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(5)),
+                      //   Buttons.Google,
+                      //   onPressed: () {
+                      //     emailForm.control("googleToggle").value = false;
+                      //     //TODO signup with google
+                      //   },
+                      //   padding: const EdgeInsets.all(10),
+                      //   text: "Continue with Google",
+                      // ),
+                      // WidgetHelper.verticalSpace,
                       WidgetHelper.verticalSpace,
                       ElevatedButton.icon(
                         onPressed: () {
                           emailForm.control("googleToggle").value = false;
                           //TODO signup with google
                         },
-                        icon: const Icon(Icons.email_outlined),
+                        icon: SvgPicture.asset(
+                          "packages/diy/assets/google.svg",
+                          width: 30,
+                        ),
                         label: const Text("Continue with Google"),
                         style: ElevatedButton.styleFrom(
+                          elevation: 0,
                           backgroundColor:
                               AppColors.textFieldBackground(context),
                           foregroundColor: AppColors.primaryContent(context),
@@ -67,7 +71,16 @@ class EmailPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          minimumSize: const Size(300, 50),
+                          minimumSize: const Size(400, 60),
+                        ),
+                      ),
+                      WidgetHelper.verticalSpace,
+                      Text(
+                        "OR",
+                        style: TextStyle(
+                          color: AppColors.subHeading(context),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       WidgetHelper.verticalSpace,
@@ -76,15 +89,21 @@ class EmailPage extends StatelessWidget {
                           emailForm.control("googleToggle").value = true;
                           emailForm.markAsTouched();
                         },
-                        icon: const Icon(Icons.email_outlined),
+                        icon: SvgPicture.asset(
+                          "packages/diy/assets/email.svg",
+                          width: 30,
+                        ),
                         label: const Text("Enter Email ID"),
                         style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor:
+                              AppColors.textFieldBackground(context),
                           foregroundColor: AppColors.primaryContent(context),
                           primary: AppColors.background(context),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          minimumSize: const Size(300, 50),
+                          minimumSize: const Size(400, 60),
                         ),
                       ),
                     ],

@@ -101,7 +101,7 @@ class AddressProofFront extends StatelessWidget {
                   height: 200,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.background(context),
+                    color: AppColors.textFieldBackground(context),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Center(
