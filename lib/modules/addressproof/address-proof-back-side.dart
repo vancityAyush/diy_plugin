@@ -171,12 +171,11 @@ class AddressProofBack extends StatelessWidget {
             ImageFile imageFile =
                 uploadAddressProofBack.control('AddressProofFront').value;
             if (imageFile != null) {
-              final res = await getIt<ApiRepository>().uploadFromCamera(
-                  file: imageFile.image!,
-                  type: uploadType.AddressProofBackSide);
+              final res = await getIt<ApiRepository>().uploadImage(
+                  file: imageFile.image!, type: DOCTYPE.AddressProofBackSide);
               print(res);
               final res2 = await getIt<ApiRepository>()
-                  .getDocument(uploadType.AddressProofBackSide);
+                  .getDocument(DOCTYPE.AddressProofBackSide);
               print(res2);
               final res3 = await getIt<OAuthService>().updateUiStatus().then(
                     (route) => Navigator.pushNamedAndRemoveUntil(

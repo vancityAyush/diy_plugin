@@ -113,11 +113,11 @@ class UploadPanPhoto extends StatelessWidget {
               ImageFile imageFile =
                   uploadPanPhotoForm.control('PanPhoto').value;
               if (imageFile != null) {
-                final res = await getIt<ApiRepository>().uploadFromCamera(
-                    file: imageFile.image!, type: uploadType.PanPhoto);
+                final res = await getIt<ApiRepository>().uploadImage(
+                    file: imageFile.image!, type: DOCTYPE.PanPhoto);
                 print(res);
-                final res2 = await getIt<ApiRepository>()
-                    .getDocument(uploadType.PanPhoto);
+                final res2 =
+                    await getIt<ApiRepository>().getDocument(DOCTYPE.PanPhoto);
                 print(res2);
                 return true;
               }
