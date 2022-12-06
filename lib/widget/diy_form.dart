@@ -6,6 +6,7 @@ import 'BottomPage.dart';
 class DiyForm extends StatelessWidget {
   final FormGroup formGroup;
   final Widget child;
+  final Widget? terms;
   final String? title;
   final String? subtitle;
   const DiyForm(
@@ -13,6 +14,7 @@ class DiyForm extends StatelessWidget {
       required this.child,
       this.title,
       this.subtitle,
+      this.terms,
       required this.formGroup})
       : super(key: key);
 
@@ -23,6 +25,7 @@ class DiyForm extends StatelessWidget {
       child: BottomPage(
         title: title,
         subtitle: subtitle,
+        terms: terms,
         child: child,
       ),
     );

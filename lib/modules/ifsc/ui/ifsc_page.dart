@@ -25,7 +25,8 @@ class IFSCPage extends StatelessWidget {
       ifscForm.reset();
     }
     return DiyForm(
-      title: "Link Your Bank Account",
+      title: "Verify Bank Account",
+      subtitle: "Lorem ipsum dolor sit amet, consectetur",
       formGroup: ifscForm,
       child: Column(
         children: [
@@ -34,6 +35,8 @@ class IFSCPage extends StatelessWidget {
             formControlName: 'ifsc',
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
               filled: AppColors.textFieldBackground(context) != null,
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
@@ -48,13 +51,13 @@ class IFSCPage extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(4),
               ),
-              labelText: 'IFSC Code',
+              // labelText: 'IFSC Code',
               labelStyle: TextStyle(color: AppColors.primaryContent(context)),
               hintText: 'Enter Your IFSC Code',
-              prefixIcon: Icon(
-                Icons.account_balance,
-                color: Theme.of(context).primaryColor,
-              ),
+              // prefixIcon: Icon(
+              //   Icons.account_balance,
+              //   color: Theme.of(context).primaryColor,
+              // ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
                 borderSide: BorderSide(
@@ -90,29 +93,31 @@ class IFSCPage extends StatelessWidget {
               ),
             ),
           ),
-          WidgetHelper.verticalSpace20,
-          NextButton(
-            text: "Search",
-            onPressed: () async {
-              List<bank> banks = await getIt<ApiRepository>()
-                  .getIfscFromCode(ifscForm.control('ifsc').value);
-              if (banks.isNotEmpty) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SearchBankLocation(banks: banks);
-                    },
-                  ),
-                );
-                return true;
-              } else {
-                AppUtil.showToast("No Bank Found");
-                return false;
-              }
-            },
-          )
         ],
+      ),
+      terms: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: NextButton(
+          text: "Search",
+          onPressed: () async {
+            List<bank> banks = await getIt<ApiRepository>()
+                .getIfscFromCode(ifscForm.control('ifsc').value);
+            if (banks.isNotEmpty) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SearchBankLocation(banks: banks);
+                  },
+                ),
+              );
+              return true;
+            } else {
+              AppUtil.showToast("No Bank Found");
+              return false;
+            }
+          },
+        ),
       ),
     );
   }

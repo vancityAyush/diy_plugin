@@ -1,27 +1,29 @@
-import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/util.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
-class UploadBankProof extends StatelessWidget {
+import '../../diy.dart';
+import '../../utils/libs.dart';
+import '../../widget/diy_form.dart';
+import '../form_service.dart';
+
+class UploadPanPhoto extends StatelessWidget {
   bool isReadOnly;
-  UploadBankProof({Key? key, this.isReadOnly = false}) : super(key: key);
+  UploadPanPhoto({Key? key, this.isReadOnly = false}) : super(key: key);
 
-  final uploadBankProofForm = getIt<FormService>().uploadBankProofForm;
-
+  final uploadPanPhotoForm = getIt<FormService>().uploadPanPhotoForm;
   @override
   Widget build(BuildContext context) {
     return DiyForm(
-      formGroup: uploadBankProofForm,
-      title: "Upload Bank Proof",
-      subtitle:
-          "Your bank account details could not be verified. Please proceed by uploading: cancelled cheque OR passbook photo",
+      formGroup: uploadPanPhotoForm,
+      title: "Upload Pan Photo",
+      subtitle: "Upload a clear image of your PAN card",
       child: Column(
         children: [
           ReactiveImagePicker(
-            formControlName: 'BankProof',
+            formControlName: 'PanPhoto',
             decoration: const InputDecoration(
                 contentPadding: EdgeInsets.zero,
                 labelText: 'Drop your document image here',
@@ -109,28 +111,14 @@ class UploadBankProof extends StatelessWidget {
             text: "Next",
             onPressed: () async {
               ImageFile imageFile =
-                  uploadBankProofForm.control('BankProof').value;
+                  uploadPanPhotoForm.control('PanPhoto').value;
               if (imageFile != null) {
                 final res = await getIt<ApiRepository>().uploadFromCamera(
-                    file: imageFile.image!, type: uploadType.BankProof);
+                    file: imageFile.image!, type: uploadType.PanPhoto);
                 print(res);
                 final res2 = await getIt<ApiRepository>()
-                    .getDocument(uploadType.BankProof);
+                    .getDocument(uploadType.PanPhoto);
                 print(res2);
-                final res3 = await getIt<OAuthService>().updateUiStatus().then(
-                      (route) => Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        route,
-                        (route) => false,
-                      ),
-                    );
-                print(res3);
-                final res = await getIt<ApiRepository>().uploadImage(
-                    file: imageFile.image!, type: DOCTYPE.BankProof);
-                // print(res);
-                // final res2 =
-                //     await getIt<ApiRepository>().getDocument(DOCTYPE.BankProof);
-                // print(res2);
                 return true;
               }
               return false;

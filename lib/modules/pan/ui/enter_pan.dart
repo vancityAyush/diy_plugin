@@ -20,7 +20,7 @@ class EnterPan extends StatelessWidget {
       panForm.reset();
     }
     return DiyForm(
-      title: "Enter PAN & Date of Birth",
+      title: "Enter PAN & DOB",
       subtitle: "A PAN card is compulsory for investing in India",
       formGroup: panForm,
       child: Column(
@@ -102,32 +102,35 @@ class EnterPan extends StatelessWidget {
             },
           ),
           WidgetHelper.verticalSpace20,
-          NextButton(
-            text: "Verify",
-            onPressed: () async {
-              return await getIt<ApiRepository>()
-                  .validatePan(
-                pan: panForm.control("pan").value,
-                dob: panForm.control("dob").value,
-              )
-                  .then(
-                (value) async {
-                  if (value != null) {
-                    getIt<FormService>().validatePanForm.value = value;
-                    final form = getIt<FormService>().validatePanForm;
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/app/validate-kra/", (route) => false,
-                        arguments: {"response": value});
-                    return true;
-                  } else {
-                    //TODO show error
-                    return false;
-                  }
-                },
-              );
-            },
-          ),
         ],
+      ),
+      terms: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: NextButton(
+          text: "Verify",
+          onPressed: () async {
+            return await getIt<ApiRepository>()
+                .validatePan(
+              pan: panForm.control("pan").value,
+              dob: panForm.control("dob").value,
+            )
+                .then(
+              (value) async {
+                if (value != null) {
+                  getIt<FormService>().validatePanForm.value = value;
+                  final form = getIt<FormService>().validatePanForm;
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/app/validate-kra/", (route) => false,
+                      arguments: {"response": value});
+                  return true;
+                } else {
+                  //TODO show error
+                  return false;
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }

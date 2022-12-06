@@ -76,13 +76,18 @@ flutter:
   assets:
     - packages/diy/assets/logo-dark.png
     - packages/diy/assets/logo-light.png
+    - packages/diy/assets/menu.png
     - packages/diy/assets/pem/public.pem
+    - packages/diy/assets/menu.svg
+    - packages/diy/assets/google.svg
+    - packages/diy/assets/email.svg
+
 
   fonts:
     - family: BeVietnamPro
       fonts:
         - asset: packages/diy/assets/fonts/BeVietnamPro-Regular.ttf
         - asset: packages/diy/assets/fonts/BeVietnamPro-Medium.ttf
-          weight: 600
+          weight: 500
         - asset: packages/diy/assets/fonts/BeVietnamPro-Bold.ttf
           weight: 700

@@ -26,8 +26,8 @@ class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DiyForm(
-      title: 'Verify Your Mobile Number',
-      subtitle: "Please enter the OTP sent to your Mobile Number",
+      title: 'Verification Code',
+      subtitle: "We have sent the code verification \nto your Mobile Number",
       formGroup: otpForm,
       child: Column(
         children: [
@@ -37,32 +37,40 @@ class OtpPage extends StatelessWidget {
                 TextSpan(
                   text: '+91 ',
                   style: TextStyle(
-                    color: AppColors.primaryContent(context),
-                    fontSize: 16.sp,
-                  ),
+                      color: AppColors.subHeading(context),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500),
                 ),
                 TextSpan(
                   text: phoneNumber + "  ",
                   style: TextStyle(
-                    color: AppColors.primaryContent(context),
-                    fontSize: 16.sp,
-                  ),
+                      color: AppColors.subHeading(context),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500),
                 ),
                 WidgetSpan(
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(
-                      Icons.edit,
-                      color: AppColors.primaryContent(context),
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primaryColor(context),
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        size: 15,
+                        color: AppColors.background(context),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          WidgetHelper.verticalSpace20,
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ReactivePinCodeTextField<String>(
@@ -85,7 +93,7 @@ class OtpPage extends StatelessWidget {
               showErrors: (control) => control.invalid && control.dirty,
             ),
           ),
-          WidgetHelper.verticalSpace20,
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           GestureDetector(
             onTap: () async {
               await getIt<OAuthService>().sendOtp(phoneNumber).then(
@@ -107,7 +115,7 @@ class OtpPage extends StatelessWidget {
               ),
             ),
           ),
-          WidgetHelper.verticalSpace20,
+          SizedBox(height: MediaQuery.of(context).size.height * 0.2),
           NextButton(
             text: "Verify",
             onPressed: () async {
@@ -132,29 +140,48 @@ class OtpPage extends StatelessWidget {
             },
           ),
           WidgetHelper.verticalSpace20,
-          ReactiveCheckboxListTile(
-            activeColor: AppColors.primaryColor(context),
-            checkboxShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-            formControlName: 'TnC',
-            title: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
+          Row(
+            children: [
+              ReactiveCheckbox(
+                activeColor: AppColors.primaryColor(context),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                formControlName: 'TnC',
+              ),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
                     text: 'I hereby declare that the mobile number belongs to ',
                     style: TextStyle(
                       color: AppColors.primaryContent(context),
-                      fontSize: 12.sp,
+                      fontSize: 14.sp,
                     ),
                   ),
-                  WidgetSpan(
-                    child: FutureBuilder(
-                      future: getIt<ApiRepository>().getRelationDropDown(),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          return ReactiveDropdownField(
-                            hint: const Text('Select Relation'),
+                ),
+              )
+            ],
+          ),
+          RichText(
+            text: TextSpan(
+              children: [
+                WidgetSpan(
+                  child: FutureBuilder(
+                    future: getIt<ApiRepository>().getRelationDropDown(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: ReactiveDropdownField(
+                            formControlName: 'relation',
+                            hint: Text('Select Relation',
+                                style: TextStyle(
+                                    color: AppColors.primaryColor(context),
+                                    fontWeight: FontWeight.w700)),
+                            iconSize: 30,
+                            iconEnabledColor: AppColors.primaryColor(context),
+                            iconDisabledColor:
+                                AppColors.primaryContent(context),
                             items: [
                               for (RelationDropdown item in snapshot.data)
                                 DropdownMenuItem(
@@ -164,11 +191,12 @@ class OtpPage extends StatelessWidget {
                                     style: TextStyle(
                                       color: AppColors.primaryContent(context),
                                       fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
+                                  alignment: Alignment.bottomLeft,
                                 )
                             ],
-                            formControlName: 'relation',
                             elevation: 0,
                             dropdownColor: AppColors.background(context),
                             decoration: const InputDecoration(
@@ -177,16 +205,17 @@ class OtpPage extends StatelessWidget {
                             validationMessages: {
                               'required': (error) => 'Please Select a Relation',
                             },
-                          );
-                        }
-                        return Container();
-                      },
-                    ),
+                          ),
+                        );
+                      }
+                      return Container();
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+          SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ],
       ),
     );
