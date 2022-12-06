@@ -7,6 +7,7 @@ import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
 import 'package:diy/utils/util.dart';
 import 'package:intl/intl.dart';
+import 'package:reactive_image_picker/image_file.dart';
 
 import '../modules/ifsc/models/bank.dart';
 
@@ -80,8 +81,8 @@ class ApiRepository {
     return res;
   }
 
-  Future<dynamic> uploadFromCamera(
-      {required File file, required, required uploadType type}) async {
+  Future<dynamic> uploadImage(
+      {required File file, required, required DOCTYPE type}) async {
     List<int> bytes = file.readAsBytesSync();
     String base64Image = base64Encode(bytes);
     String fileName = file.path.split("/").last;
@@ -101,11 +102,13 @@ class ApiRepository {
     return res;
   }
 
-  Future<dynamic> getDocument(uploadType type) async {
-    final res = await http.get(
+  Future<ImageFile> getDocument(DOCTYPE type) async {
+    final image = await http.getImage(
       "/app/document/${uploadMap[type]}",
     );
-    return res;
+    print(image);
+    File file = File.fromRawPath(image);
+    return ImageFile(image: file);
   }
 
   Future<List<dynamic>> getBankNames() async {

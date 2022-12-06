@@ -30,6 +30,14 @@ class HttpClient {
     );
   }
 
+  Future<dynamic> getImage(String endPoint) async {
+    final res = await _dio.download(
+      endPoint,
+      "/bankProof.png",
+    );
+    return res.data;
+  }
+
   Future<dynamic> get(
     String endPoint, {
     Map<String, dynamic>? queryParameters,

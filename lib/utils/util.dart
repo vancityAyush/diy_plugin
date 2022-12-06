@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-enum uploadType {
+enum DOCTYPE {
   BankProof,
   PanPhoto,
   Signature,
@@ -16,19 +16,19 @@ enum uploadType {
   KRAAOF
 }
 
-Map<uploadType, int> uploadMap = {
-  uploadType.BankProof: 7,
-  uploadType.PanPhoto: 8,
-  uploadType.Signature: 9,
-  uploadType.AddressProofFrontSide: 18,
-  uploadType.AddressProofBackSide: 19,
-  uploadType.Selfie: 20,
-  uploadType.IPV: 23,
-  uploadType.AOF: 24,
-  uploadType.Photo: 26,
-  uploadType.IncomeProo: 27,
-  uploadType.PromoCodeProof: 28,
-  uploadType.KRAAOF: 36,
+Map<DOCTYPE, int> uploadMap = {
+  DOCTYPE.BankProof: 7,
+  DOCTYPE.PanPhoto: 8,
+  DOCTYPE.Signature: 9,
+  DOCTYPE.AddressProofFrontSide: 18,
+  DOCTYPE.AddressProofBackSide: 19,
+  DOCTYPE.Selfie: 20,
+  DOCTYPE.IPV: 23,
+  DOCTYPE.AOF: 24,
+  DOCTYPE.Photo: 26,
+  DOCTYPE.IncomeProo: 27,
+  DOCTYPE.PromoCodeProof: 28,
+  DOCTYPE.KRAAOF: 36,
 };
 
 class AppUtil {

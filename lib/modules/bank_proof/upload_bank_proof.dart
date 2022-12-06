@@ -111,12 +111,12 @@ class UploadBankProof extends StatelessWidget {
               ImageFile imageFile =
                   uploadBankProofForm.control('BankProof').value;
               if (imageFile != null) {
-                final res = await getIt<ApiRepository>().uploadFromCamera(
-                    file: imageFile.image!, type: uploadType.BankProof);
-                print(res);
-                final res2 = await getIt<ApiRepository>()
-                    .getDocument(uploadType.BankProof);
-                print(res2);
+                final res = await getIt<ApiRepository>().uploadImage(
+                    file: imageFile.image!, type: DOCTYPE.BankProof);
+                // print(res);
+                // final res2 =
+                //     await getIt<ApiRepository>().getDocument(DOCTYPE.BankProof);
+                // print(res2);
                 return true;
               }
               return false;
