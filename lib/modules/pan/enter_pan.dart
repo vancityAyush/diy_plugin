@@ -7,7 +7,7 @@ import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../form_service.dart';
+import '../form_service.dart';
 
 class EnterPan extends StatelessWidget {
   bool isReadOnly;

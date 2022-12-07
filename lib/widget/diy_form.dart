@@ -25,7 +25,6 @@ class DiyForm extends StatelessWidget {
       child: BottomPage(
         title: title,
         subtitle: subtitle,
-        terms: terms,
         child: child,
       ),
     );

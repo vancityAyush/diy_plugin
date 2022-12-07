@@ -28,6 +28,30 @@ class IFSCPage extends StatelessWidget {
       title: "Verify Bank Account",
       subtitle: "Lorem ipsum dolor sit amet, consectetur",
       formGroup: ifscForm,
+      terms: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: NextButton(
+          text: "Search",
+          onPressed: () async {
+            List<bank> banks = await getIt<ApiRepository>()
+                .getIfscFromCode(ifscForm.control('ifsc').value);
+            if (banks.isNotEmpty) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SearchBankLocation(banks: banks);
+                  },
+                ),
+              );
+              return true;
+            } else {
+              AppUtil.showToast("No Bank Found");
+              return false;
+            }
+          },
+        ),
+      ),
       child: Column(
         children: [
           ReactiveTextField(
@@ -94,30 +118,6 @@ class IFSCPage extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      terms: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: NextButton(
-          text: "Search",
-          onPressed: () async {
-            List<bank> banks = await getIt<ApiRepository>()
-                .getIfscFromCode(ifscForm.control('ifsc').value);
-            if (banks.isNotEmpty) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return SearchBankLocation(banks: banks);
-                  },
-                ),
-              );
-              return true;
-            } else {
-              AppUtil.showToast("No Bank Found");
-              return false;
-            }
-          },
-        ),
       ),
     );
   }

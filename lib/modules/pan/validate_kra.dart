@@ -7,9 +7,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../network/api_repository.dart';
-import '../../../widget/widget_helper.dart';
-import '../../form_service.dart';
+import '../../network/api_repository.dart';
+import '../../widget/widget_helper.dart';
+import '../form_service.dart';
 
 class ValidateKra extends StatelessWidget {
   final bool isReadOnly;

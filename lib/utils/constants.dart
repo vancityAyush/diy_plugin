@@ -12,3 +12,5 @@ iNLRYclda3q0zVdpNnDD9aFac0R+4750DemGFH/MeKO40OkAfiGVVP6Lg9YtX0gj
 m3I3Eob2j8MxA8S1UtgLcJxaG2R9HBg4x+WCQx7+X5xowkffNkfZ1NmoYCZkbxPe
 xIWIbh7mV6zFKYniTvogTwIDAQAB
 -----END PUBLIC KEY-----""";
+
+const baseUrl = "https://newdiy.cloudyhr.com/diy/api";

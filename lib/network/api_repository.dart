@@ -5,9 +5,10 @@ import 'package:diy/diy.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
+import 'package:diy/utils/constants.dart';
 import 'package:diy/utils/util.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:reactive_image_picker/image_file.dart';
 
 import '../modules/ifsc/models/bank.dart';
 import '../utils/libs.dart';
@@ -103,13 +104,13 @@ class ApiRepository {
     return res;
   }
 
-  Future<ImageFile> getDocument(DOCTYPE type) async {
-    final image = await http.getImage(
-      "/app/document/${uploadMap[type]}",
+  NetworkImage getImage(DOCTYPE type) {
+    return NetworkImage(
+      "$baseUrl/app/document/${uploadMap[type]}",
+      headers: {
+        'Authorization': getIt<OAuthService>().token.toString(),
+      },
     );
-    print(image);
-    File file = File.fromRawPath(image);
-    return ImageFile(image: file);
   }
 
   Future<List<dynamic>> getBankNames() async {
@@ -141,18 +142,9 @@ class ApiRepository {
   //   return res;
   // }
 
-  Future<dynamic> settings({
-    bool? EnableDigiLocker,
-    bool? EnableManual,
-    bool? EnableOfflineAadhar,
-  }) async {
-    final res = await http.postEncrypted(
+  Future<dynamic> settings() async {
+    final res = await http.get(
       "/app/settings/",
-      data: {
-        "EnableDigiLocker": EnableDigiLocker,
-        "EnableManual": EnableManual,
-        "EnableOfflineAadhar": EnableOfflineAadhar,
-      },
     );
     return res;
   }

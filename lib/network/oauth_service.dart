@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:diy/modules/form_service.dart';
-import 'package:diy/network/api_repository.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/models/token.dart';
 import 'package:diy/network/models/ui_status.dart';
@@ -60,14 +59,7 @@ class OAuthService {
         currentUser!.CustomerId ?? "";
     _formService.bankAccountForm.control('MICR_CODE').value =
         currentUser!.MICR_CODE ?? "";
-    loadImages();
     //Skipped uploadBankProofForm
-  }
-
-  loadImages() async {
-    ApiRepository apiRepository = getIt<ApiRepository>();
-    final image = await apiRepository.getDocument(DOCTYPE.BankProof);
-    _formService.uploadBankProofForm.control('BankProof').value = image;
   }
 
   UiStatus uiStatus = UiStatus(NextModuleId: 1, BackMenuList: []);

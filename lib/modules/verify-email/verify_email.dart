@@ -36,7 +36,7 @@ class VerifyEmailPage extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: getIt<OAuthService>().response["Email"] + "  ",
+                  text: getIt<OAuthService>().response["Email"],
                   style: TextStyle(
                     color: AppColors.primaryContent(context),
                     fontSize: 16.sp,

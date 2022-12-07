@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
+//TODO Merge both screens as one
 class AddressProofBack extends StatelessWidget {
   bool isReadOnly;
   AddressProofBack({Key? key, this.isReadOnly = false}) : super(key: key);
@@ -15,6 +16,31 @@ class AddressProofBack extends StatelessWidget {
       formGroup: uploadAddressProofBack,
       title: "Upload Aadhaar Proof",
       subtitle: "Aadhaar Proof(back side)",
+      terms: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: NextButton(
+          text: "Next",
+          onPressed: () async {
+            ImageFile imageFile =
+                uploadAddressProofBack.control('AddressProofFront').value;
+            if (imageFile != null) {
+              final res = await getIt<ApiRepository>().uploadImage(
+                  file: imageFile.image!, type: DOCTYPE.AddressProofBackSide);
+              print(res);
+              final res3 = await getIt<OAuthService>().updateUiStatus().then(
+                    (route) => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      route,
+                      (route) => false,
+                    ),
+                  );
+              print(res3);
+              return true;
+            }
+            return false;
+          },
+        ),
+      ),
       child:
           // FutureBuilder<List<dynamic>>(
           //     future: getIt<ApiRepository>().getBankNames(),
@@ -163,36 +189,6 @@ class AddressProofBack extends StatelessWidget {
           ),
         ],
       ),
-      terms: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: NextButton(
-          text: "Next",
-          onPressed: () async {
-            ImageFile imageFile =
-                uploadAddressProofBack.control('AddressProofFront').value;
-            if (imageFile != null) {
-              final res = await getIt<ApiRepository>().uploadImage(
-                  file: imageFile.image!, type: DOCTYPE.AddressProofBackSide);
-              print(res);
-              final res2 = await getIt<ApiRepository>()
-                  .getDocument(DOCTYPE.AddressProofBackSide);
-              print(res2);
-              final res3 = await getIt<OAuthService>().updateUiStatus().then(
-                    (route) => Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      route,
-                      (route) => false,
-                    ),
-                  );
-              print(res3);
-              return true;
-            }
-            return false;
-          },
-        ),
-      ),
     );
   }
-  //),
-  //);
 }

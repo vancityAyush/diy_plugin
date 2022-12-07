@@ -175,9 +175,6 @@ class AddressProofFront extends StatelessWidget {
               final res = await getIt<ApiRepository>().uploadImage(
                   file: imageFile.image!, type: DOCTYPE.AddressProofFrontSide);
               print(res);
-              final res2 = await getIt<ApiRepository>()
-                  .getDocument(DOCTYPE.AddressProofFrontSide);
-              print(res2);
               final res3 = await getIt<OAuthService>().updateUiStatus().then(
                     (route) => Navigator.pushNamedAndRemoveUntil(
                       context,

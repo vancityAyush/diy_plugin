@@ -3,7 +3,6 @@ import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../network/oauth_service.dart';
@@ -13,21 +12,19 @@ class BottomPage extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final EdgeInsets padding;
-  final Widget? terms;
   const BottomPage(
       {Key? key,
       required this.child,
       this.title,
       this.subtitle,
-      this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      this.terms})
+      this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 20)})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isLightMode = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       drawer: Drawer(
-        width: MediaQuery.of(context).size.width,
         backgroundColor: AppColors.background(context),
         child: Builder(
           builder: (context) {
@@ -124,47 +121,28 @@ class BottomPage extends StatelessWidget {
         backgroundColor: AppColors.background(context),
         foregroundColor: AppColors.primaryContent(context),
         elevation: 0,
-        title: Text(
-          title! ?? '',
-          style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryContent(context)),
-          textAlign: TextAlign.center,
+        title: Center(
+          child: Image(
+            image: AssetImage(
+                isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
+                package: "diy"),
+            height: 40,
+            fit: BoxFit.cover,
+          ),
         ),
-        //CAN BE usefull to close the bottom sheet
         // actions: [
-        //   Builder(builder: (context) {
-        //     return Visibility(
-        //       visible: getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
-        //       child: IconButton(
-        //         onPressed: () {
-        //           Navigator.of(context).pop();
-        //         },
-        //         icon: Icon(
-        //           Icons.power_settings_new_rounded,
-        //           size: 25,
-        //           color: AppColors.primaryAccent(context),
-        //         ),
-        //       ),
-        //     );
-        //   }),
+        //   IconButton(
+        //     onPressed: () {
+        //       //Navigator.of(context).pop();
+        //     },
+        //     icon: Icon(
+        //       Icons.power_settings_new_rounded,
+        //       size: 25,
+        //       color: AppColors.primaryAccent(context),
+        //     ),
+        //   ),
         // ],
-        centerTitle: true,
-        leading: Builder(
-          builder: (context) => Visibility(
-              visible: getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, top: 15, bottom: 20),
-                child: InkWell(
-                    borderRadius: BorderRadius.circular(25),
-                    onTap: () => Scaffold.of(context).openDrawer(),
-                    child: SvgPicture.asset(
-                      "packages/diy/assets/menu.svg",
-                      color: AppColors.textColorTextField(context),
-                    )),
-              )),
-        ),
+
         automaticallyImplyLeading:
             getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
       ),
@@ -172,16 +150,33 @@ class BottomPage extends StatelessWidget {
         controller: ModalScrollController.of(context),
         physics: const BouncingScrollPhysics(),
         slivers: [
+          if (title != null)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 60.sp),
+                child: Padding(
+                  padding: padding,
+                  child: Text(
+                    title!,
+                    style: TextStyle(
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryContent(context)),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
           if (subtitle != null)
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(left: 20.sp, right: 20.sp),
+                padding: EdgeInsets.only(top: 20.sp, left: 20.sp, right: 20.sp),
                 child: Text(
                   subtitle!,
                   style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.subHeading(context),
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryAccent(context),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -200,17 +195,14 @@ class BottomPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Spacer(),
-                // Text(
-                //   "Copyrights @ 2022 © Blink Trude. All Right Reserved",
-                //   style: TextStyle(
-                //     color: AppColors.footerText(context),
-                //     fontSize: 12.sp,
-                //     fontWeight: FontWeight.w400,
-                //   ),
-                //   textAlign: TextAlign.center,
-                // ),
-                Container(
-                  child: terms,
+                Text(
+                  "Copyrights @ 2022 © Blink Trude. All Right Reserved",
+                  style: TextStyle(
+                    color: AppColors.primaryAccent(context),
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
               ],

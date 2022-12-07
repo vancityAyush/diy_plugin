@@ -6,6 +6,7 @@ import 'package:diy/modules/form_service.dart';
 import 'package:diy/modules/kyc/kyc-select.dart';
 import 'package:diy/modules/upload-pan-photo/upload-pan-photo.dart';
 import 'package:diy/network/http_client.dart';
+import 'package:diy/utils/constants.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,8 @@ import 'modules/addressproof/address-proof-front-side.dart';
 import 'modules/bank/bank_account.dart';
 import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
-import 'modules/pan/ui/enter_pan.dart';
-import 'modules/pan/ui/validate_kra.dart';
+import 'modules/pan/enter_pan.dart';
+import 'modules/pan/validate_kra.dart';
 import 'modules/verify-email/verify_email.dart';
 import 'modules/verify-mobile/ui/signup_page.dart';
 import 'network/api_repository.dart';
@@ -34,7 +35,7 @@ class FlutterDIY {
   FlutterDIY() {
     WidgetsFlutterBinding.ensureInitialized();
     getIt.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
-    final httpClient = HttpClient("https://newdiy.cloudyhr.com/diy/api");
+    final httpClient = HttpClient(baseUrl);
     getIt.registerSingletonAsync<HttpClient>(() async => httpClient);
     getIt.registerSingletonWithDependencies<OAuthService>(
       () => OAuthService(
