@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: AppColors.background(context),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
+        child: Column(
           children: [
             Container(
               height: 200,
@@ -63,11 +63,16 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.white,
                               fontWeight: FontWeight.w700)))),
             ),
-            ElevatedButton(
-              onPressed: () {
-                diy.init(context);
-              },
-              child: const Text('Go to Main Screen'),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  onPressed: () {
+                    diy.init(context);
+                  },
+                  child: const Text('Go to Main Screen'),
+                ),
+              ),
             ),
           ],
         ),

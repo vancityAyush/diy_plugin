@@ -14,7 +14,7 @@ class KycSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomPage(
-      title: "Personal details & document proofs",
+      title: "Personal details &\n document proofs",
       subtitle:
           "Use one of the following options for submitting your personal details & associated proofs",
       child: FutureBuilder(
@@ -54,8 +54,10 @@ class KycSelect extends StatelessWidget {
               ],
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryColor(context),
+              ),
             );
           }
         },
@@ -70,8 +72,9 @@ class KycSelect extends StatelessWidget {
       height: 80.sp,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: MaterialButton(
+        elevation: 0,
         onPressed: onTap,
-        color: AppColors.primaryColor(context),
+        color: AppColors.textFieldBackground(context),
         minWidth: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         shape: RoundedRectangleBorder(
@@ -83,7 +86,7 @@ class KycSelect extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                color: AppColors.textFieldBackground(context),
+                color: AppColors.subHeading(context),
                 fontSize: 17.sp,
                 height: 1.5,
                 fontWeight: FontWeight.w600,
@@ -93,7 +96,7 @@ class KycSelect extends StatelessWidget {
             Text(
               subtitle,
               style: TextStyle(
-                color: AppColors.textFieldBackground(context),
+                color: AppColors.textColorTextField(context),
                 fontSize: 13.sp,
               ),
             ),

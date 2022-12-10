@@ -25,7 +25,7 @@ class EmailPage extends StatelessWidget {
       emailForm.reset();
     }
     return DiyForm(
-      title: "Enter Your Email ID",
+      title: "Enter Email Address",
       subtitle: "You will receive an OTP on your email",
       formGroup: emailForm,
       child: Column(
@@ -92,6 +92,7 @@ class EmailPage extends StatelessWidget {
                         icon: SvgPicture.asset(
                           "packages/diy/assets/email.svg",
                           width: 30,
+                          color: AppColors.primaryContent(context),
                         ),
                         label: const Text("Enter Email ID"),
                         style: ElevatedButton.styleFrom(
@@ -109,223 +110,259 @@ class EmailPage extends StatelessWidget {
                     ],
                   );
                 }
-                return Column(
-                  children: [
-                    ReactiveTextField(
-                      readOnly: isReadOnly,
-                      formControlName: 'email',
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: AppColors.primaryColor(context),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 25.0, vertical: 20.0),
-                        filled: AppColors.textFieldBackground(context) != null,
-                        fillColor: AppColors.textFieldBackground(context),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.textFieldBackground(context),
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.primaryColor(context),
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        // labelText: 'Email ID',
-                        // labelStyle:
-                        //     TextStyle(color: AppColors.primaryContent(context)),
-                        hintText: 'Your Email ID',
-                        hintStyle: TextStyle(
-                            color: AppColors.textColorTextField(context)),
-                        // prefixIcon: Icon(
-                        //   Icons.email_outlined,
-                        //   color: Theme.of(context).primaryColor,
-                        // ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      showErrors: (control) =>
-                          control.invalid && control.hasFocus,
-                      validationMessages: {
-                        'required': (error) => 'The Email ID must not be empty',
-                        'email': (error) =>
-                            'The Email ID must be a valid email',
-                      },
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                    ),
-                    NextButton(
-                      text: "Validate E-Mail",
-                      onPressed: () async {
-                        final res = await getIt<OAuthService>().sendEmailOtp(
-                            email: emailForm.control("email").value,
-                            relationId: emailForm.control("relation").value);
-                        if (res.status) {
-                          await getIt<OAuthService>().updateUiStatus().then(
-                                (route) => Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  route,
-                                  (route) => false,
-                                ),
-                              );
-                          return true;
-                        }
-                        return false;
-                      },
-                    ),
-                    Row(
-                      children: [
-                        ReactiveCheckbox(
-                          activeColor: AppColors.primaryColor(context),
-                          shape: RoundedRectangleBorder(
+                return SizedBox(
+                  height:
+                      WidgetsBinding.instance.window.physicalSize.height / 4.5,
+                  child: Column(
+                    children: [
+                      ReactiveTextField(
+                        readOnly: isReadOnly,
+                        formControlName: 'email',
+                        keyboardType: TextInputType.emailAddress,
+                        cursorColor: AppColors.primaryColor(context),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 25.0, vertical: 20.0),
+                          filled:
+                              AppColors.textFieldBackground(context) != null,
+                          fillColor: AppColors.textFieldBackground(context),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.textFieldBackground(context),
+                            ),
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          formControlName: 'TnC',
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.primaryColor(context),
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          // labelText: 'Email ID',
+                          // labelStyle:
+                          //     TextStyle(color: AppColors.primaryContent(context)),
+                          hintText: 'Your Email ID',
+                          hintStyle: TextStyle(
+                              color: AppColors.textColorTextField(context)),
+                          // prefixIcon: Icon(
+                          //   Icons.email_outlined,
+                          //   color: Theme.of(context).primaryColor,
+                          // ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
                         ),
-                        Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              text:
-                                  'I hereby declare that the mobile number belongs to ',
-                              style: TextStyle(
-                                color: AppColors.primaryContent(context),
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: FutureBuilder(
-                              future:
-                                  getIt<ApiRepository>().getRelationDropDown(),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 50),
-                                    child: ReactiveDropdownField(
-                                      formControlName: 'relation',
-                                      hint: Text('Select Relation',
-                                          style: TextStyle(
-                                              color: AppColors.primaryColor(
-                                                  context),
-                                              fontWeight: FontWeight.w700)),
-                                      iconSize: 30,
-                                      iconEnabledColor:
-                                          AppColors.primaryColor(context),
-                                      iconDisabledColor:
-                                          AppColors.primaryContent(context),
-                                      items: [
-                                        for (RelationDropdown item
-                                            in snapshot.data)
-                                          DropdownMenuItem(
-                                            value: item.RelationId,
-                                            child: Text(
-                                              item.RelationName,
-                                              style: TextStyle(
-                                                color: AppColors.primaryContent(
-                                                    context),
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            alignment: Alignment.bottomLeft,
-                                          )
-                                      ],
-                                      elevation: 0,
-                                      dropdownColor:
-                                          AppColors.background(context),
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      validationMessages: {
-                                        'required': (error) =>
-                                            'Please Select a Relation',
-                                      },
-                                    ),
-                                  );
-                                }
-                                return Container();
-                              },
-                            ),
-                          ),
-                        ],
+                        showErrors: (control) =>
+                            control.invalid && control.hasFocus,
+                        validationMessages: {
+                          'required': (error) =>
+                              'The Email ID must not be empty',
+                          'email': (error) =>
+                              'The Email ID must be a valid email',
+                        },
                       ),
-                    ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height / 4,
+                            child: Column(
+                              children: [
+                                NextButton(
+                                  text: "Validate E-Mail",
+                                  onPressed: () async {
+                                    final res = await getIt<OAuthService>()
+                                        .sendEmailOtp(
+                                            email: emailForm
+                                                .control("email")
+                                                .value,
+                                            relationId: emailForm
+                                                .control("relation")
+                                                .value);
+                                    if (res.status) {
+                                      await getIt<OAuthService>()
+                                          .updateUiStatus()
+                                          .then(
+                                            (route) => Navigator
+                                                .pushNamedAndRemoveUntil(
+                                              context,
+                                              route,
+                                              (route) => false,
+                                            ),
+                                          );
+                                      return true;
+                                    }
+                                    return false;
+                                  },
+                                ),
+                                Row(
+                                  children: [
+                                    ReactiveCheckbox(
+                                      activeColor:
+                                          AppColors.primaryColor(context),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      formControlName: 'TnC',
+                                    ),
+                                    Expanded(
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text:
+                                              'I hereby declare that the mobile number belongs to ',
+                                          style: TextStyle(
+                                            color: AppColors.primaryContent(
+                                                context),
+                                            fontSize: 14.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      WidgetSpan(
+                                        child: FutureBuilder(
+                                          future: getIt<ApiRepository>()
+                                              .getRelationDropDown(),
+                                          builder: (context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 50),
+                                                child: ReactiveDropdownField(
+                                                  formControlName: 'relation',
+                                                  hint: Text('Select Relation',
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .primaryColor(
+                                                                  context),
+                                                          fontWeight:
+                                                              FontWeight.w700)),
+                                                  iconSize: 30,
+                                                  iconEnabledColor:
+                                                      AppColors.primaryColor(
+                                                          context),
+                                                  iconDisabledColor:
+                                                      AppColors.primaryContent(
+                                                          context),
+                                                  items: [
+                                                    for (RelationDropdown item
+                                                        in snapshot.data)
+                                                      DropdownMenuItem(
+                                                        value: item.RelationId,
+                                                        child: Text(
+                                                          item.RelationName,
+                                                          style: TextStyle(
+                                                            color: AppColors
+                                                                .primaryContent(
+                                                                    context),
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        alignment: Alignment
+                                                            .bottomLeft,
+                                                      )
+                                                  ],
+                                                  elevation: 0,
+                                                  dropdownColor:
+                                                      AppColors.background(
+                                                          context),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border: InputBorder.none,
+                                                  ),
+                                                  validationMessages: {
+                                                    'required': (error) =>
+                                                        'Please Select a Relation',
+                                                  },
+                                                ),
+                                              );
+                                            }
+                                            return Container();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
 
-                    // ReactiveCheckboxListTile(
-                    //   activeColor: AppColors.primaryColor(context),
-                    //   formControlName: 'TnC',
-                    //   checkboxShape: RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.circular(4),
-                    //   ),
-                    //   title: RichText(
-                    //     text: TextSpan(
-                    //       children: [
-                    //         TextSpan(
-                    //           text: 'I hereby declare that the mobile number',
-                    //           style: TextStyle(
-                    //             color: AppColors.primaryContent(context),
-                    //             fontSize: 14.sp,
-                    //           ),
-                    //         ),
-                    //         WidgetSpan(
-                    //           child: FutureBuilder(
-                    //             future: getIt<ApiRepository>()
-                    //                 .getRelationDropDown(),
-                    //             builder: (context, AsyncSnapshot snapshot) {
-                    //               if (snapshot.hasData) {
-                    //                 return ReactiveDropdownField(
-                    //                   readOnly: isReadOnly,
-                    //                   hint: const Text('Select Relation'),
-                    //                   items: [
-                    //                     for (RelationDropdown item
-                    //                         in snapshot.data)
-                    //                       DropdownMenuItem(
-                    //                         value: item.RelationId,
-                    //                         child: Text(
-                    //                           item.RelationName,
-                    //                           style: TextStyle(
-                    //                             color: AppColors.primaryContent(
-                    //                                 context),
-                    //                             fontSize: 14.sp,
-                    //                           ),
-                    //                         ),
-                    //                       )
-                    //                   ],
-                    //                   formControlName: 'relation',
-                    //                   elevation: 0,
-                    //                   dropdownColor:
-                    //                       AppColors.background(context),
-                    //                   decoration: const InputDecoration(
-                    //                     border: InputBorder.none,
-                    //                   ),
-                    //                   validationMessages: {
-                    //                     'required': (error) =>
-                    //                         'Please Select a Relation',
-                    //                   },
-                    //                 );
-                    //               }
-                    //               return Container();
-                    //             },
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                      // ReactiveCheckboxListTile(
+                      //   activeColor: AppColors.primaryColor(context),
+                      //   formControlName: 'TnC',
+                      //   checkboxShape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(4),
+                      //   ),
+                      //   title: RichText(
+                      //     text: TextSpan(
+                      //       children: [
+                      //         TextSpan(
+                      //           text: 'I hereby declare that the mobile number',
+                      //           style: TextStyle(
+                      //             color: AppColors.primaryContent(context),
+                      //             fontSize: 14.sp,
+                      //           ),
+                      //         ),
+                      //         WidgetSpan(
+                      //           child: FutureBuilder(
+                      //             future: getIt<ApiRepository>()
+                      //                 .getRelationDropDown(),
+                      //             builder: (context, AsyncSnapshot snapshot) {
+                      //               if (snapshot.hasData) {
+                      //                 return ReactiveDropdownField(
+                      //                   readOnly: isReadOnly,
+                      //                   hint: const Text('Select Relation'),
+                      //                   items: [
+                      //                     for (RelationDropdown item
+                      //                         in snapshot.data)
+                      //                       DropdownMenuItem(
+                      //                         value: item.RelationId,
+                      //                         child: Text(
+                      //                           item.RelationName,
+                      //                           style: TextStyle(
+                      //                             color: AppColors.primaryContent(
+                      //                                 context),
+                      //                             fontSize: 14.sp,
+                      //                           ),
+                      //                         ),
+                      //                       )
+                      //                   ],
+                      //                   formControlName: 'relation',
+                      //                   elevation: 0,
+                      //                   dropdownColor:
+                      //                       AppColors.background(context),
+                      //                   decoration: const InputDecoration(
+                      //                     border: InputBorder.none,
+                      //                   ),
+                      //                   validationMessages: {
+                      //                     'required': (error) =>
+                      //                         'Please Select a Relation',
+                      //                   },
+                      //                 );
+                      //               }
+                      //               return Container();
+                      //             },
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 );
               }),
         ],

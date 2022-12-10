@@ -3,6 +3,7 @@ import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../network/oauth_service.dart';
@@ -121,15 +122,23 @@ class BottomPage extends StatelessWidget {
         backgroundColor: AppColors.background(context),
         foregroundColor: AppColors.primaryContent(context),
         elevation: 0,
-        title: Center(
-          child: Image(
-            image: AssetImage(
-                isLightMode ? 'assets/logo-light.png' : 'assets/logo-dark.png',
-                package: "diy"),
-            height: 40,
-            fit: BoxFit.cover,
-          ),
+        title: Column(
+          children: [
+            if (title != null)
+              Padding(
+                padding: padding,
+                child: Text(
+                  title!,
+                  style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryContent(context)),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+          ],
         ),
+        centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {
@@ -142,31 +151,29 @@ class BottomPage extends StatelessWidget {
         //     ),
         //   ),
         // ],
-
-        automaticallyImplyLeading:
-            getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
+        leading: Builder(
+            builder: (context) => Visibility(
+                  visible:
+                      getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20.0, top: 15, bottom: 20),
+                    child: InkWell(
+                        borderRadius: BorderRadius.circular(25),
+                        onTap: () => Scaffold.of(context).openDrawer(),
+                        child: SvgPicture.asset(
+                          "packages/diy/assets/menu.svg",
+                          color: AppColors.textColorTextField(context),
+                        )),
+                  ),
+                )),
+        // automaticallyImplyLeading:
+        //     getIt<OAuthService>().uiStatus.BackMenuList.isNotEmpty,
       ),
       body: CustomScrollView(
         controller: ModalScrollController.of(context),
         physics: const BouncingScrollPhysics(),
         slivers: [
-          if (title != null)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: 60.sp),
-                child: Padding(
-                  padding: padding,
-                  child: Text(
-                    title!,
-                    style: TextStyle(
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryContent(context)),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
           if (subtitle != null)
             SliverToBoxAdapter(
               child: Padding(
