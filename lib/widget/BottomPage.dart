@@ -26,6 +26,7 @@ class BottomPage extends StatelessWidget {
     final isLightMode = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       drawer: Drawer(
+        width: WidgetsBinding.instance.window.physicalSize.width,
         backgroundColor: AppColors.background(context),
         child: Builder(
           builder: (context) {

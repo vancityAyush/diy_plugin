@@ -103,6 +103,51 @@ class UploadBankProof extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             WidgetHelper.verticalSpace20,
+            if (isReadOnly)
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: AppColors.primaryColor(context),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 15),
+                          textStyle: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold)),
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/form/kyc',
+                          (route) => false,
+                        );
+                      },
+                      child: Row(
+                        children: const [
+                          const Spacer(),
+                          Text(
+                            'Continue',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             if (!isReadOnly)
               Expanded(
                 child: Align(
