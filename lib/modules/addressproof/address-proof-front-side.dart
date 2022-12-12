@@ -20,92 +20,111 @@ class AddressProofFront extends StatelessWidget {
         child: Column(
           children: [
             WidgetHelper.verticalSpace20,
-            ReactiveImagePicker(
-              formControlName: 'AddressProofFront',
-              decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.zero,
-                  labelText: 'Drop your document image here',
-                  filled: false,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  helperText: ''),
-              validationMessages: {
-                ValidationMessage.required: (a) =>
-                    'Please upload your document image',
-              },
-              inputBuilder: (onPressed) => DottedBorder(
-                color:
-                    AppColors.footerText(context), //color of dotted/dash line
-                strokeWidth: 1, //thickness of dash/dots
-                dashPattern: [4, 4],
-                child: InkWell(
-                  onTap: onPressed,
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.textFieldBackground(context),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Icon(
-                            Icons.cloud_upload_outlined,
-                            color: AppColors.primaryColor(context),
-                            size: 50,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Drop your document image here',
-                            style: TextStyle(
-                              color: AppColors.primaryContent(context),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
+            if (!isReadOnly)
+              ReactiveImagePicker(
+                formControlName: 'AddressProofFront',
+                decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    labelText: 'Drop your document image here',
+                    filled: false,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    helperText: ''),
+                validationMessages: {
+                  ValidationMessage.required: (a) =>
+                      'Please upload your document image',
+                },
+                inputBuilder: (onPressed) => DottedBorder(
+                  color:
+                      AppColors.footerText(context), //color of dotted/dash line
+                  strokeWidth: 1, //thickness of dash/dots
+                  dashPattern: [4, 4],
+                  child: InkWell(
+                    onTap: onPressed,
+                    child: Container(
+                      height: 200,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColors.textFieldBackground(context),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              height: 20,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Supported: JPG, JPEG or PNG less than 10MB',
-                            style: TextStyle(
-                              color: AppColors.primaryContent(context),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
+                            Icon(
+                              Icons.cloud_upload_outlined,
+                              color: AppColors.primaryColor(context),
+                              size: 50,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Drop your document image here',
+                              style: TextStyle(
+                                color: AppColors.primaryContent(context),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Supported: JPG, JPEG or PNG less than 10MB',
+                              style: TextStyle(
+                                color: AppColors.primaryContent(context),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              //     TextButton.icon(
-              //   onPressed: onPressed,
-              //   icon: Icon(
-              //     Icons.image,
-              //     color: AppColors.primaryColor(context),
-              //   ),
-              //   label: Text(
-              //     'Drop your document image hereProofs supported: Photo of your cancelled cheque / Photo of your passbook',
-              //     style: TextStyle(
-              //         color: AppColors.primaryContent(context),
-              //         fontSize: 14.sp),
-              //   ),
-              // ),
-            ),
+                //     TextButton.icon(
+                //   onPressed: onPressed,
+                //   icon: Icon(
+                //     Icons.image,
+                //     color: AppColors.primaryColor(context),
+                //   ),
+                //   label: Text(
+                //     'Drop your document image hereProofs supported: Photo of your cancelled cheque / Photo of your passbook',
+                //     style: TextStyle(
+                //         color: AppColors.primaryContent(context),
+                //         fontSize: 14.sp),
+                //   ),
+                // ),
+              ),
+            if (isReadOnly)
+              Image(
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor(context),
+                    ),
+                  );
+                },
+                image: getIt<ApiRepository>()
+                    .getImage(DOCTYPE.AddressProofFrontSide),
+                width: double.infinity,
+                height: 250.sp,
+                fit: BoxFit.contain,
+              ),
+            WidgetHelper.verticalSpace20,
             if (!isReadOnly)
               Expanded(
                 child: Align(

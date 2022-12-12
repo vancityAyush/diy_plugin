@@ -169,9 +169,60 @@ class FormService {
       'AddressProofFront': FormControl<ImageFile>(
         validators: [Validators.required],
       ),
+      'AddressProofBack': FormControl<ImageFile>(
+        validators: [Validators.required],
+      ),
       'List': FormControl<List>(
         validators: [Validators.required],
       ),
+    },
+  );
+  final correspondence_address = FormGroup(
+    {
+      'House/bldg/block': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'Street': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'Location': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'City': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'PinCode': FormControl<String>(
+        validators: [
+          Validators.required,
+          Validators.minLength(7),
+        ],
+        touched: false,
+      ),
+      'State': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'Country': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
     },
   );
 }

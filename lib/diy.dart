@@ -18,6 +18,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'modules/addressproof/address-proof-front-side.dart';
 import 'modules/bank/bank_account.dart';
+import 'modules/correspondence_address/correspondence_address.dart';
 import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
 import 'modules/pan/enter_pan.dart';
@@ -91,6 +92,9 @@ class FlutterDIY {
               // isReadOnly = false;
               Widget page;
               switch (settings.name) {
+                case '/form/form_correspondence_address':
+                  page = Correspondence_address(isReadOnly: isReadOnly);
+                  break;
                 case '/form/address-proof-back-side':
                   page = AddressProofBack(isReadOnly: isReadOnly);
                   break;
