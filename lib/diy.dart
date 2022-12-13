@@ -5,6 +5,7 @@ import 'package:diy/modules/bank_proof/upload_bank_proof.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/modules/kyc/kyc-select.dart';
 import 'package:diy/modules/upload-pan-photo/upload-pan-photo.dart';
+import 'package:diy/modules/upload-signature/upload-signature.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/utils/constants.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
@@ -19,10 +20,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'modules/addressproof/address-proof-front-side.dart';
 import 'modules/bank/bank_account.dart';
 import 'modules/correspondence_address/correspondence_address.dart';
+import 'modules/derivativeproof/derivative-proof.dart';
 import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
+import 'modules/kyc/digilocker.dart';
 import 'modules/pan/enter_pan.dart';
 import 'modules/pan/validate_kra.dart';
+import 'modules/upload-selfie/upload-selfie.dart';
 import 'modules/verify-email/verify_email.dart';
 import 'modules/verify-mobile/ui/signup_page.dart';
 import 'network/api_repository.dart';
@@ -92,7 +96,19 @@ class FlutterDIY {
               // isReadOnly = false;
               Widget page;
               switch (settings.name) {
-                case '/form/form_correspondence_address':
+                case '/form/digilocker':
+                  page = const SelectDigilocker();
+                  break;
+                case '/form/upload-selfie':
+                  page = UploadSelfie(isReadOnly: isReadOnly);
+                  break;
+                case '/form/upload-sign':
+                  page = UploadSignature(isReadOnly: isReadOnly);
+                  break;
+                case '/form/upload-derivative-proof':
+                  page = DerivativeProofFront(isReadOnly: isReadOnly);
+                  break;
+                case '/form/correspondence-address':
                   page = Correspondence_address(isReadOnly: isReadOnly);
                   break;
                 case '/form/address-proof-back-side':

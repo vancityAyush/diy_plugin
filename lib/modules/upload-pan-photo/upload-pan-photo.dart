@@ -24,79 +24,97 @@ class UploadPanPhoto extends StatelessWidget {
         height: WidgetsBinding.instance.window.physicalSize.height / 5,
         child: Column(
           children: [
-            ReactiveImagePicker(
-              formControlName: 'PanPhoto',
-              decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.zero,
-                  labelText: 'Drop your document image here',
-                  filled: false,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  helperText: ''),
-              validationMessages: {
-                ValidationMessage.required: (a) =>
-                    'Please upload your document image',
-              },
-              inputBuilder: (onPressed) => DottedBorder(
-                color:
-                    AppColors.footerText(context), //color of dotted/dash line
-                strokeWidth: 1, //thickness of dash/dots
-                dashPattern: [4, 4],
-                child: InkWell(
-                  onTap: onPressed,
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.textFieldBackground(context),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Icon(
-                            Icons.cloud_upload_outlined,
-                            color: AppColors.primaryColor(context),
-                            size: 50,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Drop your document image here',
-                            style: TextStyle(
-                              color: AppColors.primaryContent(context),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
+            WidgetHelper.verticalSpace20,
+            if (!isReadOnly)
+              ReactiveImagePicker(
+                formControlName: 'PanPhoto',
+                decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    labelText: 'Drop your document image here',
+                    filled: false,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    helperText: ''),
+                validationMessages: {
+                  ValidationMessage.required: (a) =>
+                      'Please upload your document image',
+                },
+                inputBuilder: (onPressed) => DottedBorder(
+                  color:
+                      AppColors.footerText(context), //color of dotted/dash line
+                  strokeWidth: 1, //thickness of dash/dots
+                  dashPattern: [4, 4],
+                  child: InkWell(
+                    onTap: onPressed,
+                    child: Container(
+                      height: 200,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColors.textFieldBackground(context),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              height: 20,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Supported: JPG, JPEG or PNG less than 10MB',
-                            style: TextStyle(
-                              color: AppColors.primaryContent(context),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
+                            Icon(
+                              Icons.cloud_upload_outlined,
+                              color: AppColors.primaryColor(context),
+                              size: 50,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Drop your document image here',
+                              style: TextStyle(
+                                color: AppColors.primaryContent(context),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Supported: JPG, JPEG or PNG less than 10MB',
+                              style: TextStyle(
+                                color: AppColors.primaryContent(context),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
             WidgetHelper.verticalSpace20,
+            if (isReadOnly)
+              Image(
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor(context),
+                    ),
+                  );
+                },
+                image: getIt<ApiRepository>().getImage(DOCTYPE.PanPhoto),
+                width: double.infinity,
+                height: 250.sp,
+                fit: BoxFit.contain,
+              ),
             if (isReadOnly)
               Expanded(
                 child: Align(

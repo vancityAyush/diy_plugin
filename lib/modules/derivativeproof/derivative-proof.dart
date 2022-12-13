@@ -5,17 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
-//TODO Merge both screens as one
-class AddressProofBack extends StatelessWidget {
+class DerivativeProofFront extends StatelessWidget {
   bool isReadOnly;
-  AddressProofBack({Key? key, this.isReadOnly = false}) : super(key: key);
-  final uploadAddressProofBack = getIt<FormService>().uploadAddressProof;
+  DerivativeProofFront({Key? key, this.isReadOnly = false}) : super(key: key);
+  final uploadDerivativeProof = getIt<FormService>().uploadDerivativeProof;
   @override
   Widget build(BuildContext context) {
     return DiyForm(
-      formGroup: uploadAddressProofBack,
-      title: "Upload Aadhaar Proof",
-      subtitle: "Aadhaar Proof(back side)",
+      formGroup: uploadDerivativeProof,
+      title: "Derivative Proof",
+      //subtitle: "Aadhaar Proof(front side)",
       child: SizedBox(
         height: WidgetsBinding.instance.window.physicalSize.height / 5,
         child: Column(
@@ -23,7 +22,7 @@ class AddressProofBack extends StatelessWidget {
             WidgetHelper.verticalSpace20,
             if (!isReadOnly)
               ReactiveImagePicker(
-                formControlName: 'AddressProofBack',
+                formControlName: 'DerivativeProof',
                 decoration: const InputDecoration(
                     contentPadding: EdgeInsets.zero,
                     labelText: 'Drop your document image here',
@@ -93,6 +92,20 @@ class AddressProofBack extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                //     TextButton.icon(
+                //   onPressed: onPressed,
+                //   icon: Icon(
+                //     Icons.image,
+                //     color: AppColors.primaryColor(context),
+                //   ),
+                //   label: Text(
+                //     'Drop your document image hereProofs supported: Photo of your cancelled cheque / Photo of your passbook',
+                //     style: TextStyle(
+                //         color: AppColors.primaryContent(context),
+                //         fontSize: 14.sp),
+                //   ),
+                // ),
               ),
             if (isReadOnly)
               Image(
@@ -106,13 +119,13 @@ class AddressProofBack extends StatelessWidget {
                   );
                 },
                 image: getIt<ApiRepository>()
-                    .getImage(DOCTYPE.AddressProofBackSide),
+                    .getImage(DOCTYPE.AddressProofFrontSide),
                 width: double.infinity,
                 height: 250.sp,
                 fit: BoxFit.contain,
               ),
             WidgetHelper.verticalSpace20,
-            if (isReadOnly)
+            if (!isReadOnly)
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -128,7 +141,7 @@ class AddressProofBack extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
-                          '/form/kyc',
+                          '/form/address-proof-back-side',
                           (route) => false,
                         );
                       },
@@ -157,20 +170,19 @@ class AddressProofBack extends StatelessWidget {
                   ),
                 ),
               ),
-            if (!isReadOnly)
+            if (isReadOnly!)
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: NextButton(
                     text: "Next",
                     onPressed: () async {
-                      ImageFile imageFile = uploadAddressProofBack
-                          .control('AddressProofFront')
+                      ImageFile imageFile = uploadDerivativeProof
+                          .control('DerivativeProof')
                           .value;
                       if (imageFile != null) {
                         final res = await getIt<ApiRepository>().uploadImage(
-                            file: imageFile.image!,
-                            type: DOCTYPE.AddressProofBackSide);
+                            file: imageFile.image!, type: DOCTYPE.IncomeProo);
                         print(res);
                         final res3 =
                             await getIt<OAuthService>().updateUiStatus().then(
@@ -193,4 +205,6 @@ class AddressProofBack extends StatelessWidget {
       ),
     );
   }
+  //),
+  //);
 }

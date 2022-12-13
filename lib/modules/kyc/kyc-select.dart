@@ -30,7 +30,9 @@ class KycSelect extends StatelessWidget {
                     context,
                     "Share using Aadhaar via Digilocker",
                     "Sign in and use your Digilocker account",
-                    () {},
+                    () {
+                      Navigator.popAndPushNamed(context, '/form/digilocker');
+                    },
                   ),
                 ),
                 Visibility(

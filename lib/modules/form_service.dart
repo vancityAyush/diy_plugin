@@ -106,6 +106,7 @@ class FormService {
       ),
     },
   );
+
   final selectIfscForm = FormGroup(
     {
       'bank': FormControl<String>(
@@ -223,6 +224,30 @@ class FormService {
         touched: false,
       ),
       'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
+    },
+  );
+  final uploadSignature = FormGroup(
+    {
+      'UploadSignature': FormControl<ImageFile>(
+        validators: [Validators.required],
+      )
+    },
+  );
+  final uploadSelfie = FormGroup(
+    {
+      'UploadSelfie': FormControl<ImageFile>(
+        validators: [Validators.required],
+      )
+    },
+  );
+  final uploadDerivativeProof = FormGroup(
+    {
+      'DerivativeProof': FormControl<ImageFile>(
+        validators: [Validators.required],
+      ),
+      'List': FormControl<List>(
+        validators: [Validators.required],
+      ),
     },
   );
 }

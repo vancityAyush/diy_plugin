@@ -31,6 +31,10 @@ class UiStatus {
     8: "Upload Pan Photo",
     18: "Address Proof Front Side",
     19: "Address Proof Back Side",
+    15: "Correspondence Address",
+    9: "Upload Signature",
+    20: "Upload Selfie",
+    27: "Derivative Proof"
   };
   @JsonKey(ignore: true)
   Map<int, String> modules = {
@@ -45,6 +49,10 @@ class UiStatus {
     10: "/form/kyc",
     8: "/form/upload-pan-photo",
     18: "/form/address-proof-front-side",
-    19: "/form/address-proof-back-side"
+    19: "/form/address-proof-back-side",
+    15: "/form/correspondence-address",
+    9: "/form/upload-sign",
+    20: "/form/upload-selfie",
+    27: "/form/upload-derivative-proof"
   };
 }
