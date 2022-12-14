@@ -217,13 +217,9 @@ class FormService {
         ],
         touched: false,
       ),
-      'Country': FormControl<String>(
-        validators: [
-          Validators.required,
-        ],
-        touched: false,
+      'Country': FormControl<int>(
+        validators: [Validators.required],
       ),
-      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
     },
   );
   final uploadSignature = FormGroup(
@@ -231,6 +227,62 @@ class FormService {
       'UploadSignature': FormControl<ImageFile>(
         validators: [Validators.required],
       )
+    },
+  );
+  final personalDetails = FormGroup(
+    {
+      'Gender': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'MaritalStatus': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'FatherName': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'MotherName': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+    },
+  );
+  final financialInfo = FormGroup(
+    {
+      'Gender': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'MaritalStatus': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'FatherName': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'MotherName': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
     },
   );
   final uploadSelfie = FormGroup(

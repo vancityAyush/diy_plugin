@@ -33,6 +33,8 @@ class UiStatus {
     19: "Address Proof Back Side",
     15: "Correspondence Address",
     9: "Upload Signature",
+    13: "Personal Details",
+    21: "Financial Information",
     20: "Upload Selfie",
     27: "Derivative Proof"
   };
@@ -52,6 +54,8 @@ class UiStatus {
     19: "/form/address-proof-back-side",
     15: "/form/correspondence-address",
     9: "/form/upload-sign",
+    13: "/form/personal-details",
+    21: "/form/financial-info",
     20: "/form/upload-selfie",
     27: "/form/upload-derivative-proof"
   };

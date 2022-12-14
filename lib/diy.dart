@@ -2,8 +2,10 @@ library diy;
 
 import 'package:diy/modules/addressproof/address-proof-back-side.dart';
 import 'package:diy/modules/bank_proof/upload_bank_proof.dart';
+import 'package:diy/modules/financial-info/financial-info.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/modules/kyc/kyc-select.dart';
+import 'package:diy/modules/personal-details/personal-details.dart';
 import 'package:diy/modules/upload-pan-photo/upload-pan-photo.dart';
 import 'package:diy/modules/upload-signature/upload-signature.dart';
 import 'package:diy/network/http_client.dart';
@@ -101,6 +103,12 @@ class FlutterDIY {
                   break;
                 case '/form/upload-selfie':
                   page = UploadSelfie(isReadOnly: isReadOnly);
+                  break;
+                case '/form/financial-info':
+                  page = FinancialInfo(isReadOnly: isReadOnly);
+                  break;
+                case '/form/personal-details':
+                  page = PersonalDetails(isReadOnly: isReadOnly);
                   break;
                 case '/form/upload-sign':
                   page = UploadSignature(isReadOnly: isReadOnly);

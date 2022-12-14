@@ -1,5 +1,6 @@
 import 'package:diy/diy.dart';
 import 'package:diy/modules/form_service.dart';
+import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/util.dart';
 import 'package:diy/widget/diy_form.dart';
 import 'package:diy/widget/next_button.dart';
@@ -7,22 +8,68 @@ import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../network/oauth_service.dart';
 import '../../../utils/theme_files/app_colors.dart';
+import 'models/country_dropdown.dart';
 
 class Correspondence_address extends StatelessWidget {
   bool isReadOnly;
   Correspondence_address({Key? key, this.isReadOnly = false}) : super(key: key);
 
-  final correspondence_address = getIt<FormService>().correspondence_address;
+  final correspondenceAddress = getIt<FormService>().correspondence_address;
   @override
   Widget build(BuildContext context) {
     return DiyForm(
       title: 'Correspondence \nAddress',
       subtitle: 'Lorem ipsum dolor sit amet, consectetur \n adipiscing elit,',
-      formGroup: correspondence_address,
+      formGroup: correspondenceAddress,
       child: Column(
         children: [
+          RichText(
+              text: TextSpan(children: [
+            WidgetSpan(
+              child: FutureBuilder(
+                future: getIt<ApiRepository>().getCountryDropDown(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: ReactiveDropdownField(
+                        formControlName: 'Country',
+                        hint: Text('Select Country',
+                            style: TextStyle(
+                                color: AppColors.primaryColor(context),
+                                fontWeight: FontWeight.w700)),
+                        iconSize: 30,
+                        iconEnabledColor: AppColors.primaryColor(context),
+                        iconDisabledColor: AppColors.primaryContent(context),
+                        items: [
+                          for (CountryDropdown item in snapshot.data)
+                            DropdownMenuItem(
+                              value: item.CountryId,
+                              child: Text(
+                                item.CountryName,
+                                style: TextStyle(
+                                  color: AppColors.primaryContent(context),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              alignment: Alignment.bottomLeft,
+                            )
+                        ],
+                        elevation: 0,
+                        dropdownColor: AppColors.background(context),
+                        validationMessages: {
+                          'required': (error) => 'Please Select a Country',
+                        },
+                      ),
+                    );
+                  }
+                  return CircularProgressIndicator();
+                },
+              ),
+            ),
+          ])),
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
             formControlName: 'House/bldg/block',
@@ -277,7 +324,7 @@ class Correspondence_address extends StatelessWidget {
             onPressed: () async {
               return await getIt<OAuthService>()
                   .sendOtp(
-                correspondence_address.control('phone').value,
+                correspondenceAddress.control('phone').value,
               )
                   .then(
                 (res) {

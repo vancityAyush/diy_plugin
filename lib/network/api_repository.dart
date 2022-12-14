@@ -10,6 +10,7 @@ import 'package:diy/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
+import '../modules/correspondence_address/models/country_dropdown.dart';
 import '../modules/ifsc/models/bank.dart';
 import '../utils/libs.dart';
 
@@ -147,5 +148,19 @@ class ApiRepository {
       "/app/settings/",
     );
     return res;
+  }
+
+  Future<List<CountryDropdown>> getCountryDropDown() async {
+    final res = await http.get("/masters/countries");
+    return res
+        .map<CountryDropdown>((e) => CountryDropdown.fromJson(e))
+        .toList();
+  }
+
+  Future<List<CountryDropdown>> getStateDropDown() async {
+    final res = await http.get("/masters/states");
+    return res
+        .map<CountryDropdown>((e) => CountryDropdown.fromJson(e))
+        .toList();
   }
 }
