@@ -35,22 +35,31 @@ class KycSelect extends StatelessWidget {
                     },
                   ),
                 ),
-                Visibility(
-                  visible: res["EnableOfflineAadhar"],
-                  child: buildCard(
-                    context,
-                    "Share offline Aadhaar",
-                    "Keep your Aadhaar number, PAN card ready`",
-                    () {},
-                  ),
-                ),
+                // Visibility(
+                //   visible: res["EnableOfflineAadhar"],
+                //   child: buildCard(
+                //     context,
+                //     "Share offline Aadhaar",
+                //     "Keep your Aadhaar number, PAN card ready`",
+                //     () {},
+                //   ),
+                // ),
                 Visibility(
                   visible: res["EnableManual"],
                   child: buildCard(
                     context,
                     "Enter your personal details manually",
                     "Keep your Pan card, address proof, photo ready for upload",
-                    () {},
+                    () async {
+                      await getIt<ApiRepository>().manualJourney();
+                      await getIt<OAuthService>().updateUiStatus().then(
+                            (route) => Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              route,
+                              (route) => false,
+                            ),
+                          );
+                    },
                   ),
                 ),
               ],

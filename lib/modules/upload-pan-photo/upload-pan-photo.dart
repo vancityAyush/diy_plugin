@@ -124,9 +124,9 @@ class UploadPanPhoto extends StatelessWidget {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           primary: AppColors.primaryColor(context),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 50, vertical: 15),
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold)),
                       onPressed: () {
                         Navigator.pushNamedAndRemoveUntil(
@@ -137,11 +137,11 @@ class UploadPanPhoto extends StatelessWidget {
                       },
                       child: Row(
                         children: const [
-                          const Spacer(),
+                          Spacer(),
                           Text(
                             'Continue',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                             ),

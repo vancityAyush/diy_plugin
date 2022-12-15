@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:diy/diy.dart';
+import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
+import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
@@ -10,7 +12,6 @@ import 'package:diy/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-import '../modules/correspondence_address/models/country_dropdown.dart';
 import '../modules/ifsc/models/bank.dart';
 import '../utils/libs.dart';
 
@@ -98,8 +99,8 @@ class ApiRepository {
         "FileName": fileName,
         "Latitude": 0,
         "Longitude": 0,
-        "FileDataBase64": base64Image,
         "FileType": mimeType,
+        "FileDataBase64": base64Image,
       },
     );
     return res;
@@ -150,17 +151,22 @@ class ApiRepository {
     return res;
   }
 
-  Future<List<CountryDropdown>> getCountryDropDown() async {
+  Future<void> manualJourney() async {
+    final res = await http.get("/app/manual-journey/");
+    return res;
+  }
+
+  Future<List<CountryDropdownItem>> getCountries() async {
     final res = await http.get("/masters/countries");
     return res
-        .map<CountryDropdown>((e) => CountryDropdown.fromJson(e))
+        .map<CountryDropdownItem>((e) => CountryDropdownItem.fromJson(e))
         .toList();
   }
 
-  Future<List<CountryDropdown>> getStateDropDown() async {
+  Future<List<StateDropdownItem>> getStates() async {
     final res = await http.get("/masters/states");
     return res
-        .map<CountryDropdown>((e) => CountryDropdown.fromJson(e))
+        .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
         .toList();
   }
 }

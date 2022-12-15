@@ -1,3 +1,5 @@
+import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
+import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_image_picker/image_file.dart';
 
@@ -211,13 +213,13 @@ class FormService {
         ],
         touched: false,
       ),
-      'State': FormControl<String>(
+      'State': FormControl<StateDropdownItem>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'Country': FormControl<int>(
+      'Country': FormControl<CountryDropdownItem>(
         validators: [Validators.required],
       ),
     },

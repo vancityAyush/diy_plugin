@@ -1,4 +1,6 @@
 import 'package:diy/diy.dart';
+import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
+import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/util.dart';
@@ -9,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../utils/theme_files/app_colors.dart';
-import 'models/country_dropdown.dart';
 
 class Correspondence_address extends StatelessWidget {
   bool isReadOnly;
@@ -24,52 +25,6 @@ class Correspondence_address extends StatelessWidget {
       formGroup: correspondenceAddress,
       child: Column(
         children: [
-          RichText(
-              text: TextSpan(children: [
-            WidgetSpan(
-              child: FutureBuilder(
-                future: getIt<ApiRepository>().getCountryDropDown(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 50),
-                      child: ReactiveDropdownField(
-                        formControlName: 'Country',
-                        hint: Text('Select Country',
-                            style: TextStyle(
-                                color: AppColors.primaryColor(context),
-                                fontWeight: FontWeight.w700)),
-                        iconSize: 30,
-                        iconEnabledColor: AppColors.primaryColor(context),
-                        iconDisabledColor: AppColors.primaryContent(context),
-                        items: [
-                          for (CountryDropdown item in snapshot.data)
-                            DropdownMenuItem(
-                              value: item.CountryId,
-                              child: Text(
-                                item.CountryName,
-                                style: TextStyle(
-                                  color: AppColors.primaryContent(context),
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              alignment: Alignment.bottomLeft,
-                            )
-                        ],
-                        elevation: 0,
-                        dropdownColor: AppColors.background(context),
-                        validationMessages: {
-                          'required': (error) => 'Please Select a Country',
-                        },
-                      ),
-                    );
-                  }
-                  return CircularProgressIndicator();
-                },
-              ),
-            ),
-          ])),
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
             formControlName: 'House/bldg/block',
@@ -249,38 +204,79 @@ class Correspondence_address extends StatelessWidget {
             },
           ),
           WidgetHelper.verticalSpace,
-          ReactiveTextField(
-            cursorColor: AppColors.primaryColor(context),
-            formControlName: 'State',
-            decoration: InputDecoration(
-              fillColor: AppColors.textFieldBackground(context),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.textFieldBackground(context),
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.primaryColor(context),
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              // labelText: 'Phone Number',
-              // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
-              hintText: 'State',
-              hintStyle:
-                  TextStyle(color: AppColors.textColorTextField(context)),
-
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primaryColor(context)),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              filled: AppColors.textFieldBackground(context) != null,
-            ),
-            showErrors: (control) => control.invalid && control.hasFocus,
-            validationMessages: {
-              'required': (error) => 'The Phone Number must not be empty',
+          FutureBuilder<List<CountryDropdownItem>>(
+            future: getIt<ApiRepository>().getCountries(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<CountryDropdownItem>> snapshot) {
+              if (snapshot.hasData) {
+                return ReactiveDropdownField(
+                  items: snapshot.data!
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e.CountryName,
+                            style: TextStyle(
+                              color: AppColors.primaryContent(
+                                context,
+                              ),
+                            ),
+                          )))
+                      .toList(),
+                  formControlName: 'Country',
+                  style: TextStyle(
+                    color: AppColors.primaryContent(context),
+                  ),
+                  decoration: InputDecoration(
+                    filled: AppColors.textFieldBackground(context) != null,
+                    labelText: 'Country',
+                    labelStyle:
+                        TextStyle(color: AppColors.primaryContent(context)),
+                  ),
+                  showErrors: (control) => control.invalid && control.dirty,
+                  validationMessages: {
+                    'required': (error) => 'Please Select Country',
+                  },
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          ),
+          WidgetHelper.verticalSpace,
+          FutureBuilder<List<StateDropdownItem>>(
+            future: getIt<ApiRepository>().getStates(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<StateDropdownItem>> snapshot) {
+              if (snapshot.hasData) {
+                return ReactiveDropdownField(
+                  items: snapshot.data!
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e.StateName,
+                            style: TextStyle(
+                              color: AppColors.primaryContent(
+                                context,
+                              ),
+                            ),
+                          )))
+                      .toList(),
+                  formControlName: 'State',
+                  style: TextStyle(
+                    color: AppColors.primaryContent(context),
+                  ),
+                  decoration: InputDecoration(
+                    filled: AppColors.textFieldBackground(context) != null,
+                    labelText: 'State',
+                    labelStyle:
+                        TextStyle(color: AppColors.primaryContent(context)),
+                  ),
+                  showErrors: (control) => control.invalid && control.dirty,
+                  validationMessages: {
+                    'required': (error) => 'Please Select State',
+                  },
+                );
+              }
+              return CircularProgressIndicator();
             },
           ),
           WidgetHelper.verticalSpace20,
