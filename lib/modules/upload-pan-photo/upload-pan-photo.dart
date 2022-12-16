@@ -18,7 +18,7 @@ class UploadPanPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return DiyForm(
       formGroup: uploadPanPhotoForm,
-      title: "Upload Pan Photo",
+      title: isReadOnly ? "PAN Card Uploaded" : "Upload Pan Photo",
       subtitle: "Upload a clear image of your PAN card",
       child: SizedBox(
         height: WidgetsBinding.instance.window.physicalSize.height / 5,

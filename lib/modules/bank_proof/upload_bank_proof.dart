@@ -97,6 +97,15 @@ class UploadBankProof extends StatelessWidget {
               ),
             if (isReadOnly)
               Image(
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor(context),
+                    ),
+                  );
+                },
                 image: getIt<ApiRepository>().getImage(DOCTYPE.BankProof),
                 width: double.infinity,
                 height: 250.sp,

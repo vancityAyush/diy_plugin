@@ -18,9 +18,16 @@ class SelectDigilocker extends StatelessWidget {
           height: WidgetsBinding.instance.window.physicalSize.height / 5,
           child: Column(
             children: [
-              Text(
-                'Share a digital copy (name, gender, DoB, address, and photo) of your Asdhaar from your Govt. Digilocker account for KYC. Your 12 gidit Aadhaar number is never revealed or collected. The Aadhaar and the PAN GZJ1254A could belong to you.',
-                style: TextStyle(color: AppColors.subHeading(context)),
+              WidgetHelper.verticalSpace20,
+              WidgetHelper.verticalSpace20,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Share a digital copy (name, gender, DoB, address, and photo) of your Asdhaar from your Govt. Digilocker account for KYC. Your 12 gidit Aadhaar number is never revealed or collected. The Aadhaar and the PAN GZJ1254A could belong to you.',
+                  style: TextStyle(
+                      color: AppColors.subHeading(context), fontSize: 14.sp),
+                  textAlign: TextAlign.center,
+                ),
               ),
               Expanded(
                 child: Align(
