@@ -1,6 +1,7 @@
 import 'package:diy/diy.dart';
 import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
 import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
+import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/util.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../utils/theme_files/app_colors.dart';
+import 'models/country_dropdown_item.dart';
 
 class Correspondence_address extends StatelessWidget {
   bool isReadOnly;
@@ -19,6 +21,9 @@ class Correspondence_address extends StatelessWidget {
   final correspondenceAddress = getIt<FormService>().correspondence_address;
   @override
   Widget build(BuildContext context) {
+    if (!isReadOnly) {
+      correspondenceAddress.reset();
+    }
     return DiyForm(
       title: 'Correspondence \nAddress',
       subtitle: 'Lorem ipsum dolor sit amet, consectetur \n adipiscing elit,',
@@ -59,7 +64,7 @@ class Correspondence_address extends StatelessWidget {
               'required': (error) => 'Required Field',
             },
           ),
-          WidgetHelper.verticalSpace,
+          WidgetHelper.verticalSpace20,
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
             formControlName: 'Street',
@@ -204,6 +209,78 @@ class Correspondence_address extends StatelessWidget {
             },
           ),
           WidgetHelper.verticalSpace,
+          Container(
+            height: 55.sp,
+            decoration: BoxDecoration(
+                color: AppColors.textFieldBackground(context),
+                borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: FutureBuilder<List<StateDropdownItem>>(
+                future: getIt<ApiRepository>().getStates(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<StateDropdownItem>> snapshot) {
+                  if (snapshot.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ReactiveDropdownField(
+                        dropdownColor: AppColors.background(context),
+                        icon: Icon(Icons.arrow_drop_down),
+                        items: snapshot.data!
+                            .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(
+                                  e.StateName,
+                                  style: TextStyle(
+                                    color: AppColors.textColorTextField(
+                                      context,
+                                    ),
+                                  ),
+                                )))
+                            .toList(),
+                        formControlName: 'State',
+                        style: TextStyle(
+                          color: AppColors.textColorTextField(context),
+                        ),
+                        hint: Text('Select State',
+                            style: TextStyle(
+                              color: AppColors.textColorTextField(context),
+                            )),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          // filled: AppColors.textFieldBackground(context) != null,
+                        ),
+                        borderRadius: BorderRadius.circular(5),
+                        showErrors: (control) =>
+                            control.invalid && control.dirty,
+                        validationMessages: {
+                          'required': (error) => 'Please Select State',
+                        },
+                        iconSize: 30,
+                        iconEnabledColor: AppColors.primaryColor(context),
+                        iconDisabledColor: AppColors.primaryContent(context),
+                      ),
+                    );
+                  }
+                  return Container(
+                    height: 55.sp,
+                    padding: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
+                        color: AppColors.textFieldBackground(context),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: DropdownMenuItem(
+                      child: Text(
+                        'Select State',
+                        style: TextStyle(
+                          color: AppColors.textColorTextField(
+                            context,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           FutureBuilder<List<CountryDropdownItem>>(
             future: getIt<ApiRepository>().getCountries(),
             builder: (BuildContext context,
@@ -280,39 +357,78 @@ class Correspondence_address extends StatelessWidget {
             },
           ),
           WidgetHelper.verticalSpace20,
-          ReactiveTextField(
-            cursorColor: AppColors.primaryColor(context),
-            formControlName: 'Country',
-            decoration: InputDecoration(
-              fillColor: AppColors.textFieldBackground(context),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.textFieldBackground(context),
-                ),
-                borderRadius: BorderRadius.circular(4),
+          Container(
+            height: 55.sp,
+            decoration: BoxDecoration(
+                color: AppColors.textFieldBackground(context),
+                borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: FutureBuilder<List<CountryDropdownItem>>(
+                future: getIt<ApiRepository>().getCountries(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<CountryDropdownItem>> snapshot) {
+                  if (snapshot.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ReactiveDropdownField(
+                        dropdownColor: AppColors.background(context),
+                        icon: Icon(Icons.arrow_drop_down),
+                        items: snapshot.data!
+                            .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(
+                                  e.CountryName,
+                                  style: TextStyle(
+                                    color: AppColors.textColorTextField(
+                                      context,
+                                    ),
+                                  ),
+                                )))
+                            .toList(),
+                        formControlName: 'Country',
+                        style: TextStyle(
+                          color: AppColors.textColorTextField(context),
+                        ),
+                        hint: Text('Select Country',
+                            style: TextStyle(
+                              color: AppColors.textColorTextField(context),
+                            )),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          // filled: AppColors.textFieldBackground(context) != null,
+                        ),
+                        borderRadius: BorderRadius.circular(5),
+                        showErrors: (control) =>
+                            control.invalid && control.dirty,
+                        validationMessages: {
+                          'required': (error) => 'Please Select Country',
+                        },
+                        iconSize: 30,
+                        iconEnabledColor: AppColors.primaryColor(context),
+                        iconDisabledColor: AppColors.primaryContent(context),
+                      ),
+                    );
+                  }
+                  return Container(
+                    height: 55.sp,
+                    padding: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
+                        color: AppColors.textFieldBackground(context),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: DropdownMenuItem(
+                      child: Text(
+                        'Select Country',
+                        style: TextStyle(
+                          color: AppColors.textColorTextField(
+                            context,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.primaryColor(context),
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              // labelText: 'Phone Number',
-              // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
-              hintText: 'Country',
-              hintStyle:
-                  TextStyle(color: AppColors.textColorTextField(context)),
-
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primaryColor(context)),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              filled: AppColors.textFieldBackground(context) != null,
             ),
-            showErrors: (control) => control.invalid && control.hasFocus,
-            validationMessages: {
-              'required': (error) => 'The Phone Number must not be empty',
-            },
           ),
           WidgetHelper.verticalSpace20,
           NextButton(

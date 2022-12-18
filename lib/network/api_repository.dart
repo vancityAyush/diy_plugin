@@ -4,6 +4,11 @@ import 'dart:io';
 import 'package:diy/diy.dart';
 import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
 import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
+import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
+import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
+import 'package:diy/modules/financial-info/models/income_dropdown_item.dart';
+import 'package:diy/modules/financial-info/models/occupation_dropdown_item.dart';
+import 'package:diy/modules/financial-info/models/trading_experience_dropdown_item.dart';
 import 'package:diy/modules/verify-mobile/models/relation_dropdown.dart';
 import 'package:diy/network/http_client.dart';
 import 'package:diy/network/oauth_service.dart';
@@ -99,8 +104,8 @@ class ApiRepository {
         "FileName": fileName,
         "Latitude": 0,
         "Longitude": 0,
-        "FileType": mimeType,
         "FileDataBase64": base64Image,
+        "FileType": mimeType,
       },
     );
     return res;
@@ -167,6 +172,51 @@ class ApiRepository {
     final res = await http.get("/masters/states");
     return res
         .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
+        .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
+        .toList();
+  }
+
+  Future<List<OccupationDropdownItem>> getOccupation() async {
+    final res = await http.get("/masters/occupations");
+    return res
+        .map<OccupationDropdownItem>((e) => OccupationDropdownItem.fromJson(e))
+        .toList();
+  }
+
+  Future<List<AnnualIncomeDropdownItem>> getIncome() async {
+    final res = await http.get("/masters/annual-incomes");
+    return res
+        .map<AnnualIncomeDropdownItem>(
+            (e) => AnnualIncomeDropdownItem.fromJson(e))
+        .toList();
+  }
+
+  Future<List<StateDropdownItem>> getIncomeProof() async {
+    final res = await http.get("/masters/income-proofs");
+    return res
+        .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
+        .toList();
+  }
+
+  Future<List<StateDropdownItem>> getEmployers() async {
+    final res = await http.get("/masters/employers");
+    return res
+        .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
+        .toList();
+  }
+
+  Future<List<StateDropdownItem>> getDesignations() async {
+    final res = await http.get("/masters/designations");
+    return res
+        .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
+        .toList();
+  }
+
+  Future<List<TradingExperienceDropdownItem>> getTradingExperience() async {
+    final res = await http.get("/masters/trading-experiences");
+    return res
+        .map<TradingExperienceDropdownItem>(
+            (e) => TradingExperienceDropdownItem.fromJson(e))
         .toList();
   }
 }

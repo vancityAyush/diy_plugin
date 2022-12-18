@@ -13,7 +13,8 @@ class UploadSignature extends StatelessWidget {
   Widget build(BuildContext context) {
     return DiyForm(
       formGroup: uploadSignature,
-      title: "Upload Aadhaar Proof",
+      title:
+          isReadOnly ? "Your Signature \nUploaded" : "Upload Your \nSignature",
       subtitle: "Aadhaar Proof(front side)",
       child: SizedBox(
         height: WidgetsBinding.instance.window.physicalSize.height / 5,

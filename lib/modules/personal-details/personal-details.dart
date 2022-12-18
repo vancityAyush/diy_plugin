@@ -17,6 +17,9 @@ class PersonalDetails extends StatelessWidget {
   final PersonalDetailsForm = getIt<FormService>().personalDetails;
   @override
   Widget build(BuildContext context) {
+    if (!isReadOnly) {
+      PersonalDetailsForm.reset();
+    }
     return DiyForm(
       title: 'Personal Details',
       subtitle: 'Your details are safe & secure',
