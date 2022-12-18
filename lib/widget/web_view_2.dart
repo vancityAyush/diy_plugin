@@ -32,6 +32,14 @@ class _WebViewAppState extends State<WebViewApp> {
           },
         ),
       )
+      ..addJavaScriptChannel(
+        'Window',
+        onMessageReceived: (JavaScriptMessage message) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message.message)),
+          );
+        },
+      )
       ..loadRequest(Uri.parse(widget.url));
   }
   // ... to here.
