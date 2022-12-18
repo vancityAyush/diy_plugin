@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:diy/diy.dart';
 import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
 import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
-import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
-import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:diy/modules/financial-info/models/income_dropdown_item.dart';
 import 'package:diy/modules/financial-info/models/occupation_dropdown_item.dart';
 import 'package:diy/modules/financial-info/models/trading_experience_dropdown_item.dart';
@@ -152,6 +150,13 @@ class ApiRepository {
   Future<dynamic> settings() async {
     final res = await http.get(
       "/app/settings/",
+    );
+    return res;
+  }
+
+  Future<dynamic> digiLocker() async {
+    final res = await http.get(
+      "/app/digi-locker-journey/",
     );
     return res;
   }

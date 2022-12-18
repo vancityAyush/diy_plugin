@@ -1,5 +1,6 @@
 import 'package:diy/utils/libs.dart';
 import 'package:diy/widget/BottomPage.dart';
+import 'package:diy/widget/web_view_2.dart';
 import 'package:flutter/material.dart';
 
 import '../../diy.dart';
@@ -30,8 +31,16 @@ class KycSelect extends StatelessWidget {
                     context,
                     "Share using Aadhaar via Digilocker",
                     "Sign in and use your Digilocker account",
-                    () {
-                      Navigator.popAndPushNamed(context, '/form/digilocker');
+                    () async {
+                      final res = await apiRepository.digiLocker();
+                      final data = res["Data"] as List<dynamic>;
+                      final m = getIt<OAuthService>().currentUser!.Mobile!;
+                      final url =
+                          "https://newdiy.cloudyhr.com/diy/digio?m=$m&env=${data[0]}&id=${data[1]}&t=${data[2]}";
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WebViewApp(url: url)));
                     },
                   ),
                 ),

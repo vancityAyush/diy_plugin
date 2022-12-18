@@ -1,7 +1,6 @@
 import 'package:diy/diy.dart';
 import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
 import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
-import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/util.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../utils/theme_files/app_colors.dart';
-import 'models/country_dropdown_item.dart';
 
 class Correspondence_address extends StatelessWidget {
   bool isReadOnly;
@@ -281,6 +279,7 @@ class Correspondence_address extends StatelessWidget {
                 },
               ),
             ),
+          ),
           FutureBuilder<List<CountryDropdownItem>>(
             future: getIt<ApiRepository>().getCountries(),
             builder: (BuildContext context,

@@ -25,7 +25,6 @@ import 'modules/correspondence_address/correspondence_address.dart';
 import 'modules/derivativeproof/derivative-proof.dart';
 import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
-import 'modules/kyc/digilocker.dart';
 import 'modules/pan/enter_pan.dart';
 import 'modules/pan/validate_kra.dart';
 import 'modules/upload-selfie/upload-selfie.dart';
@@ -98,9 +97,6 @@ class FlutterDIY {
               // isReadOnly = false;
               Widget page;
               switch (settings.name) {
-                case '/form/digilocker':
-                  page = const SelectDigilocker();
-                  break;
                 case '/form/upload-selfie':
                   page = UploadSelfie(isReadOnly: isReadOnly);
                   break;
