@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
-class UploadBankProof extends StatelessWidget {
+class UploadBankProof extends StatefulWidget {
   bool isReadOnly;
   UploadBankProof({Key? key, this.isReadOnly = false}) : super(key: key);
 
+  @override
+  State<UploadBankProof> createState() => _UploadBankProofState();
+}
+
+class _UploadBankProofState extends State<UploadBankProof> {
   final uploadBankProofForm = getIt<FormService>().uploadBankProofForm;
 
   @override
@@ -22,7 +27,7 @@ class UploadBankProof extends StatelessWidget {
         height: WidgetsBinding.instance.window.physicalSize.height / 5,
         child: Column(
           children: [
-            if (!isReadOnly)
+            if (!widget.isReadOnly)
               ReactiveImagePicker(
                 formControlName: 'BankProof',
                 decoration: const InputDecoration(
@@ -95,7 +100,7 @@ class UploadBankProof extends StatelessWidget {
                   ),
                 ),
               ),
-            if (isReadOnly)
+            if (widget.isReadOnly)
               Image(
                 loadingBuilder: (BuildContext context, Widget child,
                     ImageChunkEvent? loadingProgress) {
@@ -112,86 +117,48 @@ class UploadBankProof extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             WidgetHelper.verticalSpace20,
-            if (isReadOnly)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: AppColors.primaryColor(context),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
-                          textStyle: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/form/kyc',
-                          (route) => false,
-                        );
-                      },
-                      child: Row(
-                        children: const [
-                          const Spacer(),
-                          Text(
-                            'Continue',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
+            if (widget.isReadOnly)
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.isReadOnly = false;
+                    });
+                  },
+                  child: const Text("Recapture")),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: NextButton(
+                  text: "Next",
+                  onPressed: () async {
+                    ImageFile imageFile =
+                        uploadBankProofForm.control('BankProof').value;
+                    if (imageFile != null) {
+                      final res = await getIt<ApiRepository>().uploadImage(
+                          file: imageFile.image!, type: DOCTYPE.BankProof);
+                      print(res);
+                      final res3 =
+                          await getIt<OAuthService>().updateUiStatus().then(
+                                (route) => Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  route,
+                                  (route) => false,
+                                ),
+                              );
+                      print(res3);
+                      await getIt<ApiRepository>().uploadImage(
+                          file: imageFile.image!, type: DOCTYPE.BankProof);
+                      // print(res);
+                      // final res2 =
+                      //     await getIt<ApiRepository>().getDocument(DOCTYPE.BankProof);
+                      // print(res2);
+                      return true;
+                    }
+                    return false;
+                  },
                 ),
               ),
-            if (!isReadOnly)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: NextButton(
-                    text: "Next",
-                    onPressed: () async {
-                      ImageFile imageFile =
-                          uploadBankProofForm.control('BankProof').value;
-                      if (imageFile != null) {
-                        final res = await getIt<ApiRepository>().uploadImage(
-                            file: imageFile.image!, type: DOCTYPE.BankProof);
-                        print(res);
-                        final res3 =
-                            await getIt<OAuthService>().updateUiStatus().then(
-                                  (route) => Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    route,
-                                    (route) => false,
-                                  ),
-                                );
-                        print(res3);
-                        await getIt<ApiRepository>().uploadImage(
-                            file: imageFile.image!, type: DOCTYPE.BankProof);
-                        // print(res);
-                        // final res2 =
-                        //     await getIt<ApiRepository>().getDocument(DOCTYPE.BankProof);
-                        // print(res2);
-                        return true;
-                      }
-                      return false;
-                    },
-                  ),
-                ),
-              )
+            )
           ],
         ),
       ),

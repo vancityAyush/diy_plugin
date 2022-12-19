@@ -5,22 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
-class AddressProofFront extends StatelessWidget {
+class AddressProofFront extends StatefulWidget {
   bool isReadOnly;
   AddressProofFront({Key? key, this.isReadOnly = false}) : super(key: key);
+
+  @override
+  State<AddressProofFront> createState() => _AddressProofFrontState();
+}
+
+class _AddressProofFrontState extends State<AddressProofFront> {
   final uploadAddressProofFront = getIt<FormService>().uploadAddressProof;
+
   @override
   Widget build(BuildContext context) {
     return DiyForm(
       formGroup: uploadAddressProofFront,
-      title: "Upload Aadhaar Proof",
-      subtitle: "Aadhaar Proof(front side)",
+      title: "Upload Address Proof",
+      subtitle: "Address Proof (Front side)",
       child: SizedBox(
         height: WidgetsBinding.instance.window.physicalSize.height / 5,
         child: Column(
           children: [
             WidgetHelper.verticalSpace20,
-            if (!isReadOnly)
+            if (!widget.isReadOnly)
               ReactiveImagePicker(
                 formControlName: 'AddressProofFront',
                 decoration: const InputDecoration(
@@ -107,7 +114,7 @@ class AddressProofFront extends StatelessWidget {
                 //   ),
                 // ),
               ),
-            if (isReadOnly)
+            if (widget.isReadOnly)
               Image(
                 loadingBuilder: (BuildContext context, Widget child,
                     ImageChunkEvent? loadingProgress) {
@@ -125,87 +132,49 @@ class AddressProofFront extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             WidgetHelper.verticalSpace20,
-            if (!isReadOnly)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: AppColors.primaryColor(context),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
-                          textStyle: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/form/address-proof-back-side',
-                          (route) => false,
-                        );
-                      },
-                      child: Row(
-                        children: const [
-                          const Spacer(),
-                          Text(
-                            'Continue',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
+            if (widget.isReadOnly)
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.isReadOnly = false;
+                    });
+                  },
+                  child: const Text("Recapture")),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: NextButton(
+                  text: "Next",
+                  validateForm: false,
+                  onPressed: () async {
+                    print("Next");
+                    ImageFile imageFile = uploadAddressProofFront
+                        .control('AddressProofFront')
+                        .value;
+                    if (imageFile != null) {
+                      final res = await getIt<ApiRepository>().uploadImage(
+                        file: imageFile.image!,
+                        type: DOCTYPE.AddressProofFrontSide,
+                      );
+                      print(res);
+                      final res3 =
+                          await getIt<OAuthService>().updateUiStatus().then(
+                                (route) => Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  route,
+                                  (route) => false,
+                                ),
+                              );
+                      return true;
+                    }
+                    return true;
+                  },
                 ),
               ),
-            if (isReadOnly!)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: NextButton(
-                    text: "Next",
-                    onPressed: () async {
-                      ImageFile imageFile = uploadAddressProofFront
-                          .control('AddressProofFront')
-                          .value;
-                      if (imageFile != null) {
-                        final res = await getIt<ApiRepository>().uploadImage(
-                            file: imageFile.image!,
-                            type: DOCTYPE.AddressProofFrontSide);
-                        print(res);
-                        final res3 =
-                            await getIt<OAuthService>().updateUiStatus().then(
-                                  (route) => Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    route,
-                                    (route) => false,
-                                  ),
-                                );
-                        print(res3);
-                        return true;
-                      }
-                      return false;
-                    },
-                  ),
-                ),
-              ),
+            ),
           ],
         ),
       ),
     );
   }
-  //),
-  //);
 }

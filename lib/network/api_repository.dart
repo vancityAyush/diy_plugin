@@ -97,13 +97,15 @@ class ApiRepository {
     final res = await http.post(
       "/app/upload-document/",
       data: {
-        "DocumentId": 0,
+        "DocumentId": uploadMap[type],
         "DocumentType": uploadMap[type],
         "FileName": fileName,
         "Latitude": 0,
         "Longitude": 0,
         "FileDataBase64": base64Image,
         "FileType": mimeType,
+        "Status": 0,
+        "poaType": "0",
       },
     );
     return res;

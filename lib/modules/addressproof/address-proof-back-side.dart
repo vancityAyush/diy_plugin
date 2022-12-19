@@ -14,8 +14,8 @@ class AddressProofBack extends StatelessWidget {
   Widget build(BuildContext context) {
     return DiyForm(
       formGroup: uploadAddressProofBack,
-      title: "Upload Aadhaar Proof",
-      subtitle: "Aadhaar Proof(back side)",
+      title: "Upload Address Proof",
+      subtitle: "Address Proof(back side)",
       child: SizedBox(
         height: WidgetsBinding.instance.window.physicalSize.height / 5,
         child: Column(
@@ -163,6 +163,7 @@ class AddressProofBack extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: NextButton(
                     text: "Next",
+                    validateForm: false,
                     onPressed: () async {
                       ImageFile imageFile = uploadAddressProofBack
                           .control('AddressProofFront')
