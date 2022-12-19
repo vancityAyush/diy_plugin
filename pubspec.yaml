@@ -84,6 +84,9 @@ flutter:
     - packages/diy/assets/menu.svg
     - packages/diy/assets/google.svg
     - packages/diy/assets/email.svg
+    - packages/diy/assets/security.svg
+    - packages/diy/assets/congratulation.svg
+    - packages/diy/assets/congratulation.png
 
 
   fonts:

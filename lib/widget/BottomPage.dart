@@ -182,7 +182,7 @@ class BottomPage extends StatelessWidget {
                 child: Text(
                   subtitle!,
                   style: TextStyle(
-                    fontSize: 13.sp,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
                     color: AppColors.primaryAccent(context),
                   ),

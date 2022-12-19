@@ -36,6 +36,9 @@ class UiStatus {
     13: "Personal Details",
     21: "Financial Information",
     20: "Upload Selfie",
+    23: "Mobile cam IPV",
+    24: "E-Sign",
+    25: "Congratulations",
     27: "Derivative Proof"
   };
   @JsonKey(ignore: true)
@@ -57,6 +60,9 @@ class UiStatus {
     13: "/form/personal-details",
     21: "/form/financial-info",
     20: "/form/upload-selfie",
+    23: "/form/ipv",
+    24: "/form/esign",
+    25: "/form/invest-now",
     27: "/form/upload-derivative-proof"
   };
 }

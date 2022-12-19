@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../utils/theme_files/app_colors.dart';
+
 class WebViewApp extends StatefulWidget {
   final String url;
   const WebViewApp({super.key, required this.url});
@@ -48,7 +50,10 @@ class _WebViewAppState extends State<WebViewApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter WebView'),
+        title: const Text('DigiLocker'),
+        elevation: 0,
+        backgroundColor: AppColors.primaryColor(context),
+        centerTitle: true,
       ),
       body: WebViewWidget(
         controller: _controller,

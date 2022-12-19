@@ -170,6 +170,17 @@ class FormService {
     },
   );
 
+  final uploadIpvForm = FormGroup(
+    {
+      'ipv': FormControl<ImageFile>(
+        validators: [Validators.required],
+      ),
+      'ipvCode': FormControl<String>(
+          //validators: [Validators.required],
+          ),
+    },
+  );
+
   final uploadAddressProof = FormGroup(
     {
       'AddressProofFront': FormControl<ImageFile>(
