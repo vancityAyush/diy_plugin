@@ -2,8 +2,11 @@ library diy;
 
 import 'package:diy/modules/addressproof/address-proof-back-side.dart';
 import 'package:diy/modules/bank_proof/upload_bank_proof.dart';
+import 'package:diy/modules/esign/esign.dart';
 import 'package:diy/modules/financial-info/financial-info.dart';
 import 'package:diy/modules/form_service.dart';
+import 'package:diy/modules/invest-now/invest-now.dart';
+import 'package:diy/modules/ipv/ipv-upload.dart';
 import 'package:diy/modules/kyc/kyc-select.dart';
 import 'package:diy/modules/personal-details/personal-details.dart';
 import 'package:diy/modules/upload-pan-photo/upload-pan-photo.dart';
@@ -84,7 +87,7 @@ class FlutterDIY {
       builder: (context) {
         return ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.85,
+            maxHeight: MediaQuery.of(context).size.height * 0.70,
           ),
           child: Navigator(
             initialRoute: "/",
@@ -97,6 +100,15 @@ class FlutterDIY {
               // isReadOnly = false;
               Widget page;
               switch (settings.name) {
+                case '/form/invest-now':
+                  page = InvestNow(isReadOnly: isReadOnly);
+                  break;
+                case '/form/esign':
+                  page = ESign(isReadOnly: isReadOnly);
+                  break;
+                case '/form/ipv':
+                  page = UploadIpv(isReadOnly: isReadOnly);
+                  break;
                 case '/form/upload-selfie':
                   page = UploadSelfie(isReadOnly: isReadOnly);
                   break;

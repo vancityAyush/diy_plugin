@@ -154,7 +154,7 @@ class EnterPan extends StatelessWidget {
       builder: (dialogContext) {
         return Center(
           child: Container(
-            height: WidgetsBinding.instance.window.physicalSize.height / 5,
+            height: WidgetsBinding.instance.window.physicalSize.height / 6,
             margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               color: AppColors.background(context),
@@ -163,6 +163,7 @@ class EnterPan extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                _getCloseButton(context),
                 CircleAvatar(
                   radius: 60,
                   backgroundColor: AppColors.primaryColor(context),
@@ -233,6 +234,27 @@ class EnterPan extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  _getCloseButton(context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 20, 0),
+      child: GestureDetector(
+        onTap: () {},
+        child: Container(
+          alignment: FractionalOffset.topRight,
+          child: GestureDetector(
+            child: Icon(
+              Icons.close,
+              color: AppColors.primaryContent(context),
+            ),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).pop('dialog');
+            },
+          ),
+        ),
+      ),
     );
   }
 }
