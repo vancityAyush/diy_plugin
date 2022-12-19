@@ -6,10 +6,17 @@ import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
 //TODO Merge both screens as one
-class AddressProofBack extends StatelessWidget {
+class AddressProofBack extends StatefulWidget {
   bool isReadOnly;
   AddressProofBack({Key? key, this.isReadOnly = false}) : super(key: key);
+
+  @override
+  State<AddressProofBack> createState() => _AddressProofBackState();
+}
+
+class _AddressProofBackState extends State<AddressProofBack> {
   final uploadAddressProofBack = getIt<FormService>().uploadAddressProof;
+
   @override
   Widget build(BuildContext context) {
     return DiyForm(
@@ -21,7 +28,7 @@ class AddressProofBack extends StatelessWidget {
         child: Column(
           children: [
             WidgetHelper.verticalSpace20,
-            if (!isReadOnly)
+            if (!widget.isReadOnly)
               ReactiveImagePicker(
                 formControlName: 'AddressProofBack',
                 decoration: const InputDecoration(
@@ -94,7 +101,7 @@ class AddressProofBack extends StatelessWidget {
                   ),
                 ),
               ),
-            if (isReadOnly)
+            if (widget.isReadOnly)
               Image(
                 loadingBuilder: (BuildContext context, Widget child,
                     ImageChunkEvent? loadingProgress) {
@@ -112,52 +119,15 @@ class AddressProofBack extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             WidgetHelper.verticalSpace20,
-            if (isReadOnly)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: AppColors.primaryColor(context),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
-                          textStyle: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/form/kyc',
-                          (route) => false,
-                        );
-                      },
-                      child: Row(
-                        children: const [
-                          const Spacer(),
-                          Text(
-                            'Continue',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            if (!isReadOnly)
+            if (widget.isReadOnly)
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.isReadOnly = false;
+                    });
+                  },
+                  child: const Text("Recapture")),
+            if (!widget.isReadOnly)
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -166,7 +136,7 @@ class AddressProofBack extends StatelessWidget {
                     validateForm: false,
                     onPressed: () async {
                       ImageFile imageFile = uploadAddressProofBack
-                          .control('AddressProofFront')
+                          .control('AddressProofBack')
                           .value;
                       if (imageFile != null) {
                         final res = await getIt<ApiRepository>().uploadImage(
