@@ -30,6 +30,7 @@ import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
 import 'modules/pan/enter_pan.dart';
 import 'modules/pan/validate_kra.dart';
+import 'modules/select-plan/select-plan.dart';
 import 'modules/upload-selfie/upload-selfie.dart';
 import 'modules/verify-email/verify_email.dart';
 import 'modules/verify-mobile/ui/signup_page.dart';
@@ -100,6 +101,9 @@ class FlutterDIY {
               // isReadOnly = false;
               Widget page;
               switch (settings.name) {
+                case '/form/select-plan':
+                  page = SelectPlan(isReadOnly: isReadOnly);
+                  break;
                 case '/form/invest-now':
                   page = InvestNow(isReadOnly: isReadOnly);
                   break;

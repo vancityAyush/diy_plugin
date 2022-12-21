@@ -1,5 +1,6 @@
 import 'package:diy/utils/libs.dart';
 import 'package:diy/widget/BottomPage.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../diy.dart';
@@ -40,12 +41,27 @@ class ESign extends StatelessWidget {
                           fontSize: 16.sp),
                     ),
                     WidgetHelper.verticalSpace20,
-                    Text(
-                      'You may click here and download the\npre-filled form before proceeding to\ne-signing the document.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: AppColors.subHeading(context),
-                          fontSize: 16.sp),
+                    RichText(
+                      text: TextSpan(
+                        children: <InlineSpan>[
+                          TextSpan(
+                            text: 'You may',
+                          ),
+                          TextSpan(
+                              text: ' click here ',
+                              recognizer: new TapGestureRecognizer()..onTap = () => print('Tap Here onTap'),
+                              style: TextStyle(
+                                  color: AppColors.primaryColor(context),
+                                  fontWeight: FontWeight.bold)),
+                          TextSpan(
+                            text:
+                                'and download the\npre-filled form before proceeding to\ne-signing the document. ',
+                          )
+                        ],
+                        style: TextStyle(
+                            color: AppColors.subHeading(context),
+                            fontSize: 16.sp),
+                      ),
                     ),
                   ],
                 ),
