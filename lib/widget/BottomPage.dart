@@ -1,4 +1,5 @@
 import 'package:diy/diy.dart';
+import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/theme_files/app_colors.dart';
 import 'package:diy/widget/header.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class BottomPage extends StatelessWidget {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          icon: Icon(Icons.close_rounded))
+                          icon: Icon(Icons.close_rounded)),
                     ],
                   ),
                 ),
@@ -113,7 +114,16 @@ class BottomPage extends StatelessWidget {
                         },
                       );
                     },
-                  )
+                  ),
+                WidgetHelper.verticalSpace5,
+                WidgetHelper.verticalSpace5,
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Logout'),
+                  onTap: () {
+                    getIt<OAuthService>().logout();
+                  },
+                )
               ],
             );
           },

@@ -20,144 +20,133 @@ class SignUpPage extends StatelessWidget {
     return DiyForm(
       title: 'Sign Up Now',
       formGroup: signUpForm,
-      child: SizedBox(
-        height: WidgetsBinding.instance.window.physicalSize.height / 4.5,
-        child: Column(
-          children: [
-            ReactiveTextField(
-              cursorColor: AppColors.primaryColor(context),
-              formControlName: 'phone',
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                fillColor: AppColors.textFieldBackground(context),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.textFieldBackground(context),
-                  ),
-                  borderRadius: BorderRadius.circular(4),
+      child: Column(
+        children: [
+          ReactiveTextField(
+            cursorColor: AppColors.primaryColor(context),
+            formControlName: 'phone',
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              fillColor: AppColors.textFieldBackground(context),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.textFieldBackground(context),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.primaryColor(context),
-                  ),
-                  borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.primaryColor(context),
                 ),
-                // labelText: 'Phone Number',
-                // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
-                hintText: 'Your 10 digit phone number',
-                hintStyle:
-                    TextStyle(color: AppColors.textColorTextField(context)),
-                prefixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      '+91',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textColorTextField(context)),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      '|',
-                      style: TextStyle(
-                        fontSize: 20,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              // labelText: 'Phone Number',
+              // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
+              hintText: 'Your 10 digit phone number',
+              hintStyle:
+                  TextStyle(color: AppColors.textColorTextField(context)),
+              prefixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    '+91',
+                    style: TextStyle(
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primaryContent(context),
-                      ),
+                        color: AppColors.textColorTextField(context)),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    '|',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryContent(context),
                     ),
-                    const SizedBox(width: 10),
-                  ],
-                ),
-                border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: AppColors.primaryColor(context)),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                filled: AppColors.textFieldBackground(context) != null,
+                  ),
+                  const SizedBox(width: 10),
+                ],
               ),
-              maxLength: 10,
-              showErrors: (control) => control.invalid && control.hasFocus,
-              validationMessages: {
-                'required': (error) => 'The Phone Number must not be empty',
-                'minLength': (error) =>
-                    'The Phone Number must have at least 10 characters',
-              },
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor(context)),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              filled: AppColors.textFieldBackground(context) != null,
             ),
-            WidgetHelper.verticalSpace,
-            Text(
-              "You will receive an OTP on your number",
-              style: Theme.of(context).textTheme.caption,
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: NextButton(
-                  text: "Continue",
-                  onPressed: () async {
-                    return await getIt<OAuthService>()
-                        .sendOtp(
-                      signUpForm.control('phone').value,
-                    )
-                        .then(
-                      (res) {
-                        if (res.status) {
-                          AppUtil.showToast(
-                            'OTP sent successfully',
-                          );
-                          Navigator.of(context).push(
-                            AppUtil.pageBuilder(
-                              OtpPage(
-                                  phoneNumber:
-                                      signUpForm.control('phone').value),
-                            ),
-                          );
-                          return true;
-                        } else {
-                          AppUtil.showErrorToast(res.arguments);
-                        }
-                        return false;
-                      },
+            maxLength: 10,
+            showErrors: (control) => control.invalid && control.hasFocus,
+            validationMessages: {
+              'required': (error) => 'The Phone Number must not be empty',
+              'minLength': (error) =>
+                  'The Phone Number must have at least 10 characters',
+            },
+          ),
+          WidgetHelper.verticalSpace,
+          Text(
+            "You will receive an OTP on your number",
+            style: Theme.of(context).textTheme.caption,
+          ),
+          NextButton(
+            text: "Continue",
+            onPressed: () async {
+              return await getIt<OAuthService>()
+                  .sendOtp(
+                signUpForm.control('phone').value,
+              )
+                  .then(
+                (res) {
+                  if (res.status) {
+                    AppUtil.showToast(
+                      'OTP sent successfully',
                     );
-                  },
+                    Navigator.of(context).push(
+                      AppUtil.pageBuilder(
+                        OtpPage(phoneNumber: signUpForm.control('phone').value),
+                      ),
+                    );
+                    return true;
+                  } else {
+                    AppUtil.showErrorToast(res.arguments);
+                  }
+                  return false;
+                },
+              );
+            },
+          ),
+          Row(
+            children: [
+              ReactiveCheckbox(
+                formControlName: 'TnC',
+                activeColor: AppColors.primaryColor(context),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                ReactiveCheckbox(
-                  formControlName: 'TnC',
-                  activeColor: AppColors.primaryColor(context),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    text:
+                        'I understand and authorize JM Financial Services to contact me via SMS, Calls, and WhatsApp for all future communication ',
+                    style: Theme.of(context).textTheme.caption,
+                    children: [
+                      TextSpan(
+                        text: 'Terms and Conditions',
+                        style: Theme.of(context).textTheme.caption?.copyWith(
+                              color: AppColors.primaryColor(context),
+                              decoration: TextDecoration.underline,
+                            ),
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      text:
-                          'I understand and authorize JM Financial Services to contact me via SMS, Calls, and WhatsApp for all future communication ',
-                      style: Theme.of(context).textTheme.caption,
-                      children: [
-                        TextSpan(
-                          text: 'Terms and Conditions',
-                          style: Theme.of(context).textTheme.caption?.copyWith(
-                                color: AppColors.primaryColor(context),
-                                decoration: TextDecoration.underline,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-          ],
-        ),
+              ),
+            ],
+          ),
+          SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+        ],
       ),
     );
   }
