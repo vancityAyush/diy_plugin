@@ -6,6 +6,8 @@ import 'package:diy/modules/financial-info/models/trading_experience_dropdown_it
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_image_picker/image_file.dart';
 
+import 'derivativeproof/model/income_dropdown_item.dart';
+
 class FormService {
   final signUpForm = FormGroup(
     {
@@ -313,8 +315,11 @@ class FormService {
       'DerivativeProof': FormControl<ImageFile>(
         validators: [Validators.required],
       ),
-      'List': FormControl<List>(
-        validators: [Validators.required],
+      'IncomeProof': FormControl<IncomeProofDropdownItem>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
       ),
     },
   );

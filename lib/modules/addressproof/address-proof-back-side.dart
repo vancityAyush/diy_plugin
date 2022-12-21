@@ -159,6 +159,27 @@ class _AddressProofBackState extends State<AddressProofBack> {
                   ),
                 ),
               ),
+            if (widget.isReadOnly)
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: NextButton(
+                    text: "Next",
+                    validateForm: false,
+                    onPressed: () async {
+                      await getIt<OAuthService>().updateUiStatus().then(
+                            (route) => Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              route,
+                              (route) => false,
+                            ),
+                          );
+
+                      return true;
+                    },
+                  ),
+                ),
+              ),
           ],
         ),
       ),

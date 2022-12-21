@@ -15,6 +15,7 @@ import 'package:diy/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
+import '../modules/derivativeproof/model/income_dropdown_item.dart';
 import '../modules/ifsc/models/bank.dart';
 import '../utils/libs.dart';
 
@@ -198,10 +199,11 @@ class ApiRepository {
         .toList();
   }
 
-  Future<List<StateDropdownItem>> getIncomeProof() async {
+  Future<List<IncomeProofDropdownItem>> getIncomeProof() async {
     final res = await http.get("/masters/income-proofs");
     return res
-        .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
+        .map<IncomeProofDropdownItem>(
+            (e) => IncomeProofDropdownItem.fromJson(e))
         .toList();
   }
 

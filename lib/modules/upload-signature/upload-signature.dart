@@ -5,25 +5,33 @@ import 'package:flutter/material.dart';
 import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
-class UploadSignature extends StatelessWidget {
+class UploadSignature extends StatefulWidget {
   bool isReadOnly;
   UploadSignature({Key? key, this.isReadOnly = false}) : super(key: key);
+
+  @override
+  State<UploadSignature> createState() => _UploadSignatureState();
+}
+
+class _UploadSignatureState extends State<UploadSignature> {
   final uploadSignature = getIt<FormService>().uploadSignature;
+
   @override
   Widget build(BuildContext context) {
     return DiyForm(
       formGroup: uploadSignature,
-      title:
-          isReadOnly ? "Your Signature \nUploaded" : "Upload Your \nSignature",
+      title: widget.isReadOnly
+          ? "Your Signature \nUploaded"
+          : "Upload Your \nSignature",
       subtitle: "Aadhaar Proof(front side)",
       child: SizedBox(
         height: WidgetsBinding.instance.window.physicalSize.height / 5,
         child: Column(
           children: [
             WidgetHelper.verticalSpace20,
-            if (!isReadOnly)
+            if (!widget.isReadOnly)
               ReactiveImagePicker(
-                formControlName: 'AddressProofFront',
+                formControlName: 'UploadSignature',
                 decoration: const InputDecoration(
                     contentPadding: EdgeInsets.zero,
                     labelText: 'Drop your document image here',
@@ -108,7 +116,7 @@ class UploadSignature extends StatelessWidget {
                 //   ),
                 // ),
               ),
-            if (isReadOnly)
+            if (widget.isReadOnly)
               Image(
                 loadingBuilder: (BuildContext context, Widget child,
                     ImageChunkEvent? loadingProgress) {
@@ -125,7 +133,15 @@ class UploadSignature extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             WidgetHelper.verticalSpace20,
-            if (!isReadOnly)
+            if (widget.isReadOnly)
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.isReadOnly = false;
+                    });
+                  },
+                  child: const Text("Recapture")),
+            if (!widget.isReadOnly)
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -138,12 +154,14 @@ class UploadSignature extends StatelessWidget {
                               horizontal: 50, vertical: 15),
                           textStyle: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/form/address-proof-back-side',
-                          (route) => false,
-                        );
+                      onPressed: () async {
+                        await getIt<OAuthService>().updateUiStatus().then(
+                              (route) => Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                route,
+                                (route) => false,
+                              ),
+                            );
                       },
                       child: Row(
                         children: const [
@@ -170,12 +188,13 @@ class UploadSignature extends StatelessWidget {
                   ),
                 ),
               ),
-            if (isReadOnly!)
+            if (widget.isReadOnly!)
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: NextButton(
                     text: "Next",
+                    validateForm: false,
                     onPressed: () async {
                       ImageFile imageFile =
                           uploadSignature.control('UploadSignature').value;
@@ -204,6 +223,4 @@ class UploadSignature extends StatelessWidget {
       ),
     );
   }
-  //),
-  //);
 }

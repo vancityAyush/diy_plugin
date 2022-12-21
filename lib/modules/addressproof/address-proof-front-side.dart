@@ -140,38 +140,60 @@ class _AddressProofFrontState extends State<AddressProofFront> {
                     });
                   },
                   child: const Text("Recapture")),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: NextButton(
-                  text: "Next",
-                  validateForm: false,
-                  onPressed: () async {
-                    print("Next");
-                    ImageFile imageFile = uploadAddressProofFront
-                        .control('AddressProofFront')
-                        .value;
-                    if (imageFile != null) {
-                      final res = await getIt<ApiRepository>().uploadImage(
-                        file: imageFile.image!,
-                        type: DOCTYPE.AddressProofFrontSide,
-                      );
-                      print(res);
-                      final res3 =
-                          await getIt<OAuthService>().updateUiStatus().then(
-                                (route) => Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  route,
-                                  (route) => false,
-                                ),
-                              );
+            if (!widget.isReadOnly)
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: NextButton(
+                    text: "Next",
+                    validateForm: false,
+                    onPressed: () async {
+                      print("Next");
+                      ImageFile imageFile = uploadAddressProofFront
+                          .control('AddressProofFront')
+                          .value;
+                      if (imageFile != null) {
+                        final res = await getIt<ApiRepository>().uploadImage(
+                          file: imageFile.image!,
+                          type: DOCTYPE.AddressProofFrontSide,
+                        );
+                        print(res);
+                        final res3 =
+                            await getIt<OAuthService>().updateUiStatus().then(
+                                  (route) => Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    route,
+                                    (route) => false,
+                                  ),
+                                );
+                        return true;
+                      }
                       return true;
-                    }
-                    return true;
-                  },
+                    },
+                  ),
                 ),
               ),
-            ),
+            if (widget.isReadOnly)
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: NextButton(
+                    text: "Next",
+                    validateForm: false,
+                    onPressed: () async {
+                      await getIt<OAuthService>().updateUiStatus().then(
+                            (route) => Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              route,
+                              (route) => false,
+                            ),
+                          );
+
+                      return true;
+                    },
+                  ),
+                ),
+              ),
           ],
         ),
       ),

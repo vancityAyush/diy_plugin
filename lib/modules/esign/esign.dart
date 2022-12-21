@@ -49,7 +49,8 @@ class ESign extends StatelessWidget {
                           ),
                           TextSpan(
                               text: ' click here ',
-                              recognizer: new TapGestureRecognizer()..onTap = () => print('Tap Here onTap'),
+                              recognizer: new TapGestureRecognizer()
+                                ..onTap = () => print('Tap Here onTap'),
                               style: TextStyle(
                                   color: AppColors.primaryColor(context),
                                   fontWeight: FontWeight.bold)),
@@ -74,7 +75,7 @@ class ESign extends StatelessWidget {
                           return false;
                         }),
                   ),
-                )
+                ),
               ],
             ),
           ),
