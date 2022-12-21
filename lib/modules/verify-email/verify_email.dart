@@ -23,9 +23,6 @@ class VerifyEmailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      otpForm.reset();
-    }
     return DiyForm(
       title: 'Verify Your Email Address',
       subtitle: "Please enter the OTP sent to your email",
@@ -111,20 +108,14 @@ class VerifyEmailPage extends StatelessWidget {
               final res = await getIt<OAuthService>().validateEmail(
                 otp: otpForm.control('otp').value,
               );
-              if (res.status) {
-                AppUtil.showToast("OTP verified successfully");
-                await getIt<OAuthService>().updateUiStatus().then(
-                      (route) => Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        route,
-                        (route) => false,
-                      ),
-                    );
-                return true;
-              } else {
-                AppUtil.showToast("Something went wrong");
-              }
-              return false;
+              await getIt<OAuthService>().updateUiStatus().then(
+                    (route) => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      route,
+                      (route) => false,
+                    ),
+                  );
+              return true;
             },
           ),
           WidgetHelper.verticalSpace20,

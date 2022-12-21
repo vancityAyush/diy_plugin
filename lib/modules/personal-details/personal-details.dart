@@ -1,14 +1,14 @@
 import 'package:diy/diy.dart';
 import 'package:diy/modules/form_service.dart';
-import 'package:diy/utils/util.dart';
+import 'package:diy/network/api_repository.dart';
 import 'package:diy/widget/diy_form.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../network/oauth_service.dart';
 import '../../../utils/theme_files/app_colors.dart';
+import '../../network/oauth_service.dart';
 
 class PersonalDetails extends StatelessWidget {
   bool isReadOnly;
@@ -17,83 +17,86 @@ class PersonalDetails extends StatelessWidget {
   final PersonalDetailsForm = getIt<FormService>().personalDetails;
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      PersonalDetailsForm.reset();
-    }
     return DiyForm(
       title: 'Personal Details',
       subtitle: 'Your details are safe & secure',
       formGroup: PersonalDetailsForm,
       child: Column(
         children: [
-          ReactiveTextField(
-            cursorColor: AppColors.primaryColor(context),
-            formControlName: 'Gender',
-            decoration: InputDecoration(
-              fillColor: AppColors.textFieldBackground(context),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.textFieldBackground(context),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: ReactiveDropdownField<int>(
+              dropdownColor: AppColors.background(context),
+              formControlName: 'Gender',
+              items: const [
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text("Male"),
                 ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.primaryColor(context),
+                DropdownMenuItem(
+                  value: 2,
+                  child: Text("Female"),
                 ),
-                borderRadius: BorderRadius.circular(4),
+              ],
+              icon: Icon(Icons.arrow_drop_down),
+              style: TextStyle(
+                color: AppColors.textColorTextField(context),
               ),
-              // labelText: 'Phone Number',
-              // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
-              hintText: 'Gender',
-              hintStyle:
-                  TextStyle(color: AppColors.textColorTextField(context)),
-
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primaryColor(context)),
-                borderRadius: BorderRadius.circular(4),
+              hint: Text('Select Gender',
+                  style: TextStyle(
+                    color: AppColors.textColorTextField(context),
+                  )),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                // filled: AppColors.textFieldBackground(context) != null,
               ),
-              filled: AppColors.textFieldBackground(context) != null,
+              borderRadius: BorderRadius.circular(5),
+              showErrors: (control) => control.invalid && control.dirty,
+              validationMessages: {
+                'required': (error) => 'Please Select Gender',
+              },
+              iconSize: 30,
+              iconEnabledColor: AppColors.primaryColor(context),
+              iconDisabledColor: AppColors.primaryContent(context),
             ),
-            showErrors: (control) => control.invalid && control.hasFocus,
-            validationMessages: {
-              'required': (error) => 'Required Field',
-            },
           ),
-          WidgetHelper.verticalSpace,
-          ReactiveTextField(
-            cursorColor: AppColors.primaryColor(context),
-            formControlName: 'MaritalStatus',
-            decoration: InputDecoration(
-              fillColor: AppColors.textFieldBackground(context),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.textFieldBackground(context),
+          WidgetHelper.verticalSpace20,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: ReactiveDropdownField<int>(
+              dropdownColor: AppColors.background(context),
+              formControlName: 'MaritalStatus',
+              items: const [
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text("Single"),
                 ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.primaryColor(context),
+                DropdownMenuItem(
+                  value: 2,
+                  child: Text("Married"),
                 ),
-                borderRadius: BorderRadius.circular(4),
+              ],
+              icon: Icon(Icons.arrow_drop_down),
+              style: TextStyle(
+                color: AppColors.textColorTextField(context),
               ),
-              // labelText: 'Phone Number',
-              // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
-              hintText: 'Marital Status',
-              hintStyle:
-                  TextStyle(color: AppColors.textColorTextField(context)),
-
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primaryColor(context)),
-                borderRadius: BorderRadius.circular(4),
+              hint: Text('Maritial Status',
+                  style: TextStyle(
+                    color: AppColors.textColorTextField(context),
+                  )),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                // filled: AppColors.textFieldBackground(context) != null,
               ),
-              filled: AppColors.textFieldBackground(context) != null,
+              borderRadius: BorderRadius.circular(5),
+              showErrors: (control) => control.invalid && control.dirty,
+              validationMessages: {
+                'required': (error) => 'Please Select Marital Status',
+              },
+              iconSize: 30,
+              iconEnabledColor: AppColors.primaryColor(context),
+              iconDisabledColor: AppColors.primaryContent(context),
             ),
-            showErrors: (control) => control.invalid && control.hasFocus,
-            validationMessages: {
-              'required': (error) => 'Required Field',
-            },
           ),
           WidgetHelper.verticalSpace20,
           ReactiveTextField(
@@ -134,7 +137,7 @@ class PersonalDetails extends StatelessWidget {
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
             formControlName: 'MotherName',
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.name,
             decoration: InputDecoration(
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
@@ -170,23 +173,16 @@ class PersonalDetails extends StatelessWidget {
           NextButton(
             text: "Continue",
             onPressed: () async {
-              return await getIt<OAuthService>()
-                  .sendOtp(
-                PersonalDetailsForm.control('phone').value,
-              )
-                  .then(
-                (res) {
-                  if (res.status) {
-                    AppUtil.showToast(
-                      'OTP sent successfully',
-                    );
-                    return true;
-                  } else {
-                    AppUtil.showErrorToast(res.arguments);
-                  }
-                  return false;
-                },
-              );
+              await getIt<ApiRepository>()
+                  .savePersonalDetails(PersonalDetailsForm.value);
+              await getIt<OAuthService>().updateUiStatus().then(
+                    (route) => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      route,
+                      (route) => false,
+                    ),
+                  );
+              return true;
             },
           ),
           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),

@@ -3,7 +3,6 @@ import 'package:diy/modules/correspondence_address/models/country_dropdown_item.
 import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/utils/libs.dart';
-import 'package:diy/utils/util.dart';
 import 'package:diy/widget/diy_form.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/widget_helper.dart';
@@ -19,9 +18,6 @@ class Correspondence_address extends StatelessWidget {
   final correspondenceAddress = getIt<FormService>().correspondence_address;
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      correspondenceAddress.reset();
-    }
     return DiyForm(
       title: 'Correspondence \nAddress',
       subtitle: 'Lorem ipsum dolor sit amet, consectetur \n adipiscing elit,',
@@ -30,7 +26,7 @@ class Correspondence_address extends StatelessWidget {
         children: [
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
-            formControlName: 'House/bldg/block',
+            formControlName: 'CorrespondenceHouseNo',
             decoration: InputDecoration(
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
@@ -65,7 +61,7 @@ class Correspondence_address extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
-            formControlName: 'Street',
+            formControlName: 'CorrespondenceStreet',
             decoration: InputDecoration(
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
@@ -100,7 +96,7 @@ class Correspondence_address extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
-            formControlName: 'Location',
+            formControlName: 'CorrespondenceLocation',
             decoration: InputDecoration(
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
@@ -135,7 +131,7 @@ class Correspondence_address extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
-            formControlName: 'City',
+            formControlName: 'CorrespondenceCity',
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               fillColor: AppColors.textFieldBackground(context),
@@ -171,9 +167,9 @@ class Correspondence_address extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           ReactiveTextField(
             cursorColor: AppColors.primaryColor(context),
-            formControlName: 'PinCode',
+            formControlName: 'CorrespondencePincode',
             keyboardType: TextInputType.phone,
-            maxLength: 7,
+            maxLength: 6,
             decoration: InputDecoration(
               fillColor: AppColors.textFieldBackground(context),
               enabledBorder: OutlineInputBorder(
@@ -357,24 +353,37 @@ class Correspondence_address extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           NextButton(
             text: "Continue",
+            validateForm: false,
             onPressed: () async {
-              return await getIt<OAuthService>()
-                  .sendOtp(
-                correspondenceAddress.control('phone').value,
-              )
-                  .then(
-                (res) {
-                  if (res.status) {
-                    AppUtil.showToast(
-                      'OTP sent successfully',
+              StateDropdownItem? state =
+                  correspondenceAddress.value['State'] as StateDropdownItem?;
+              CountryDropdownItem? country = correspondenceAddress
+                  .value['Country'] as CountryDropdownItem?;
+
+              correspondenceAddress.controls['CorrespondenceState']!.value =
+                  state?.StateId;
+              correspondenceAddress.controls['CorrespondenceStateName']!.value =
+                  state?.StateName;
+              correspondenceAddress.controls['CorrespondenceCountry']!.value =
+                  country?.CountryId;
+              correspondenceAddress.controls['CorrespondenceCountryName']!
+                  .value = country?.CountryName;
+
+              if (correspondenceAddress.valid) {
+                final res = await getIt<ApiRepository>()
+                    .saveCorrespondenceAddress(correspondenceAddress.value);
+                await getIt<OAuthService>().updateUiStatus().then(
+                      (route) => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        route,
+                        (route) => false,
+                      ),
                     );
-                    return true;
-                  } else {
-                    AppUtil.showErrorToast(res.arguments);
-                  }
-                  return false;
-                },
-              );
+                return true;
+              } else {
+                correspondenceAddress.markAllAsTouched();
+                return false;
+              }
             },
           ),
           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),

@@ -21,9 +21,6 @@ class IFSCPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      ifscForm.reset();
-    }
     return DiyForm(
       title: "Verify Bank Account",
       subtitle: "Lorem ipsum dolor sit amet, consectetur",

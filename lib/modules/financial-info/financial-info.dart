@@ -21,9 +21,6 @@ class FinancialInfo extends StatelessWidget {
   final financialInfoForm = getIt<FormService>().financialInfo;
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      financialInfoForm.reset();
-    }
     return DiyForm(
       title: 'Financial Information',
       subtitle: 'Your details are safe & secure',

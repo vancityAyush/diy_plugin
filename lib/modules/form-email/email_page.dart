@@ -21,9 +21,6 @@ class EmailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      emailForm.reset();
-    }
     return DiyForm(
       title: "Enter Email Address",
       subtitle: "You will receive an OTP on your email",

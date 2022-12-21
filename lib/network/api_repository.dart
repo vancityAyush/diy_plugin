@@ -180,8 +180,23 @@ class ApiRepository {
     final res = await http.get("/masters/states");
     return res
         .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
-        .map<StateDropdownItem>((e) => StateDropdownItem.fromJson(e))
         .toList();
+  }
+
+  Future<dynamic> saveCorrespondenceAddress(Request data) async {
+    final res = await http.post(
+      "/app/save-correspondence-address/",
+      data: data,
+    );
+    return res;
+  }
+
+  Future<dynamic> savePersonalDetails(Request data) async {
+    final res = await http.post(
+      "/app/save-personal-detail/",
+      data: data,
+    );
+    return res;
   }
 
   Future<List<OccupationDropdownItem>> getOccupation() async {

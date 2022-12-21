@@ -198,34 +198,58 @@ class FormService {
   );
   final correspondence_address = FormGroup(
     {
-      'House/bldg/block': FormControl<String>(
+      'CorrespondenceHouseNo': FormControl<String>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'Street': FormControl<String>(
+      'CorrespondenceStreet': FormControl<String>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'Location': FormControl<String>(
+      'CorrespondenceStateName': FormControl<String>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'City': FormControl<String>(
+      'CorrespondenceLocation': FormControl<String>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'PinCode': FormControl<String>(
+      'CorrespondenceState': FormControl<int>(
         validators: [
           Validators.required,
-          Validators.minLength(7),
+        ],
+        touched: false,
+      ),
+      'CorrespondenceCountryName': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'CorrespondenceCountry': FormControl<int>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'CorrespondenceCity': FormControl<String>(
+        validators: [
+          Validators.required,
+        ],
+        touched: false,
+      ),
+      'CorrespondencePincode': FormControl<String>(
+        validators: [
+          Validators.required,
+          Validators.minLength(6),
         ],
         touched: false,
       ),
@@ -240,6 +264,7 @@ class FormService {
       ),
     },
   );
+
   final uploadSignature = FormGroup(
     {
       'UploadSignature': FormControl<ImageFile>(
@@ -249,13 +274,13 @@ class FormService {
   );
   final personalDetails = FormGroup(
     {
-      'Gender': FormControl<String>(
+      'Gender': FormControl<int>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'MaritalStatus': FormControl<String>(
+      'MaritalStatus': FormControl<int>(
         validators: [
           Validators.required,
         ],

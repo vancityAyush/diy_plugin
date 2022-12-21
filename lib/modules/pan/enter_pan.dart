@@ -19,9 +19,6 @@ class EnterPan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isReadOnly) {
-      panForm.reset();
-    }
     return DiyForm(
       title: "Enter PAN & DOB",
       subtitle: "A PAN card is compulsory for investing in India",
