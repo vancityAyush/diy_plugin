@@ -28,6 +28,7 @@ import 'modules/correspondence_address/correspondence_address.dart';
 import 'modules/derivativeproof/derivative-proof.dart';
 import 'modules/form-email/email_page.dart';
 import 'modules/ifsc/ui/ifsc_page.dart';
+import 'modules/nomination/esign.dart';
 import 'modules/pan/enter_pan.dart';
 import 'modules/pan/validate_kra.dart';
 import 'modules/select-plan/select-plan.dart';
@@ -101,6 +102,9 @@ class FlutterDIY {
               // isReadOnly = false;
               Widget page;
               switch (settings.name) {
+                case '/form/nomination':
+                  page = Nomination(isReadOnly: isReadOnly);
+                  break;
                 case '/form/select-plan':
                   page = SelectPlan(isReadOnly: isReadOnly);
                   break;

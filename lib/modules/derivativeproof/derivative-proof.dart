@@ -1,3 +1,4 @@
+import 'package:diy/modules/derivativeproof/model/income_dropdown_item.dart';
 import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/util.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -19,6 +20,79 @@ class DerivativeProofFront extends StatelessWidget {
         height: WidgetsBinding.instance.window.physicalSize.height / 5,
         child: Column(
           children: [
+            Container(
+              height: 55.sp,
+              decoration: BoxDecoration(
+                  color: AppColors.textFieldBackground(context),
+                  borderRadius: BorderRadius.circular(5)),
+              child: Center(
+                child: FutureBuilder<List<IncomeProofDropdownItem>>(
+                  future: getIt<ApiRepository>().getIncomeProof(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<IncomeProofDropdownItem>> snapshot) {
+                    if (snapshot.hasData) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: ReactiveDropdownField(
+                          dropdownColor: AppColors.background(context),
+                          icon: Icon(Icons.arrow_drop_down),
+                          items: snapshot.data!
+                              .map((e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(
+                                    e.DocumentName,
+                                    style: TextStyle(
+                                      color: AppColors.textColorTextField(
+                                        context,
+                                      ),
+                                    ),
+                                  )))
+                              .toList(),
+                          formControlName: 'IncomeProof',
+                          style: TextStyle(
+                            color: AppColors.textColorTextField(context),
+                          ),
+                          hint: Text('Income Proof Type',
+                              style: TextStyle(
+                                color: AppColors.textColorTextField(context),
+                              )),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            // filled: AppColors.textFieldBackground(context) != null,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                          showErrors: (control) =>
+                              control.invalid && control.dirty,
+                          validationMessages: {
+                            'required': (error) => 'Please Select State',
+                          },
+                          iconSize: 30,
+                          iconEnabledColor: AppColors.primaryColor(context),
+                          iconDisabledColor: AppColors.primaryContent(context),
+                        ),
+                      );
+                    }
+                    return Container(
+                      height: 55.sp,
+                      padding: EdgeInsets.only(left: 15),
+                      decoration: BoxDecoration(
+                          color: AppColors.textFieldBackground(context),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: DropdownMenuItem(
+                        child: Text(
+                          'Income Proof Type',
+                          style: TextStyle(
+                            color: AppColors.textColorTextField(
+                              context,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
             WidgetHelper.verticalSpace20,
             if (!isReadOnly)
               ReactiveImagePicker(
@@ -176,6 +250,7 @@ class DerivativeProofFront extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: NextButton(
                     text: "Next",
+                    validateForm: false,
                     onPressed: () async {
                       ImageFile imageFile = uploadDerivativeProof
                           .control('DerivativeProof')
