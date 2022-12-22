@@ -18,41 +18,36 @@ class SelectPlan extends StatelessWidget {
         title: "Select a Plan",
         subtitle: "Select Trading Segment",
         child: Center(
-          child: Container(
-            height: WidgetsBinding.instance.window.physicalSize.height / 6,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryAccent(context),
-                          surfaceTintColor: AppColors.primaryColor(context),
-                        ),
-                        onPressed: () {},
-                        child: Text('     Cash + MF     ')),
-                    WidgetHelper.horizontalSpace20,
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryAccent(context),
-                        ),
-                        onPressed: () {},
-                        child: Text('Cash + MF + F&O')),
-                  ],
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: NextButton(
-                        text: ' E-Sign Now',
-                        onPressed: () async {
-                          return false;
-                        }),
-                  ),
-                )
-              ],
-            ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryAccent(context),
+                        surfaceTintColor: AppColors.primaryColor(context),
+                      ),
+                      onPressed: () {},
+                      child: Text('     Cash + MF     ')),
+                  WidgetHelper.horizontalSpace20,
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryAccent(context),
+                      ),
+                      onPressed: () {},
+                      child: Text('Cash + MF + F&O')),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: NextButton(
+                    text: ' E-Sign Now',
+                    onPressed: () async {
+                      return false;
+                    }),
+              )
+            ],
           ),
         ));
   }

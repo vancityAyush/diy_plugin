@@ -12,34 +12,28 @@ class InvestNow extends StatelessWidget {
     return BottomPage(
         title: "Congratulations",
         child: Center(
-          child: Container(
-            height: WidgetsBinding.instance.window.physicalSize.height / 6,
-            child: Column(
-              children: [
-                WidgetHelper.verticalSpace,
-                Image.asset(
-                  "packages/diy/assets/congratulation.png",
-                  width: 200.sp,
-                ),
-                WidgetHelper.verticalSpace,
-                Text(
-                  'Congratulations {Name}!',
-                  style: TextStyle(
-                      color: AppColors.primaryContent(context),
-                      fontSize: 16.sp),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: NextButton(
-                        text: "Let's Start",
-                        onPressed: () async {
-                          return false;
-                        }),
-                  ),
-                )
-              ],
-            ),
+          child: Column(
+            children: [
+              WidgetHelper.verticalSpace,
+              Image.asset(
+                "packages/diy/assets/congratulation.png",
+                width: 200.sp,
+              ),
+              WidgetHelper.verticalSpace,
+              Text(
+                'Congratulations {Name}!',
+                style: TextStyle(
+                    color: AppColors.primaryContent(context), fontSize: 16.sp),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: NextButton(
+                    text: "Let's Start",
+                    onPressed: () async {
+                      return false;
+                    }),
+              )
+            ],
           ),
         ));
   }

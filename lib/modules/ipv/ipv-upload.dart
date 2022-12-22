@@ -20,188 +20,180 @@ class UploadIpv extends StatelessWidget {
       formGroup: uploadIpvForm,
       title: "Mobile cam IPV",
       subtitle: "Let's do a quick in-person-verification over web cam",
-      child: SizedBox(
-        height: WidgetsBinding.instance.window.physicalSize.height / 5.5,
-        child: Column(
-          children: [
-            WidgetHelper.verticalSpace20,
-            ReactiveTextField(
-              readOnly: isReadOnly,
-              formControlName: 'ipvCode',
-              keyboardType: TextInputType.number,
-              cursorColor: AppColors.primaryColor(context),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                filled: AppColors.textFieldBackground(context) != null,
-                fillColor: AppColors.textFieldBackground(context),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
+      child: Column(
+        children: [
+          WidgetHelper.verticalSpace20,
+          ReactiveTextField(
+            readOnly: isReadOnly,
+            formControlName: 'ipvCode',
+            keyboardType: TextInputType.number,
+            cursorColor: AppColors.primaryColor(context),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+              filled: AppColors.textFieldBackground(context) != null,
+              fillColor: AppColors.textFieldBackground(context),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.textFieldBackground(context),
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.primaryColor(context),
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              // labelText: 'Email ID',
+              // labelStyle:
+              //     TextStyle(color: AppColors.primaryContent(context)),
+
+              hintText: '3436',
+              hintStyle: TextStyle(
+                  color: AppColors.primaryContent(context),
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w700),
+              // prefixIcon: Icon(
+              //   Icons.email_outlined,
+              //   color: Theme.of(context).primaryColor,
+              // ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            showErrors: (control) => control.invalid && control.hasFocus,
+            validationMessages: {},
+          ),
+          WidgetHelper.verticalSpace20,
+          //if (!isReadOnly)
+          ReactiveImagePicker(
+            formControlName: 'ipv',
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.zero,
+                labelText: 'Drop your document image here',
+                filled: false,
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                helperText: ''),
+            validationMessages: {
+              ValidationMessage.required: (a) =>
+                  'Please upload your document image',
+            },
+            inputBuilder: (onPressed) => DottedBorder(
+              color: AppColors.footerText(context), //color of dotted/dash line
+              strokeWidth: 1, //thickness of dash/dots
+              dashPattern: [4, 4],
+              child: InkWell(
+                onTap: onPressed,
+                child: Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
                     color: AppColors.textFieldBackground(context),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.primaryColor(context),
-                  ),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                // labelText: 'Email ID',
-                // labelStyle:
-                //     TextStyle(color: AppColors.primaryContent(context)),
-
-                hintText: '3436',
-                hintStyle: TextStyle(
-                    color: AppColors.primaryContent(context),
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w700),
-                // prefixIcon: Icon(
-                //   Icons.email_outlined,
-                //   color: Theme.of(context).primaryColor,
-                // ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-              showErrors: (control) => control.invalid && control.hasFocus,
-              validationMessages: {},
-            ),
-            WidgetHelper.verticalSpace20,
-            //if (!isReadOnly)
-            ReactiveImagePicker(
-              formControlName: 'ipv',
-              decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.zero,
-                  labelText: 'Drop your document image here',
-                  filled: false,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  helperText: ''),
-              validationMessages: {
-                ValidationMessage.required: (a) =>
-                    'Please upload your document image',
-              },
-              inputBuilder: (onPressed) => DottedBorder(
-                color:
-                    AppColors.footerText(context), //color of dotted/dash line
-                strokeWidth: 1, //thickness of dash/dots
-                dashPattern: [4, 4],
-                child: InkWell(
-                  onTap: onPressed,
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.textFieldBackground(context),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 20,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Icon(
+                          Icons.camera_alt_outlined,
+                          color: AppColors.primaryColor(context),
+                          size: 50,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Click here to capture picture',
+                          style: TextStyle(
+                            color: AppColors.primaryContent(context),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
                           ),
-                          Icon(
-                            Icons.camera_alt_outlined,
-                            color: AppColors.primaryColor(context),
-                            size: 50,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Supported: JPG, JPEG or PNG less than 10MB',
+                          style: TextStyle(
+                            color: AppColors.primaryContent(context),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Click here to capture picture',
-                            style: TextStyle(
-                              color: AppColors.primaryContent(context),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Supported: JPG, JPEG or PNG less than 10MB',
-                            style: TextStyle(
-                              color: AppColors.primaryContent(context),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
             ),
-
-            if (isReadOnly)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: AppColors.primaryColor(context),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
-                          textStyle: const TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        showCustomDialog(context);
-                      },
-                      child: Row(
-                        children: const [
-                          Spacer(),
-                          Text(
-                            'Capture',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                          const Spacer(),
-                        ],
+          ),
+          WidgetHelper.verticalSpace20,
+          if (isReadOnly)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: AppColors.primaryColor(context),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      textStyle: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    showCustomDialog(context);
+                  },
+                  child: Row(
+                    children: const [
+                      Spacer(),
+                      Text(
+                        'Capture',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                      ),
+                      const Spacer(),
+                    ],
                   ),
                 ),
               ),
-            if (!isReadOnly)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: NextButton(
-                    text: "Next",
-                    onPressed: () async {
-                      showCustomDialog(context);
-                      return false;
-                    },
-                  ),
-                ),
-              )
-          ],
-        ),
+            ),
+          if (!isReadOnly)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: NextButton(
+                text: "Next",
+                onPressed: () async {
+                  showCustomDialog(context);
+                  return false;
+                },
+              ),
+            )
+        ],
       ),
     );
   }

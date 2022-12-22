@@ -25,101 +25,96 @@ class IFSCPage extends StatelessWidget {
       title: "Verify Bank Account",
       subtitle: "Lorem ipsum dolor sit amet, consectetur",
       formGroup: ifscForm,
-      child: SizedBox(
-        height: WidgetsBinding.instance.window.physicalSize.height / 5,
-        child: Column(
-          children: [
-            ReactiveTextField(
-              readOnly: isReadOnly,
-              formControlName: 'ifsc',
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
-                filled: AppColors.textFieldBackground(context) != null,
-                fillColor: AppColors.textFieldBackground(context),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.textFieldBackground(context),
-                  ),
-                  borderRadius: BorderRadius.circular(4),
+      child: Column(
+        children: [
+          ReactiveTextField(
+            readOnly: isReadOnly,
+            formControlName: 'ifsc',
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
+              filled: AppColors.textFieldBackground(context) != null,
+              fillColor: AppColors.textFieldBackground(context),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.textFieldBackground(context),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.primaryColor(context),
-                  ),
-                  borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColors.primaryColor(context),
                 ),
-                // labelText: 'IFSC Code',
-                labelStyle: TextStyle(color: AppColors.primaryContent(context)),
-                hintText: 'Enter Your IFSC Code',
-                // prefixIcon: Icon(
-                //   Icons.account_balance,
-                //   color: Theme.of(context).primaryColor,
-                // ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                  ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              // labelText: 'IFSC Code',
+              labelStyle: TextStyle(color: AppColors.primaryContent(context)),
+              hintText: 'Enter Your IFSC Code',
+              // prefixIcon: Icon(
+              //   Icons.account_balance,
+              //   color: Theme.of(context).primaryColor,
+              // ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
-              showErrors: (control) => control.invalid && control.dirty,
-              validationMessages: {
-                'required': (error) => 'Please Enter IFSC',
-              },
             ),
-            WidgetHelper.verticalSpace20,
-            Visibility(
-              visible: !isReadOnly,
-              child: TextButton(
-                onPressed: () async {
+            showErrors: (control) => control.invalid && control.dirty,
+            validationMessages: {
+              'required': (error) => 'Please Enter IFSC',
+            },
+          ),
+          WidgetHelper.verticalSpace20,
+          Visibility(
+            visible: !isReadOnly,
+            child: TextButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SelectIFSCPage();
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                "Search IFSC Code",
+                style: TextStyle(
+                  color: AppColors.primaryColor(context),
+                  fontSize: 16.sp,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: NextButton(
+              text: "Search",
+              onPressed: () async {
+                List<bank> banks = await getIt<ApiRepository>()
+                    .getIfscFromCode(ifscForm.control('ifsc').value);
+                if (banks.isNotEmpty) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return SelectIFSCPage();
+                        return SearchBankLocation(banks: banks);
                       },
                     ),
                   );
-                },
-                child: Text(
-                  "Search IFSC Code",
-                  style: TextStyle(
-                    color: AppColors.primaryColor(context),
-                    fontSize: 16.sp,
-                  ),
-                ),
-              ),
+                  return true;
+                } else {
+                  AppUtil.showToast("No Bank Found");
+                  return false;
+                }
+              },
             ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: NextButton(
-                  text: "Search",
-                  onPressed: () async {
-                    List<bank> banks = await getIt<ApiRepository>()
-                        .getIfscFromCode(ifscForm.control('ifsc').value);
-                    if (banks.isNotEmpty) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return SearchBankLocation(banks: banks);
-                          },
-                        ),
-                      );
-                      return true;
-                    } else {
-                      AppUtil.showToast("No Bank Found");
-                      return false;
-                    }
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
