@@ -348,4 +348,14 @@ class FormService {
       ),
     },
   );
+  final selectPlan = FormGroup(
+    {
+      'Segment1': FormControl<bool>(validators: [Validators.requiredTrue]),
+      'Segment2': FormControl<bool>(validators: [Validators.requiredTrue]),
+      'SelectedSegment1':
+          FormControl<bool>(validators: [Validators.requiredTrue]),
+      'SelectedSegment2':
+          FormControl<bool>(validators: [Validators.requiredTrue]),
+    },
+  );
 }
