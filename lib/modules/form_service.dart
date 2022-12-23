@@ -1,12 +1,12 @@
 import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
 import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
 import 'package:diy/modules/financial-info/models/income_dropdown_item.dart';
-import 'package:diy/modules/financial-info/models/occupation_dropdown_item.dart';
 import 'package:diy/modules/financial-info/models/trading_experience_dropdown_item.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_image_picker/image_file.dart';
 
 import 'derivativeproof/model/income_dropdown_item.dart';
+import 'financial-info/models/occupation_dropdown_item.dart';
 
 class FormService {
   final signUpForm = FormGroup(
@@ -302,7 +302,7 @@ class FormService {
   );
   final financialInfo = FormGroup(
     {
-      'EducationQualification': FormControl<String>(
+      'EducationQualification': FormControl<int>(
         validators: [
           Validators.required,
         ],

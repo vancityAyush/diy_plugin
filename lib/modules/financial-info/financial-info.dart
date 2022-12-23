@@ -48,13 +48,47 @@ class FinancialInfo extends StatelessWidget {
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: ReactiveDropdownField(
+                child: ReactiveDropdownField<int>(
                   dropdownColor: AppColors.textFieldBackground(context),
                   formControlName: 'EducationQualification',
-                  items: listitems.map((itemone) {
-                    return DropdownMenuItem(
-                        value: itemone, child: Text(itemone));
-                  }).toList(),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text("Doctorate"),
+                    ),
+                    DropdownMenuItem(
+                      value: 2,
+                      child: Text("Graduate"),
+                    ),
+                    DropdownMenuItem(
+                      value: 3,
+                      child: Text("HIGH SCHOOL"),
+                    ),
+                    DropdownMenuItem(
+                      value: 4,
+                      child: Text("Illiterate"),
+                    ),
+                    DropdownMenuItem(
+                      value: 5,
+                      child: Text("Others"),
+                    ),
+                    DropdownMenuItem(
+                      value: 6,
+                      child: Text("Post Graduate"),
+                    ),
+                    DropdownMenuItem(
+                      value: 7,
+                      child: Text("PROFESSIONAL"),
+                    ),
+                    DropdownMenuItem(
+                      value: 8,
+                      child: Text("Professional Degree"),
+                    ),
+                    DropdownMenuItem(
+                      value: 9,
+                      child: Text("Under High School"),
+                    ),
+                  ],
                   style: TextStyle(
                     color: AppColors.textColorTextField(context),
                   ),
@@ -66,6 +100,12 @@ class FinancialInfo extends StatelessWidget {
                     border: InputBorder.none,
                     // filled: AppColors.textFieldBackground(context) != null,
                   ),
+                  borderRadius: BorderRadius.circular(5),
+                  showErrors: (control) => control.invalid && control.dirty,
+                  validationMessages: {
+                    'required': (error) =>
+                        'Please Select Education Qualification',
+                  },
                   iconSize: 30,
                   iconEnabledColor: AppColors.primaryColor(context),
                   iconDisabledColor: AppColors.primaryContent(context),
@@ -88,7 +128,7 @@ class FinancialInfo extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: ReactiveDropdownField(
-                        dropdownColor: AppColors.background(context),
+                        dropdownColor: AppColors.textFieldBackground(context),
                         icon: Icon(Icons.arrow_drop_down),
                         items: snapshot.data!
                             .map((e) => DropdownMenuItem(
@@ -162,7 +202,7 @@ class FinancialInfo extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: ReactiveDropdownField(
-                        dropdownColor: AppColors.background(context),
+                        dropdownColor: AppColors.textFieldBackground(context),
                         icon: Icon(Icons.arrow_drop_down),
                         items: snapshot.data!
                             .map((e) => DropdownMenuItem(
@@ -192,7 +232,7 @@ class FinancialInfo extends StatelessWidget {
                         showErrors: (control) =>
                             control.invalid && control.dirty,
                         validationMessages: {
-                          'required': (error) => 'Please Select State',
+                          'required': (error) => 'Please Select Occupation',
                         },
                         iconSize: 30,
                         iconEnabledColor: AppColors.primaryColor(context),
@@ -237,7 +277,7 @@ class FinancialInfo extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: ReactiveDropdownField(
-                        dropdownColor: AppColors.background(context),
+                        dropdownColor: AppColors.textFieldBackground(context),
                         icon: Icon(Icons.arrow_drop_down),
                         items: snapshot.data!
                             .map((e) => DropdownMenuItem(
@@ -261,7 +301,6 @@ class FinancialInfo extends StatelessWidget {
                             )),
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          // filled: AppColors.textFieldBackground(context) != null,
                         ),
                         borderRadius: BorderRadius.circular(5),
                         showErrors: (control) =>

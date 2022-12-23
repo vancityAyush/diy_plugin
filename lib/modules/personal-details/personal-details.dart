@@ -1,6 +1,7 @@
 import 'package:diy/diy.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/network/api_repository.dart';
+import 'package:diy/utils/libs.dart';
 import 'package:diy/widget/diy_form.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/widget_helper.dart';
@@ -23,79 +24,94 @@ class PersonalDetails extends StatelessWidget {
       formGroup: PersonalDetailsForm,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: ReactiveDropdownField<int>(
-              dropdownColor: AppColors.background(context),
-              formControlName: 'Gender',
-              items: const [
-                DropdownMenuItem(
-                  value: 1,
-                  child: Text("Male"),
-                ),
-                DropdownMenuItem(
-                  value: 2,
-                  child: Text("Female"),
-                ),
-              ],
-              icon: Icon(Icons.arrow_drop_down),
-              style: TextStyle(
-                color: AppColors.textColorTextField(context),
-              ),
-              hint: Text('Select Gender',
+          Container(
+            height: 55.sp,
+            decoration: BoxDecoration(
+                color: AppColors.textFieldBackground(context),
+                borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: ReactiveDropdownField<int>(
+                  dropdownColor: AppColors.textFieldBackground(context),
+                  formControlName: 'Gender',
+                  items: const [
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text("Male"),
+                    ),
+                    DropdownMenuItem(
+                      value: 2,
+                      child: Text("Female"),
+                    ),
+                  ],
+                  icon: Icon(Icons.arrow_drop_down),
                   style: TextStyle(
                     color: AppColors.textColorTextField(context),
-                  )),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                // filled: AppColors.textFieldBackground(context) != null,
+                  ),
+                  hint: Text('Select Gender',
+                      style: TextStyle(
+                        color: AppColors.textColorTextField(context),
+                      )),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                  showErrors: (control) => control.invalid && control.dirty,
+                  validationMessages: {
+                    'required': (error) => 'Please Select Gender',
+                  },
+                  iconSize: 30,
+                  iconEnabledColor: AppColors.primaryColor(context),
+                  iconDisabledColor: AppColors.primaryContent(context),
+                ),
               ),
-              borderRadius: BorderRadius.circular(5),
-              showErrors: (control) => control.invalid && control.dirty,
-              validationMessages: {
-                'required': (error) => 'Please Select Gender',
-              },
-              iconSize: 30,
-              iconEnabledColor: AppColors.primaryColor(context),
-              iconDisabledColor: AppColors.primaryContent(context),
             ),
           ),
           WidgetHelper.verticalSpace20,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: ReactiveDropdownField<int>(
-              dropdownColor: AppColors.background(context),
-              formControlName: 'MaritalStatus',
-              items: const [
-                DropdownMenuItem(
-                  value: 1,
-                  child: Text("Single"),
-                ),
-                DropdownMenuItem(
-                  value: 2,
-                  child: Text("Married"),
-                ),
-              ],
-              icon: Icon(Icons.arrow_drop_down),
-              style: TextStyle(
-                color: AppColors.textColorTextField(context),
-              ),
-              hint: Text('Maritial Status',
+          Container(
+            height: 55.sp,
+            decoration: BoxDecoration(
+                color: AppColors.textFieldBackground(context),
+                borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: ReactiveDropdownField<int>(
+                  dropdownColor: AppColors.textFieldBackground(context),
+                  formControlName: 'MaritalStatus',
+                  items: const [
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text("Single"),
+                    ),
+                    DropdownMenuItem(
+                      value: 2,
+                      child: Text("Married"),
+                    ),
+                  ],
+                  icon: Icon(Icons.arrow_drop_down),
                   style: TextStyle(
                     color: AppColors.textColorTextField(context),
-                  )),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                // filled: AppColors.textFieldBackground(context) != null,
+                  ),
+                  hint: Text('Maritial Status',
+                      style: TextStyle(
+                        color: AppColors.textColorTextField(context),
+                      )),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    // filled: AppColors.textFieldBackground(context) != null,
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                  showErrors: (control) => control.invalid && control.dirty,
+                  validationMessages: {
+                    'required': (error) => 'Please Select Marital Status',
+                  },
+                  iconSize: 30,
+                  iconEnabledColor: AppColors.primaryColor(context),
+                  iconDisabledColor: AppColors.primaryContent(context),
+                ),
               ),
-              borderRadius: BorderRadius.circular(5),
-              showErrors: (control) => control.invalid && control.dirty,
-              validationMessages: {
-                'required': (error) => 'Please Select Marital Status',
-              },
-              iconSize: 30,
-              iconEnabledColor: AppColors.primaryColor(context),
-              iconDisabledColor: AppColors.primaryContent(context),
             ),
           ),
           WidgetHelper.verticalSpace20,
