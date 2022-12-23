@@ -19,6 +19,19 @@ class FinancialInfo extends StatelessWidget {
   FinancialInfo({Key? key, this.isReadOnly = false}) : super(key: key);
 
   final financialInfoForm = getIt<FormService>().financialInfo;
+  List<String> listitems = [
+    "Doctorate",
+    "Graduate",
+    "HIGH SCHOOL",
+    "Illiterate",
+    "Others",
+    "Post Graduate",
+    "PROFESSIONAL",
+    "Professional Degree",
+    "Under High School"
+  ];
+  String selectval = "Education Qualification";
+
   @override
   Widget build(BuildContext context) {
     return DiyForm(
@@ -27,40 +40,38 @@ class FinancialInfo extends StatelessWidget {
       formGroup: financialInfoForm,
       child: Column(
         children: [
-          ReactiveTextField(
-            cursorColor: AppColors.primaryColor(context),
-            formControlName: 'EducationQualification',
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              fillColor: AppColors.textFieldBackground(context),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.textFieldBackground(context),
+          Container(
+            height: 55.sp,
+            decoration: BoxDecoration(
+                color: AppColors.textFieldBackground(context),
+                borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: ReactiveDropdownField(
+                  dropdownColor: AppColors.textFieldBackground(context),
+                  formControlName: 'EducationQualification',
+                  items: listitems.map((itemone) {
+                    return DropdownMenuItem(
+                        value: itemone, child: Text(itemone));
+                  }).toList(),
+                  style: TextStyle(
+                    color: AppColors.textColorTextField(context),
+                  ),
+                  hint: Text('Education Qualification',
+                      style: TextStyle(
+                        color: AppColors.textColorTextField(context),
+                      )),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    // filled: AppColors.textFieldBackground(context) != null,
+                  ),
+                  iconSize: 30,
+                  iconEnabledColor: AppColors.primaryColor(context),
+                  iconDisabledColor: AppColors.primaryContent(context),
                 ),
-                borderRadius: BorderRadius.circular(4),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.primaryColor(context),
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              // labelText: 'Phone Number',
-              // labelStyle: TextStyle(color: AppColors.primaryContent(context)),
-              hintText: 'Education Qualification',
-              hintStyle:
-                  TextStyle(color: AppColors.textColorTextField(context)),
-
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primaryColor(context)),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              filled: AppColors.textFieldBackground(context) != null,
             ),
-            showErrors: (control) => control.invalid && control.hasFocus,
-            validationMessages: {
-              'required': (error) => 'Required Field',
-            },
           ),
           WidgetHelper.verticalSpace20,
           Container(
@@ -286,6 +297,34 @@ class FinancialInfo extends StatelessWidget {
             ),
           ),
           WidgetHelper.verticalSpace20,
+          ReactiveCheckboxListTile(
+            activeColor: AppColors.primaryColor(context),
+            formControlName: 'Citizen',
+            checkboxShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
+            title: Text(
+              'I am Indian citizen, born and residing in India',
+              style: TextStyle(
+                color: AppColors.primaryContent(context),
+                fontSize: 14.sp,
+              ),
+            ),
+          ),
+          ReactiveCheckboxListTile(
+            activeColor: AppColors.primaryColor(context),
+            formControlName: 'PoliticalIdentity',
+            checkboxShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
+            title: Text(
+              'I am not a politically exposed person',
+              style: TextStyle(
+                color: AppColors.primaryContent(context),
+                fontSize: 14.sp,
+              ),
+            ),
+          ),
           NextButton(
             text: "Continue",
             onPressed: () async {

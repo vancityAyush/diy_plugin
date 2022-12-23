@@ -206,7 +206,7 @@ class EmailPage extends StatelessWidget {
                                   RichText(
                                     text: TextSpan(
                                       text:
-                                          'I hereby declare that the mobile number belongs to ',
+                                          'I hereby declare that the email belongs to ',
                                       style: TextStyle(
                                         color:
                                             AppColors.primaryContent(context),

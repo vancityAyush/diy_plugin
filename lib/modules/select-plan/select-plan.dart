@@ -29,7 +29,7 @@ class SelectPlan extends StatelessWidget {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -45,6 +45,7 @@ class SelectPlan extends StatelessWidget {
                       Text('Cash + MTF')
                     ],
                   ),
+                  Divider(),
                   Row(
                     children: [
                       Transform.scale(
@@ -60,6 +61,23 @@ class SelectPlan extends StatelessWidget {
                     ],
                   ),
                 ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 80),
+                child: ReactiveCheckboxListTile(
+                  activeColor: AppColors.primaryColor(context),
+                  formControlName: 'Segment1',
+                  checkboxShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  title: Text(
+                    'Cash + MTF',
+                    style: TextStyle(
+                      color: AppColors.primaryContent(context),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ),
               ),
               GestureDetector(
                 onTap: () {

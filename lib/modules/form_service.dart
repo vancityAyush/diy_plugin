@@ -302,7 +302,7 @@ class FormService {
   );
   final financialInfo = FormGroup(
     {
-      'EducationQualification': FormControl<StateDropdownItem>(
+      'EducationQualification': FormControl<String>(
         validators: [
           Validators.required,
         ],
@@ -326,6 +326,9 @@ class FormService {
         ],
         touched: false,
       ),
+      'Citizen': FormControl<bool>(validators: [Validators.requiredTrue]),
+      'PoliticalIdentity':
+          FormControl<bool>(validators: [Validators.requiredTrue]),
     },
   );
   final uploadSelfie = FormGroup(
