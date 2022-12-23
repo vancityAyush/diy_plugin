@@ -41,4 +41,8 @@ abstract class AppColors {
         light: LightThemeColors.subHeading,
         dark: DarkThemeColors.subHeading,
       ).getColor(context);
+  static Color secondaryColor(BuildContext context) => ThemedColor(
+        light: LightThemeColors.secondaryColor,
+        dark: DarkThemeColors.secondaryColor,
+      ).getColor(context);
 }
