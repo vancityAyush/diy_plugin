@@ -200,8 +200,8 @@ class OAuthService {
   }
 
   Future<dynamic> startAuth(String mobile) async {
+    final rsaEncrypter = _http.rsaEncrypter;
     try {
-      final rsaEncrypter = _http.rsaEncrypter;
       final response = await _http.post(
         "/auth/start/",
         data: {

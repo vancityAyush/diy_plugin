@@ -18,7 +18,8 @@ class FormService {
         ],
         touched: false,
       ),
-      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
+      'TnC':
+          FormControl<bool>(value: true, validators: [Validators.requiredTrue]),
     },
   );
   final otpForm = FormGroup(
@@ -26,8 +27,10 @@ class FormService {
       'otp': FormControl<String>(
         validators: [Validators.required, Validators.minLength(4)],
       ),
-      'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
+      'TnC':
+          FormControl<bool>(value: true, validators: [Validators.requiredTrue]),
       'relation': FormControl<int>(
+        value: 01,
         validators: [Validators.required],
       ),
     },
@@ -53,6 +56,7 @@ class FormService {
       ),
       'TnC': FormControl<bool>(validators: [Validators.requiredTrue]),
       'relation': FormControl<int>(
+        value: 01,
         validators: [Validators.required],
       ),
     },
