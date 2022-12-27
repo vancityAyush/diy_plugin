@@ -39,7 +39,7 @@ class UiStatus {
     20: "Upload Selfie",
     23: "Mobile cam IPV",
     22: "Select a Plan",
-    24: "E-Sign",
+    36: "E-Sign",
     25: "Congratulations",
     27: "Derivative Proof"
   };
@@ -65,7 +65,7 @@ class UiStatus {
     20: "/form/upload-selfie",
     23: "/form/ipv",
     22: "/form/select-plan",
-    24: "/form/esign",
+    36: "/form/esign",
     25: "/form/invest-now",
     27: "/form/upload-derivative-proof"
   };

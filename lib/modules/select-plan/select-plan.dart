@@ -1,5 +1,7 @@
+import 'package:diy/modules/select-plan/models/plan.dart';
 import 'package:diy/utils/libs.dart';
 import 'package:flutter/material.dart';
+import 'package:reactive_segmented_control/reactive_segmented_control.dart';
 
 import '../../diy.dart';
 import '../../network/api_repository.dart';
@@ -8,374 +10,98 @@ class SelectPlan extends StatelessWidget {
   bool isReadOnly;
 
   SelectPlan({Key? key, this.isReadOnly = false}) : super(key: key);
-
   final apiRepository = getIt<ApiRepository>();
+
   final selectPlanForm = getIt<FormService>().selectPlan;
 
   @override
   Widget build(BuildContext context) {
-    final isLightMode = Theme.of(context).brightness == Brightness.light;
     return DiyForm(
-        title: "Select a Plan",
-        subtitle: "Select Trading Segment",
-        formGroup: selectPlanForm,
-        child: Center(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("Trading Segment"),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Transform.scale(
-                        scale: 1.3,
-                        child: ReactiveCheckbox(
-                            activeColor: AppColors.primaryColor(context),
-                            formControlName: 'Segment1',
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
-                            )),
-                      ),
-                      Text('Cash + MTF')
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Transform.scale(
-                        scale: 1.3,
-                        child: ReactiveCheckbox(
-                            activeColor: AppColors.primaryColor(context),
-                            formControlName: 'Segment2',
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
-                            )),
-                      ),
-                      Text('Cash + MTF + F&O')
-                    ],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 80),
-                child: ReactiveCheckboxListTile(
-                  activeColor: AppColors.primaryColor(context),
-                  formControlName: 'Segment1',
-                  checkboxShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  title: Text(
-                    'Cash + MTF',
-                    style: TextStyle(
-                      color: AppColors.primaryContent(context),
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  print('Selection');
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: AppColors.textFieldBackground(context),
-                      border:
-                          Border.all(color: AppColors.primaryColor(context)),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10.0, top: 10.0, bottom: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                              scale: 1.3,
-                              child: ReactiveCheckbox(
-                                activeColor: AppColors.primaryColor(context),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                formControlName: 'SelectedSegment1',
-                              ),
-                            ),
-                            Text(
-                              "DIY Standard",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          ListTile(
-                            title: Text('Delivery at 0.25'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                          ListTile(
-                            title: Text('Intraday Free'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                          ListTile(
-                            title: Text('Future at 0.001'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                          ListTile(
-                            title: Text('Options Rs. 20 per Lot'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                        ],
-                      ),
-                      ExpansionTile(
-                        title: Center(
-                          child: Text(
-                            "Read More",
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.primaryColor(context)),
-                          ),
-                        ),
-                        iconColor: AppColors.primaryColor(context),
-                        collapsedIconColor: AppColors.primaryColor(context),
-                        children: <Widget>[
-                          DataTable(
-                            headingRowColor: MaterialStateColor.resolveWith(
-                                (states) =>
-                                    AppColors.textFieldBackground(context)),
-                            columns: [
-                              DataColumn(
-                                  label: Text(
-                                ' Particular ',
-                              )),
-                              DataColumn(
-                                  label: Text(
-                                '   Charges Per Order   ',
-                              )),
-                            ],
-                            rows: [
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) =>
-                                          AppColors.secondaryColor(context)),
-                                  cells: [
-                                    DataCell(Text('Futures')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) => AppColors.textFieldBackground(
-                                          context)),
-                                  cells: [
-                                    DataCell(Text('Options')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) =>
-                                          AppColors.secondaryColor(context)),
-                                  cells: [
-                                    DataCell(Text('Equity Intraday')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) => AppColors.textFieldBackground(
-                                          context)),
-                                  cells: [
-                                    DataCell(Text('Currency F&O')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              WidgetHelper.verticalSpace,
-              GestureDetector(
-                onTap: () {
-                  print('Selection');
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: AppColors.textFieldBackground(context),
-                      border:
-                          Border.all(color: AppColors.primaryColor(context)),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10.0, top: 10.0, bottom: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                              scale: 1.3,
-                              child: ReactiveCheckbox(
-                                activeColor: AppColors.primaryColor(context),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                formControlName: 'SelectedSegment2',
-                              ),
-                            ),
-                            Text(
-                              "DIY Standard",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          ListTile(
-                            title: Text('Delivery at 0.25'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                          ListTile(
-                            title: Text('Intraday Free'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                          ListTile(
-                            title: Text('Future at 0.001'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                          ListTile(
-                            title: Text('Options Rs. 20 per Lot'),
-                            leading: Icon(Icons.keyboard_arrow_right_rounded),
-                            minLeadingWidth: 10,
-                            visualDensity: VisualDensity(vertical: -4),
-                          ),
-                        ],
-                      ),
-                      ExpansionTile(
-                        title: Center(
-                          child: Text(
-                            "Read More",
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.primaryColor(context)),
-                          ),
-                        ),
-                        iconColor: AppColors.primaryColor(context),
-                        collapsedIconColor: AppColors.primaryColor(context),
-                        children: <Widget>[
-                          DataTable(
-                            headingRowColor: MaterialStateColor.resolveWith(
-                                (states) =>
-                                    AppColors.textFieldBackground(context)),
-                            columns: [
-                              DataColumn(
-                                  label: Text(
-                                ' Particular ',
-                              )),
-                              DataColumn(
-                                  label: Text(
-                                '   Charges Per Order   ',
-                              )),
-                            ],
-                            rows: [
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) =>
-                                          AppColors.secondaryColor(context)),
-                                  cells: [
-                                    DataCell(Text('Futures')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) => AppColors.textFieldBackground(
-                                          context)),
-                                  cells: [
-                                    DataCell(Text('Options')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) =>
-                                          AppColors.secondaryColor(context)),
-                                  cells: [
-                                    DataCell(Text('Equity Intraday')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                              DataRow(
-                                  color: MaterialStateColor.resolveWith(
-                                      (states) => AppColors.textFieldBackground(
-                                          context)),
-                                  cells: [
-                                    DataCell(Text('Currency F&O')),
-                                    DataCell(
-                                      Center(child: Text('₹ 20')),
-                                    ),
-                                  ]),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              WidgetHelper.verticalSpace20,
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: NextButton(
-                  text: "Next",
-                  onPressed: () async {
-                    showCustomDialog(context);
-                    return false;
-                  },
-                ),
-              )
-            ],
+      title: "Select a Plan",
+      subtitle: "Select Trading Segment",
+      formGroup: selectPlanForm,
+      child: Column(
+        children: [
+          WidgetHelper.verticalSpace20,
+          ReactiveSegmentedControl(
+            children: const {
+              1: Text("Cash + MTF"),
+              2: Text("Cash + MTF + F&O"),
+            },
+            formControlName: "PlanType",
           ),
-        ));
+          ReactiveValueListenableBuilder<int>(
+            builder: (context, value, child) {
+              return FutureBuilder<List<plan>>(
+                future: apiRepository.getPlans(value.value!),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return ReactiveRadioListTile<int>(
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                snapshot.data![index].Title,
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              for (var item in snapshot.data![index].Features)
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 16.sp,
+                                    ),
+                                    WidgetHelper.horizontalSpace,
+                                    Text(item),
+                                  ],
+                                )
+                            ],
+                          ),
+                          value: snapshot.data![index].PlanId,
+                          formControlName: "PlanId",
+                        );
+                      },
+                    );
+                  }
+                  return Text(value.toString());
+                },
+              );
+            },
+            formControlName: "PlanType",
+          ),
+          WidgetHelper.verticalSpace20,
+          ReactiveCheckboxListTile(
+            title: Text("DDPI"),
+            formControlName: "DdpiOpted",
+          ),
+          WidgetHelper.verticalSpace20,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: NextButton(
+              text: "Next",
+              onPressed: () async {
+                // showCustomDialog(context);
+                await apiRepository.savePlanDetails(selectPlanForm.value);
+                await getIt<OAuthService>().updateUiStatus().then(
+                      (route) => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        route,
+                        (route) => false,
+                      ),
+                    );
+                return true;
+              },
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   void showCustomDialog(BuildContext context) {
@@ -411,7 +137,7 @@ class SelectPlan extends StatelessWidget {
                 DataTable(
                   headingRowColor: MaterialStateColor.resolveWith(
                       (states) => AppColors.background(context)),
-                  columns: [
+                  columns: const [
                     DataColumn(
                         label: Text(
                       ' Particular ',

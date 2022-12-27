@@ -2,13 +2,51 @@ import 'package:diy/utils/libs.dart';
 import 'package:diy/utils/util.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:reactive_image_picker/image_file.dart';
 import 'package:reactive_image_picker/reactive_image_picker.dart';
 
-class UploadSelfie extends StatelessWidget {
+class UploadSelfie extends StatefulWidget {
   bool isReadOnly;
   UploadSelfie({Key? key, this.isReadOnly = false}) : super(key: key);
+
+  @override
+  State<UploadSelfie> createState() => _UploadSelfieState();
+}
+
+class _UploadSelfieState extends State<UploadSelfie> {
   final uploadSelfie = getIt<FormService>().uploadSelfie;
+
+  final Location location = new Location();
+  late LocationData _locationData;
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  @override
+  void initState() {
+    initLocation();
+    super.initState();
+  }
+
+  initLocation() async {
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DiyForm(
@@ -18,7 +56,7 @@ class UploadSelfie extends StatelessWidget {
       child: Column(
         children: [
           WidgetHelper.verticalSpace20,
-          if (!isReadOnly)
+          if (!widget.isReadOnly)
             ReactiveImagePicker(
               formControlName: 'UploadSelfie',
               decoration: const InputDecoration(
@@ -90,22 +128,8 @@ class UploadSelfie extends StatelessWidget {
                   ),
                 ),
               ),
-
-              //     TextButton.icon(
-              //   onPressed: onPressed,
-              //   icon: Icon(
-              //     Icons.image,
-              //     color: AppColors.primaryColor(context),
-              //   ),
-              //   label: Text(
-              //     'Drop your document image hereProofs supported: Photo of your cancelled cheque / Photo of your passbook',
-              //     style: TextStyle(
-              //         color: AppColors.primaryContent(context),
-              //         fontSize: 14.sp),
-              //   ),
-              // ),
             ),
-          if (isReadOnly)
+          if (widget.isReadOnly)
             Image(
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent? loadingProgress) {
@@ -122,7 +146,15 @@ class UploadSelfie extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           WidgetHelper.verticalSpace20,
-          if (!isReadOnly)
+          if (widget.isReadOnly)
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    widget.isReadOnly = false;
+                  });
+                },
+                child: const Text("Recapture")),
+          if (widget.isReadOnly)
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -165,29 +197,37 @@ class UploadSelfie extends StatelessWidget {
                 ),
               ),
             ),
-          if (isReadOnly!)
+          if (!widget.isReadOnly)
             Align(
               alignment: Alignment.bottomCenter,
               child: NextButton(
                 text: "Next",
                 validateForm: false,
                 onPressed: () async {
-                  ImageFile imageFile =
-                      uploadSelfie.control('UploadSelfie').value;
-                  if (imageFile != null) {
-                    final res = await getIt<ApiRepository>().uploadImage(
-                        file: imageFile.image!, type: DOCTYPE.Signature);
-                    print(res);
-                    final res3 =
-                        await getIt<OAuthService>().updateUiStatus().then(
-                              (route) => Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                route,
-                                (route) => false,
-                              ),
-                            );
-                    print(res3);
-                    return true;
+                  final permission = await location.hasPermission();
+                  if (permission != PermissionStatus.granted) {
+                    await location.requestPermission();
+                  }
+                  if (permission == PermissionStatus.granted) {
+                    _locationData = await location.getLocation();
+                    ImageFile imageFile =
+                        uploadSelfie.control('UploadSelfie').value;
+                    if (imageFile != null) {
+                      final res = await getIt<ApiRepository>().uploadImage(
+                        file: imageFile.image!,
+                        type: DOCTYPE.Selfie,
+                        lat: _locationData.latitude ?? 0,
+                        long: _locationData.longitude ?? 0,
+                      );
+                      await getIt<OAuthService>().updateUiStatus().then(
+                            (route) => Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              route,
+                              (route) => false,
+                            ),
+                          );
+                      return true;
+                    }
                   }
                   return false;
                 },
@@ -197,6 +237,4 @@ class UploadSelfie extends StatelessWidget {
       ),
     );
   }
-  //),
-  //);
 }

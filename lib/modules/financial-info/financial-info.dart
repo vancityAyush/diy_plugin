@@ -3,7 +3,6 @@ import 'package:diy/modules/financial-info/models/occupation_dropdown_item.dart'
 import 'package:diy/modules/financial-info/models/trading_experience_dropdown_item.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/utils/libs.dart';
-import 'package:diy/utils/util.dart';
 import 'package:diy/widget/diy_form.dart';
 import 'package:diy/widget/next_button.dart';
 import 'package:diy/widget/widget_helper.dart';
@@ -19,7 +18,7 @@ class FinancialInfo extends StatelessWidget {
   FinancialInfo({Key? key, this.isReadOnly = false}) : super(key: key);
 
   final financialInfoForm = getIt<FormService>().financialInfo;
-  List<String> listitems = [
+  List<String> educationalDropdown = [
     "Doctorate",
     "Graduate",
     "HIGH SCHOOL",
@@ -30,7 +29,6 @@ class FinancialInfo extends StatelessWidget {
     "Professional Degree",
     "Under High School"
   ];
-  String selectval = "Education Qualification";
 
   @override
   Widget build(BuildContext context) {
@@ -48,47 +46,17 @@ class FinancialInfo extends StatelessWidget {
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: ReactiveDropdownField<int>(
+                child: ReactiveDropdownField<String>(
                   dropdownColor: AppColors.textFieldBackground(context),
-                  formControlName: 'EducationQualification',
-                  items: const [
-                    DropdownMenuItem(
-                      value: 1,
-                      child: Text("Doctorate"),
-                    ),
-                    DropdownMenuItem(
-                      value: 2,
-                      child: Text("Graduate"),
-                    ),
-                    DropdownMenuItem(
-                      value: 3,
-                      child: Text("HIGH SCHOOL"),
-                    ),
-                    DropdownMenuItem(
-                      value: 4,
-                      child: Text("Illiterate"),
-                    ),
-                    DropdownMenuItem(
-                      value: 5,
-                      child: Text("Others"),
-                    ),
-                    DropdownMenuItem(
-                      value: 6,
-                      child: Text("Post Graduate"),
-                    ),
-                    DropdownMenuItem(
-                      value: 7,
-                      child: Text("PROFESSIONAL"),
-                    ),
-                    DropdownMenuItem(
-                      value: 8,
-                      child: Text("Professional Degree"),
-                    ),
-                    DropdownMenuItem(
-                      value: 9,
-                      child: Text("Under High School"),
-                    ),
-                  ],
+                  formControlName: 'Education',
+                  items: educationalDropdown
+                      .map(
+                        (e) => DropdownMenuItem(
+                          child: Text(e),
+                          value: e,
+                        ),
+                      )
+                      .toList(),
                   style: TextStyle(
                     color: AppColors.textColorTextField(context),
                   ),
@@ -127,12 +95,12 @@ class FinancialInfo extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ReactiveDropdownField(
+                      child: ReactiveDropdownField<int>(
                         dropdownColor: AppColors.textFieldBackground(context),
-                        icon: Icon(Icons.arrow_drop_down),
+                        icon: const Icon(Icons.arrow_drop_down),
                         items: snapshot.data!
                             .map((e) => DropdownMenuItem(
-                                value: e,
+                                value: e.AnnualIncomeId,
                                 child: Text(
                                   e.AnnualIncomeName,
                                   style: TextStyle(
@@ -201,12 +169,12 @@ class FinancialInfo extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ReactiveDropdownField(
+                      child: ReactiveDropdownField<int>(
                         dropdownColor: AppColors.textFieldBackground(context),
                         icon: Icon(Icons.arrow_drop_down),
                         items: snapshot.data!
                             .map((e) => DropdownMenuItem(
-                                value: e,
+                                value: e.OccupationId,
                                 child: Text(
                                   e.OccupationName,
                                   style: TextStyle(
@@ -276,12 +244,12 @@ class FinancialInfo extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ReactiveDropdownField(
+                      child: ReactiveDropdownField<int>(
                         dropdownColor: AppColors.textFieldBackground(context),
                         icon: Icon(Icons.arrow_drop_down),
                         items: snapshot.data!
                             .map((e) => DropdownMenuItem(
-                                value: e,
+                                value: e.TradingExperienceId,
                                 child: Text(
                                   e.TradingExperienceName,
                                   style: TextStyle(
@@ -338,7 +306,7 @@ class FinancialInfo extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           ReactiveCheckboxListTile(
             activeColor: AppColors.primaryColor(context),
-            formControlName: 'Citizen',
+            formControlName: 'IsIndianCitizen',
             checkboxShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
@@ -352,7 +320,7 @@ class FinancialInfo extends StatelessWidget {
           ),
           ReactiveCheckboxListTile(
             activeColor: AppColors.primaryColor(context),
-            formControlName: 'PoliticalIdentity',
+            formControlName: 'IsNotPEP',
             checkboxShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
@@ -366,24 +334,18 @@ class FinancialInfo extends StatelessWidget {
           ),
           NextButton(
             text: "Continue",
+            validateForm: false,
             onPressed: () async {
-              return await getIt<OAuthService>()
-                  .sendOtp(
-                financialInfoForm.control('phone').value,
-              )
-                  .then(
-                (res) {
-                  if (res.status) {
-                    AppUtil.showToast(
-                      'OTP sent successfully',
-                    );
-                    return true;
-                  } else {
-                    AppUtil.showErrorToast(res.arguments);
-                  }
-                  return false;
-                },
-              );
+              await getIt<ApiRepository>()
+                  .saveFinancialInfo(financialInfoForm.value);
+              await getIt<OAuthService>().updateUiStatus().then(
+                    (route) => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      route,
+                      (route) => false,
+                    ),
+                  );
+              return true;
             },
           ),
           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),

@@ -188,6 +188,7 @@ class PersonalDetails extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           NextButton(
             text: "Continue",
+            validateForm: false,
             onPressed: () async {
               await getIt<ApiRepository>()
                   .savePersonalDetails(PersonalDetailsForm.value);

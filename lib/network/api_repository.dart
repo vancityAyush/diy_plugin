@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 
 import '../modules/derivativeproof/model/income_dropdown_item.dart';
 import '../modules/ifsc/models/bank.dart';
+import '../modules/select-plan/models/plan.dart';
 import '../utils/libs.dart';
 
 typedef Request = Map<String, dynamic>;
@@ -67,16 +68,20 @@ class ApiRepository {
     final res = await http.postEncrypted(
       "/app/validate-kra/",
       data: data,
-      // {
-      //   "PAN": pan,
-      //   "DateOfBirth": dob,
-      //   "KraVerified": kraVerified,
-      //   "PanVerified": panVerified,
-      //   "FirstName": firstName,
-      //   "MiddleName": middleName,
-      //   "LastName": lastName,
-      //   "UAN": uan
-      // },
+    );
+    return res;
+  }
+
+  Future<dynamic> generateKra() async {
+    final res = await http.get(
+      "/app/generate-aof/",
+    );
+    return res;
+  }
+
+  Future<dynamic> startESign() async {
+    final res = await http.get(
+      "/app/kra-esign-start/",
     );
     return res;
   }
@@ -90,7 +95,11 @@ class ApiRepository {
   }
 
   Future<dynamic> uploadImage(
-      {required File file, required, required DOCTYPE type}) async {
+      {required File file,
+      required,
+      required DOCTYPE type,
+      double lat = 25.25,
+      double long = 81.52}) async {
     List<int> bytes = file.readAsBytesSync();
     String base64Image = base64Encode(bytes);
     String fileName = file.path.split("/").last;
@@ -101,8 +110,8 @@ class ApiRepository {
         "DocumentId": uploadMap[type],
         "DocumentType": uploadMap[type],
         "FileName": fileName,
-        "Latitude": 0,
-        "Longitude": 0,
+        "Latitude": lat,
+        "Longitude": long,
         "FileDataBase64": base64Image,
         "FileType": mimeType,
         "Status": 0,
@@ -164,6 +173,13 @@ class ApiRepository {
     return res;
   }
 
+  Future<dynamic> startIPV() async {
+    final res = await http.get(
+      "/app/ipv-start/",
+    );
+    return res;
+  }
+
   Future<void> manualJourney() async {
     final res = await http.get("/app/manual-journey/");
     return res;
@@ -194,6 +210,22 @@ class ApiRepository {
   Future<dynamic> savePersonalDetails(Request data) async {
     final res = await http.post(
       "/app/save-personal-detail/",
+      data: data,
+    );
+    return res;
+  }
+
+  Future<dynamic> saveFinancialInfo(Request data) async {
+    final res = await http.post(
+      "/app/save-financial-info/",
+      data: data,
+    );
+    return res;
+  }
+
+  Future<dynamic> savePlanDetails(Request data) async {
+    final res = await http.post(
+      "/app/save-plan-details/",
       data: data,
     );
     return res;
@@ -242,5 +274,11 @@ class ApiRepository {
         .map<TradingExperienceDropdownItem>(
             (e) => TradingExperienceDropdownItem.fromJson(e))
         .toList();
+  }
+
+  Future<List<plan>> getPlans(int planType) async {
+    final res = await http.get("/masters/plans/$planType");
+    final ret = res.map<plan>((e) => plan.fromJson(e)).toList();
+    return ret;
   }
 }

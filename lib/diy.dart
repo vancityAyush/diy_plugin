@@ -6,6 +6,7 @@ import 'package:diy/modules/esign/esign.dart';
 import 'package:diy/modules/financial-info/financial-info.dart';
 import 'package:diy/modules/form_service.dart';
 import 'package:diy/modules/invest-now/invest-now.dart';
+import 'package:diy/modules/ipv/ipv-start.dart';
 import 'package:diy/modules/ipv/ipv-upload.dart';
 import 'package:diy/modules/kyc/kyc-select.dart';
 import 'package:diy/modules/personal-details/personal-details.dart';
@@ -115,7 +116,11 @@ class FlutterDIY {
                   page = ESign(isReadOnly: isReadOnly);
                   break;
                 case '/form/ipv':
-                  page = UploadIpv(isReadOnly: isReadOnly);
+                  if (isReadOnly) {
+                    page = UploadIpv(isReadOnly: isReadOnly);
+                  } else {
+                    page = IpvStart();
+                  }
                   break;
                 case '/form/upload-selfie':
                   page = UploadSelfie(isReadOnly: isReadOnly);

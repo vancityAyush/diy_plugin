@@ -11,7 +11,7 @@ enum DOCTYPE {
   IPV,
   AOF,
   Photo,
-  IncomeProo,
+  IncomeProof,
   PromoCodeProof,
   KRAAOF
 }
@@ -26,7 +26,7 @@ Map<DOCTYPE, int> uploadMap = {
   DOCTYPE.IPV: 23,
   DOCTYPE.AOF: 24,
   DOCTYPE.Photo: 26,
-  DOCTYPE.IncomeProo: 27,
+  DOCTYPE.IncomeProof: 27,
   DOCTYPE.PromoCodeProof: 28,
   DOCTYPE.KRAAOF: 36,
 };

@@ -15,7 +15,7 @@ class EnterPan extends StatelessWidget {
   bool isReadOnly;
   EnterPan({Key? key, this.isReadOnly = false}) : super(key: key);
   final panForm = getIt<FormService>().panForm;
-  final kraForm = getIt<FormService>().validatePanForm;
+  final validatePanForm = getIt<FormService>().validatePanForm;
 
   @override
   Widget build(BuildContext context) {
@@ -115,16 +115,16 @@ class EnterPan extends StatelessWidget {
                     .then(
                   (value) async {
                     if (value != null) {
-                      //   getIt<FormService>().validatePanForm.value = value;
-                      //   final form = getIt<FormService>().validatePanForm;
-                      //   Navigator.pushNamedAndRemoveUntil(
-                      //       context, "/app/validate-kra/", (route) => false,
-                      //       arguments: {"response": value});
-                      showCustomDialog(context);
-
-                      return true;
+                      getIt<FormService>().validatePanForm.value = value;
+                      bool res = await showCustomDialog(context);
+                      if (res) {
+                        await getIt<OAuthService>().updateUiStatus().then(
+                              (newRoute) => Navigator.pushNamedAndRemoveUntil(
+                                  context, newRoute, (route) => false),
+                            );
+                      }
+                      return res;
                     } else {
-                      //TODO show error
                       return false;
                     }
                   },
@@ -137,8 +137,8 @@ class EnterPan extends StatelessWidget {
     );
   }
 
-  void showCustomDialog(BuildContext context) {
-    showDialog(
+  Future<bool> showCustomDialog(BuildContext context) async {
+    return await showDialog(
       context: context,
       barrierLabel: "Barrier",
       barrierDismissible: true,
@@ -155,7 +155,7 @@ class EnterPan extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _getCloseButton(context),
+                _getCloseButton(dialogContext),
                 CircleAvatar(
                   radius: 60,
                   backgroundColor: AppColors.primaryColor(context),
@@ -168,7 +168,7 @@ class EnterPan extends StatelessWidget {
                 WidgetHelper.verticalSpace20,
                 Center(
                   child: Text(
-                    "Hello, ${kraForm.control('FirstName').value} ${kraForm.control('MiddleName').value} ${kraForm.control('LastName').value}",
+                    "Hello, ${validatePanForm.control('FirstName').value} ${validatePanForm.control('MiddleName').value} ${validatePanForm.control('LastName').value}",
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -183,17 +183,13 @@ class EnterPan extends StatelessWidget {
                     validateForm: false,
                     onPressed: () async {
                       try {
-                        await getIt<ApiRepository>().validateKra(kraForm.value);
-
+                        await getIt<ApiRepository>()
+                            .validateKra(validatePanForm.value);
+                        Navigator.pop(dialogContext, true);
                         return true;
                       } catch (e) {
+                        Navigator.pop(dialogContext, false);
                         return false;
-                      } finally {
-                        Navigator.pop(dialogContext);
-                        await getIt<OAuthService>().updateUiStatus().then(
-                              (newRoute) => Navigator.pushNamedAndRemoveUntil(
-                                  context, newRoute, (route) => false),
-                            );
                       }
                     },
                   ),
@@ -215,7 +211,7 @@ class EnterPan extends StatelessWidget {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.of(context).pop();
+                            Navigator.pop(dialogContext, false);
                           },
                       ),
                     ],
@@ -242,7 +238,7 @@ class EnterPan extends StatelessWidget {
               color: AppColors.primaryContent(context),
             ),
             onTap: () {
-              Navigator.of(context, rootNavigator: true).pop('dialog');
+              Navigator.pop(context, false);
             },
           ),
         ),

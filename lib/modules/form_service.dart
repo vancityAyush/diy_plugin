@@ -1,12 +1,9 @@
 import 'package:diy/modules/correspondence_address/models/country_dropdown_item.dart';
 import 'package:diy/modules/correspondence_address/models/state_dropdown_item.dart';
-import 'package:diy/modules/financial-info/models/income_dropdown_item.dart';
-import 'package:diy/modules/financial-info/models/trading_experience_dropdown_item.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_image_picker/image_file.dart';
 
 import 'derivativeproof/model/income_dropdown_item.dart';
-import 'financial-info/models/occupation_dropdown_item.dart';
 
 class FormService {
   final signUpForm = FormGroup(
@@ -306,33 +303,33 @@ class FormService {
   );
   final financialInfo = FormGroup(
     {
-      'EducationQualification': FormControl<int>(
+      'Education': FormControl<String>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'AnnualIncome': FormControl<AnnualIncomeDropdownItem>(
+      'AnnualIncome': FormControl<int>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'Occupation': FormControl<OccupationDropdownItem>(
+      'Occupation': FormControl<int>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'TradingExperience': FormControl<TradingExperienceDropdownItem>(
+      'TradingExperience': FormControl<int>(
         validators: [
           Validators.required,
         ],
         touched: false,
       ),
-      'Citizen': FormControl<bool>(validators: [Validators.requiredTrue]),
-      'PoliticalIdentity':
+      'IsIndianCitizen':
           FormControl<bool>(validators: [Validators.requiredTrue]),
+      'IsNotPEP': FormControl<bool>(validators: [Validators.requiredTrue]),
     },
   );
   final uploadSelfie = FormGroup(
@@ -357,12 +354,16 @@ class FormService {
   );
   final selectPlan = FormGroup(
     {
-      'Segment1': FormControl<bool>(validators: [Validators.requiredTrue]),
-      'Segment2': FormControl<bool>(validators: [Validators.requiredTrue]),
-      'SelectedSegment1':
-          FormControl<bool>(validators: [Validators.requiredTrue]),
-      'SelectedSegment2':
-          FormControl<bool>(validators: [Validators.requiredTrue]),
+      "PlanType": FormControl<int>(
+        validators: [Validators.required],
+        value: 1,
+      ),
+      "PlanId": FormControl<int>(
+        validators: [Validators.required],
+      ),
+      "DdpiOpted": FormControl<bool>(
+        validators: [Validators.required],
+      ),
     },
   );
 }

@@ -67,6 +67,9 @@ class HttpClient {
         data: encodeJson ? jsonEncode(data) : data,
         queryParameters: queryParameters,
       );
+      if (response.statusCode == 500) {
+        AppUtil.showErrorToast(response.data["ErrorMessage"]);
+      }
       return response.data;
     } on DioError catch (e) {
       final String? res = e.response!.data["ErrorMessage"];

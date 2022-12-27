@@ -12,6 +12,7 @@ class DerivativeProofFront extends StatelessWidget {
   final uploadDerivativeProof = getIt<FormService>().uploadDerivativeProof;
   @override
   Widget build(BuildContext context) {
+    isReadOnly = false;
     return DiyForm(
       formGroup: uploadDerivativeProof,
       title: "Derivative Proof",
@@ -54,7 +55,7 @@ class DerivativeProofFront extends StatelessWidget {
                             style: TextStyle(
                               color: AppColors.textColorTextField(context),
                             )),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           // filled: AppColors.textFieldBackground(context) != null,
                         ),
@@ -197,7 +198,7 @@ class DerivativeProofFront extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           WidgetHelper.verticalSpace20,
-          if (!isReadOnly)
+          if (isReadOnly)
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -240,7 +241,7 @@ class DerivativeProofFront extends StatelessWidget {
                 ),
               ),
             ),
-          if (isReadOnly!)
+          if (!isReadOnly!)
             Align(
               alignment: Alignment.bottomCenter,
               child: NextButton(
@@ -249,21 +250,19 @@ class DerivativeProofFront extends StatelessWidget {
                 onPressed: () async {
                   ImageFile imageFile =
                       uploadDerivativeProof.control('DerivativeProof').value;
-                  if (imageFile != null) {
-                    final res = await getIt<ApiRepository>().uploadImage(
-                        file: imageFile.image!, type: DOCTYPE.IncomeProo);
-                    print(res);
-                    final res3 =
-                        await getIt<OAuthService>().updateUiStatus().then(
-                              (route) => Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                route,
-                                (route) => false,
-                              ),
-                            );
-                    print(res3);
-                    return true;
-                  }
+                  final res = await getIt<ApiRepository>().uploadImage(
+                      file: imageFile.image!, type: DOCTYPE.IncomeProof);
+                  print(res);
+                  final res3 =
+                      await getIt<OAuthService>().updateUiStatus().then(
+                            (route) => Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              route,
+                              (route) => false,
+                            ),
+                          );
+                  print(res3);
+                  return true;
                   return false;
                 },
               ),
