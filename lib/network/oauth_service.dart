@@ -25,8 +25,10 @@ class OAuthService {
     _formService.signUpForm.control('phone').value = currentUser!.Mobile ?? "";
     _formService.emailForm.control('email').value = currentUser!.Email ?? "";
     _formService.panForm.control('pan').value = currentUser!.PAN ?? "";
-    _formService.panForm.control('dob').value = DateTime.parse(
-        currentUser!.DateOfBirth ?? DateTime(2000 - 01 - 01).toString());
+    if (currentUser!.DateOfBirth != null) {
+      _formService.panForm.control('dob').value =
+          DateTime.parse(currentUser!.DateOfBirth!);
+    }
     _formService.validatePanForm.control('PAN').value = currentUser!.PAN ?? "";
     _formService.validatePanForm.control('DateOfBirth').value =
         currentUser!.DateOfBirth ?? "";

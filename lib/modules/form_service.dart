@@ -68,7 +68,10 @@ class FormService {
         ],
       ),
       'dob': FormControl<DateTime>(
-        validators: [Validators.required],
+        validators: [
+          Validators.required,
+          Validators.min(DateTime.now().subtract(Duration(days: 365 * 18))),
+        ],
       ),
     },
   );

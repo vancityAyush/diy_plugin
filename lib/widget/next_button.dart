@@ -66,9 +66,6 @@ class NextButton extends StatelessWidget {
           } else {
             _onClick2();
           }
-          Future.delayed(const Duration(seconds: 2), () {
-            _btnController.reset();
-          });
         },
         child: Row(
           children: [
