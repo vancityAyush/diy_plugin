@@ -169,7 +169,6 @@ class _AddressProofBackState extends State<AddressProofBack> {
                           (route) => false,
                         ),
                       );
-
                   return true;
                 },
               ),

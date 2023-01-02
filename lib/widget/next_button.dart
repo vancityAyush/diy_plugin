@@ -37,6 +37,9 @@ class NextButton extends StatelessWidget {
       form.markAllAsTouched();
       _btnController.error();
     }
+    Future.delayed(Duration(seconds: 2), () {
+      _btnController.reset();
+    });
   }
 
   Future<void> _onClick2() async {
@@ -47,6 +50,9 @@ class NextButton extends StatelessWidget {
     } else {
       _btnController.error();
     }
+    Future.delayed(Duration(seconds: 2), () {
+      _btnController.reset();
+    });
   }
 
   @override
@@ -59,10 +65,17 @@ class NextButton extends StatelessWidget {
         color: color ?? AppColors.primaryColor(context),
         controller: _btnController,
         onPressed: () async {
-          if (form != null) {
-            await _onClick1(form);
-          } else {
-            await _onClick2();
+          try {
+            if (form != null) {
+              await _onClick1(form);
+            } else {
+              await _onClick2();
+            }
+          } catch (e) {
+            _btnController.error();
+            Future.delayed(Duration(seconds: 2), () {
+              _btnController.reset();
+            });
           }
         },
         child: Row(
