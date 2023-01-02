@@ -166,7 +166,6 @@ class OAuthService {
     } on HttpException catch (e) {
       print(e);
       await logout();
-      //TODO NAVIGATE TO LOGIN PAGE
     }
   }
 

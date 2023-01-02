@@ -65,6 +65,8 @@ class IFSCPage extends StatelessWidget {
             showErrors: (control) => control.invalid && control.dirty,
             validationMessages: {
               'required': (error) => 'Please Enter IFSC',
+              'minLength': (error) =>
+                  'The IFSC Code must have at least 11 characters',
             },
           ),
           WidgetHelper.verticalSpace20,

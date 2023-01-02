@@ -24,10 +24,8 @@ class BottomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLightMode = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       drawer: Drawer(
-        width: WidgetsBinding.instance.window.physicalSize.width,
         backgroundColor: AppColors.background(context),
         child: Builder(
           builder: (context) {
@@ -120,8 +118,10 @@ class BottomPage extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.logout),
                   title: Text('Logout'),
-                  onTap: () {
-                    getIt<OAuthService>().logout();
+                  onTap: () async {
+                    await getIt<OAuthService>().logout();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/logout', (route) => false);
                   },
                 )
               ],
@@ -133,10 +133,8 @@ class BottomPage extends StatelessWidget {
         backgroundColor: AppColors.background(context),
         foregroundColor: AppColors.primaryContent(context),
         elevation: 0,
-        title: Column(
-          children: [
-            if (title != null)
-              Padding(
+        title: title != null
+            ? Padding(
                 padding: padding,
                 child: Text(
                   title!,
@@ -146,9 +144,8 @@ class BottomPage extends StatelessWidget {
                       color: AppColors.primaryContent(context)),
                   textAlign: TextAlign.center,
                 ),
-              ),
-          ],
-        ),
+              )
+            : null,
         centerTitle: true,
         // actions: [
         //   IconButton(

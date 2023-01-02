@@ -102,6 +102,9 @@ class FlutterDIY {
               //TODO REMOVE BELOW LINE
               // isReadOnly = false;
               Widget page;
+              if (settings.name == "/logout") {
+                Navigator.pop(context);
+              }
               switch (settings.name) {
                 case '/form/nomination':
                   page = Nomination(isReadOnly: isReadOnly);

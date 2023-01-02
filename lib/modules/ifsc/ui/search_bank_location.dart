@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../models/bank.dart';
 
+//"BKID0001248","BankAccountNo":"12481011000"
 class SearchBankLocation extends StatelessWidget {
   SearchBankLocation({Key? key, required this.banks}) : super(key: key) {
     filteredBanks.addAll(banks);
@@ -28,6 +29,7 @@ class SearchBankLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomPage(
+      title: "Select Bank Branch",
       child: Column(
         children: [
           TextField(
@@ -48,7 +50,7 @@ class SearchBankLocation extends StatelessWidget {
           WidgetHelper.verticalSpace20,
           Obx(
             () => SizedBox(
-              height: 350.sp,
+              height: 280.sp,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: filteredBanks.length,

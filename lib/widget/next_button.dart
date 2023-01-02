@@ -24,7 +24,7 @@ class NextButton extends StatelessWidget {
     this.validateForm = true,
   }) : super(key: key);
 
-  void _onClick1(form) async {
+  Future<void> _onClick1(form) async {
     _btnController.start();
     if (form!.valid || !validateForm) {
       bool res = await onPressed();
@@ -39,7 +39,7 @@ class NextButton extends StatelessWidget {
     }
   }
 
-  void _onClick2() async {
+  Future<void> _onClick2() async {
     _btnController.start();
     bool res = await onPressed();
     if (res) {
@@ -56,15 +56,13 @@ class NextButton extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: RoundedLoadingButton(
         borderRadius: 4,
-        resetAfterDuration: true,
-        resetDuration: const Duration(seconds: 2),
         color: color ?? AppColors.primaryColor(context),
         controller: _btnController,
         onPressed: () async {
           if (form != null) {
-            _onClick1(form);
+            await _onClick1(form);
           } else {
-            _onClick2();
+            await _onClick2();
           }
         },
         child: Row(

@@ -70,8 +70,10 @@ class FormService {
       'dob': FormControl<DateTime>(
         validators: [
           Validators.required,
-          Validators.min(DateTime.now().subtract(Duration(days: 365 * 18))),
+          Validators.min(
+              DateTime.now().subtract(const Duration(days: 365 * 18))),
         ],
+        value: null,
       ),
     },
   );
@@ -112,7 +114,6 @@ class FormService {
         validators: [
           Validators.required,
           Validators.minLength(11),
-          Validators.pattern("[A-Z]{4}[0-9]{7}")
         ],
       ),
     },
@@ -135,7 +136,6 @@ class FormService {
         validators: [
           Validators.required,
           Validators.minLength(11),
-          Validators.pattern("[A-Z]{4}[0-9]{7}")
         ],
       ),
       'BankAccountNo': FormControl<String>(

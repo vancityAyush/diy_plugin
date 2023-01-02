@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../diy.dart';
 import '../../utils/libs.dart';
 import '../../utils/theme_files/app_colors.dart';
-import '../../utils/util.dart';
 import '../../widget/diy_form.dart';
 import '../form_service.dart';
 
@@ -68,25 +67,19 @@ class BankAccountNumber extends StatelessWidget {
               onPressed: () async {
                 // final val = getIt<OAuthService>().currentUser;
                 // selectbankAccountForm.control('CustomerId').value(val);
-                final res = await getIt<ApiRepository>()
+                await getIt<ApiRepository>()
                     .validateBankAcc(selectbankAccountForm.value)
                     .then((res) async {
-                  if (res.status) {
-                    AppUtil.showToast("Bank Account Verified");
-                    selectbankAccountForm.value = res;
-                    await getIt<OAuthService>().updateUiStatus().then(
-                          (route) => Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            route,
-                            (route) => false,
-                          ),
-                        );
-                    return true;
-                  } else {
-                    AppUtil.showToast("Something went wrong");
-                  }
+                  selectbankAccountForm.value = res;
+                  await getIt<OAuthService>().updateUiStatus().then(
+                        (route) => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          route,
+                          (route) => false,
+                        ),
+                      );
+                  return true;
                 });
-
                 return false;
               },
             ),
