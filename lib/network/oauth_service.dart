@@ -21,14 +21,21 @@ class OAuthService {
 
   final FormService _formService = getIt<FormService>();
 
-  void currentUserData() {
+  void resetForms() {
+    _formService.signUpForm.reset();
+    _formService.emailForm.reset();
+    _formService.panForm.reset();
+    _formService.validatePanForm.reset();
+    _formService.selectIfscForm.reset();
+    //TODO Complete it
+  }
+
+  void patchForm() {
     _formService.signUpForm.control('phone').value = currentUser!.Mobile ?? "";
     _formService.emailForm.control('email').value = currentUser!.Email ?? "";
     _formService.panForm.control('pan').value = currentUser!.PAN ?? "";
-    if (currentUser!.DateOfBirth != null) {
-      _formService.panForm.control('dob').value =
-          DateTime.parse(currentUser!.DateOfBirth!);
-    }
+    _formService.panForm.control('dob').value = DateTime.parse(
+        currentUser!.DateOfBirth ?? DateTime(2000 - 01 - 01).toString());
     _formService.validatePanForm.control('PAN').value = currentUser!.PAN ?? "";
     _formService.validatePanForm.control('DateOfBirth').value =
         currentUser!.DateOfBirth ?? "";
@@ -62,6 +69,54 @@ class OAuthService {
     _formService.bankAccountForm.control('MICR_CODE').value =
         currentUser!.MICR_CODE ?? "";
     //Skipped uploadBankProofForm
+    _formService.correspondence_address.control('CorrespondenceHouseNo').value =
+        currentUser!.CorrespondenceHouseNo ?? "";
+    _formService.correspondence_address.control('CorrespondenceStreet').value =
+        currentUser!.CorrespondenceStreet ?? "";
+    _formService.correspondence_address
+        .control('CorrespondenceStateName')
+        .value = currentUser!.CorrespondenceStateName ?? "";
+    _formService.correspondence_address
+        .control('CorrespondenceLocation')
+        .value = currentUser!.CorrespondenceLocation ?? "";
+    _formService.correspondence_address.control('CorrespondenceState').value =
+        currentUser!.CorrespondenceState ?? "";
+    _formService.correspondence_address
+        .control('CorrespondenceCountryName')
+        .value = currentUser!.CorrespondenceCountryName ?? "";
+    _formService.correspondence_address.control('CorrespondenceCountry').value =
+        currentUser!.CorrespondenceCountry ?? "";
+    _formService.correspondence_address.control('CorrespondenceCity').value =
+        currentUser!.CorrespondenceCity ?? "";
+    _formService.correspondence_address.control('CorrespondencePincode').value =
+        currentUser!.CorrespondencePincode ?? "";
+    _formService.correspondence_address.control('CorrespondenceState').value =
+        currentUser!.CorrespondenceState ?? "";
+    _formService.correspondence_address.control('State').value =
+        currentUser!.CorrespondenceState ?? "";
+    _formService.correspondence_address.control('Country').value =
+        currentUser!.CorrespondenceCountry ?? "";
+    _formService.personalDetails.control('Gender').value =
+        currentUser!.Gender ?? "";
+    _formService.personalDetails.control('MaritalStatus').value =
+        currentUser!.MaritalStatus ?? "";
+    _formService.personalDetails.control('FatherName').value =
+        currentUser!.FatherName ?? "";
+    _formService.personalDetails.control('MotherName').value =
+        currentUser!.MotherName ?? "";
+    _formService.financialInfo.control('Education').value =
+        currentUser!.Education ?? "";
+    _formService.financialInfo.control('AnnualIncome').value =
+        currentUser!.AnnualIncome ?? "";
+    _formService.financialInfo.control('Occupation').value =
+        currentUser!.Occupation ?? "";
+    _formService.financialInfo.control('TradingExperience').value =
+        currentUser!.TradingExperience ?? "";
+    _formService.selectPlan.control('PlanType').value =
+        currentUser!.PlanType ?? "";
+    _formService.selectPlan.control('PlanId').value = currentUser!.PlanId ?? "";
+    _formService.selectPlan.control('DdpiOpted').value =
+        currentUser!.DdpiOpted ?? "";
   }
 
   UiStatus uiStatus = UiStatus(NextModuleId: 1, BackMenuList: []);
@@ -191,7 +246,7 @@ class OAuthService {
       User user = await verifyAuth(response["Mobile"], otp, response["RefId"],
           relationshipId: relationId);
       currentUser = user;
-      currentUserData();
+      patchForm();
       token.setToken(user.Auth!);
       return ResponseModel(status: true, arguments: "User Verified");
     } catch (e) {
